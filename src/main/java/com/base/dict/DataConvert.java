@@ -16,6 +16,7 @@ import com.opensymphony.xwork2.util.ValueStack;
 public class DataConvert extends ListUIBean {
 	public static final String TEMPLATE = "dataConvert";
 
+	
 	protected String defaultValue;
 	protected String withCode;
 	protected String separator;
