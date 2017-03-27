@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="SysAttach">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			attach_id,
+			attach_name,
+			attach_path,
+			file_type,
+			file_size,
+			oper_user_id,
+			oper_name,
+			oper_time,
+			attach_state,
+			attach_desc,
+			model_code
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			attach_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from sys_attach
+			<where>	      				
+				<if test="attachId != null and attachId != ''">
+					<![CDATA[and attach_id = #{attachId}]]>
+				</if>
+				<if test="attachName != null and attachName != ''">
+					<![CDATA[and attach_name = #{attachName}]]>
+				</if>
+				<if test="attachPath != null and attachPath != ''">
+					<![CDATA[and attach_path = #{attachPath}]]>
+				</if>
+				<if test="fileType != null and fileType != ''">
+					<![CDATA[and file_type = #{fileType}]]>
+				</if>
+				<if test="fileSize != null and fileSize != ''">
+					<![CDATA[and file_size = #{fileSize}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+				<if test="operName != null and operName != ''">
+					<![CDATA[and oper_name = #{operName}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and oper_time = #{operTime}]]>
+				</if>
+				<if test="attachState != null and attachState != ''">
+					<![CDATA[and attach_state = #{attachState}]]>
+				</if>
+				<if test="attachDesc != null and attachDesc != ''">
+					<![CDATA[and attach_desc = #{attachDesc}]]>
+				</if>				
+				<if test="modelCode != null and modelCode != ''">
+					<![CDATA[and model_code = #{modelCode}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.sys.entity.SysAttach">
+	    <![CDATA[
+			insert into sys_attach (
+				attach_id,
+				attach_name,
+				attach_path,
+				file_type,
+				file_size,
+				oper_user_id,
+				oper_name,
+				oper_time,
+				attach_state,
+				attach_desc,
+				model_code
+			) values (
+				#{attachId},
+				#{attachName},
+				#{attachPath},
+				#{fileType},
+				#{fileSize},
+				#{operUserId},
+				#{operName},
+				#{operTime},
+				#{attachState},
+				#{attachDesc},
+				#{modelCode}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.sys.entity.SysAttach">
+        <![CDATA[
+			delete from sys_attach 
+				where
+					attach_id = #{attachId}
+    	]]>
+    </delete>
+   
+	<!-- 跟据主键更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.sys.entity.SysAttach">
+	    <![CDATA[
+			update sys_attach set
+				attach_name = #{attachName},
+				attach_path = #{attachPath},
+				file_type = #{fileType},
+				file_size = #{fileSize},
+				oper_user_id = #{operUserId},
+				oper_name = #{operName},
+				oper_time = #{operTime},
+				attach_state = #{attachState},
+				attach_desc = #{attachDesc},
+				model_code = #{modelCode}
+				where 
+					attach_id = #{attachId}
+    	]]>
+	</update>
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.sys.entity.SysAttach" resultMap="sys.SysAttachRM">
+        select <include refid="allColumns" />
+			from sys_attach 
+			<where>	      				
+				<if test="attachId != null and attachId != ''">
+					<![CDATA[and attach_id = #{attachId}]]>
+				</if>
+			</where>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.sys.entity.query.SysAttachQuery" resultMap="sys.SysAttachRM">
+			<include refid="querySql"/>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.sys.entity.query.SysAttachQuery" resultMap="sys.SysAttachRM">
+		<include refid="querySql"/>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.sys.entity.query.SysAttachQuery" resultType="integer">
+		select count(*) from ( <include refid="querySql"/> ) as tmp_bzzc_attach
+	</select>
+	
+</mapper>

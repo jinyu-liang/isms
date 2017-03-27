@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="ExWorkType">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			work_cd,
+			work_nm,
+			work_ws_cd,
+			work_ws_nm,
+			work_count_type,
+			work_pay,
+			oper_user_id,
+			oper_user_name,
+			oper_time
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			work_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" />
+			from ex_work_type t
+			<where>	      				
+				<if test="workCd != null and workCd != ''">
+					<![CDATA[and t.work_cd = #{workCd}]]>
+				</if>
+				<if test="workNm != null and workNm != ''">
+					<![CDATA[and t.work_nm = #{workNm}]]>
+				</if>
+				<if test="work_ws_cd != null and work_ws_cd != ''">
+					<![CDATA[and t.work_ws_cd = #{work_ws_cd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.ExWorkType">
+	    <![CDATA[
+			insert into ex_work_type (
+				work_cd,
+				work_nm,
+				work_ws_cd,
+				work_ws_nm,
+				work_count_type,
+				work_pay,
+				oper_user_id,
+				oper_user_name,
+				oper_time
+			) values (
+				#{workCd},
+				#{workNm},
+				#{work_ws_cd},
+				#{work_ws_nm},
+				#{work_count_type},
+				#{work_pay},
+				#{operUserId},
+				#{operUserName},
+				#{operTime}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.ExWorkType">
+      
+			delete from ex_work_type 
+				<where>	 
+					<if test="workCd != null and workCd != ''">
+						<![CDATA[and work_cd = #{workCd}]]>
+					</if>
+					<if test="workNm != null and workNm != ''">
+						<![CDATA[and work_nm = #{workNm}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.ExWorkType">
+	   
+			update ex_work_type 
+				<set>
+				<if test="workNm != null">
+					work_nm = #{workNm},
+				</if>
+				<if test="workCd != null">
+					work_cd = #{workCd},
+				</if>
+				<if test="workNm != null">
+					work_nm = #{workNm},
+				</if>
+				<if test="work_count_type != null">
+					work_count_type = #{work_count_type},
+				</if>
+				<if test="work_pay != null">
+					work_pay = #{work_pay},
+				</if>
+				<if test="operUserId != null">
+					oper_user_id = #{operUserId},
+				</if>
+				<if test="operUserName != null">
+					oper_user_name = #{operUserName},
+				</if>
+				</set>
+				
+				where 
+					work_cd = #{workCd}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.ExWorkType" resultMap="pretrst.ExWorkTypeRM">
+        select <include refid="allColumns" />
+	    
+			from ex_work_type 
+			<where>	      				
+				<if test="workCd != null and workCd != ''">
+					<![CDATA[and work_cd = #{workCd}]]>
+				</if>
+				<if test="workNm != null and workNm != ''">
+					<![CDATA[and work_nm = #{workNm}]]>
+				</if>
+				<if test="work_ws_cd != null and work_ws_cd != ''">
+					<![CDATA[and work_ws_cd = #{work_ws_cd}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.ExWorkTypeQuery" resultMap="pretrst.ExWorkTypeRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.ExWorkTypeQuery" resultMap="pretrst.ExWorkTypeRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.ExWorkTypeQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ex_work_type
+	</select>
+</mapper>

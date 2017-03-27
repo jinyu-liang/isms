@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="GgkzAuthResource">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			auth_id,
+			resource_id,
+			oper_time,
+			oper_user_id
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			auth_id,
+			resource_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ggkz_auth_resource
+			<where>	      				
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				<if test="resourceId != null and resourceId != ''">
+					<![CDATA[and resource_id = #{resourceId}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and oper_time = #{operTime}]]>
+				</if>
+				<if test="operTimeStart != null and operTimeStart != ''">
+					<![CDATA[and oper_time >= #{operTimeStart}]]>
+				</if>
+				<if test="operTimeEnd != null and operTimeEnd != ''">
+					<![CDATA[and oper_time <= #{operTimeEnd}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.ggkz.entity.GgkzAuthResource">
+	    <![CDATA[
+			insert into ggkz_auth_resource (
+				auth_id,
+				resource_id,
+				oper_time,
+				oper_user_id
+			) values (
+				#{authId},
+				#{resourceId},
+				#{operTime},
+				#{operUserId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzAuthResource">
+      
+			delete from ggkz_auth_resource 
+				<where>	 
+					<if test="authId != null and authId != ''">
+						<![CDATA[and auth_id = #{authId}]]>
+					</if>
+					<if test="resourceId != null and resourceId != ''">
+						<![CDATA[and resource_id = #{resourceId}]]>
+					</if>
+					<if test="operTime != null and operTime != ''">
+						<![CDATA[and oper_time = #{operTime}]]>
+					</if>
+					<if test="operUserId != null and operUserId != ''">
+						<![CDATA[and oper_user_id = #{operUserId}]]>
+					</if>
+				</where>
+    
+    </delete>
+    
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzAuthResource">
+	   
+			update ggkz_auth_resource 
+				<set>
+				<if test="operTime != null">
+					oper_time = #{operTime},
+				</if>
+				<if test="operUserId != null">
+					oper_user_id = #{operUserId}
+				</if>
+				</set>
+				
+				where 
+					auth_id = #{authId} and 
+					resource_id = #{resourceId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzAuthResource" resultMap="ggkz.GgkzAuthResourceRM">
+        select <include refid="allColumns" />
+	    
+			from ggkz_auth_resource 
+			<where>	      				
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				<if test="resourceId != null and resourceId != ''">
+					<![CDATA[and resource_id = #{resourceId}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and oper_time = #{operTime}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.ggkz.entity.query.GgkzAuthResourceQuery" resultMap="ggkz.GgkzAuthResourceRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.ggkz.entity.query.GgkzAuthResourceQuery" resultMap="ggkz.GgkzAuthResourceRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.ggkz.entity.query.GgkzAuthResourceQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ggkz_auth_resource
+	</select>
+	
+	<!-- 批量插入权限与资源关联 -->
+   <insert id="batchInsert" parameterType="java.util.List">  
+        insert into ggkz_auth_resource  
+        (       auth_id,
+				resource_id,
+				oper_time,
+				oper_user_id  
+        ) values  
+        <foreach collection="list" item="item" index="index" separator=",">  
+            (
+               #{item.authId},
+               #{item.resourceId},
+               #{item.operTime},
+               #{item.operUserId}  
+            )  
+        </foreach>  
+    </insert> 
+	<select id="selectAuthResourceByRoles" parameterType="java.util.List" resultType="string">
+		select distinct auth.resource_id from ggkz_role_mobile_auth role left join ggkz_auth_mobile_resource auth  on role.auth_id = auth.auth_id
+        where role.role_id in 
+        <foreach collection="list" item="item"  index="index" open="(" separator="," close=")">  
+            #{item}
+        </foreach> 
+	</select>
+</mapper>

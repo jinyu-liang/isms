@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="msg">
+    <resultMap id="MsgMessageInfoRM" type="com.is.pms.msginteract.entity.MsgMessageInfo">
+        <id property="id" column="id" javaType="String" jdbcType="VARCHAR" />
+        <result property="sendid" column="sendid" javaType="String" jdbcType="VARCHAR"/>
+        <result property="receiver" column="receiver" javaType="String" jdbcType="BLOB" typeHandler="blobHandler"/>
+        <result property="sender" column="sender" javaType="String" jdbcType="VARCHAR" />
+        <result property="owner" column="owner" javaType="String" jdbcType="VARCHAR" />
+        <result property="theme" column="theme" javaType="String" jdbcType="VARCHAR" />
+        <result property="attachment" column="attachment" javaType="String" jdbcType="BLOB" typeHandler="blobHandler"/>
+        <result property="body" column="body" javaType="String" jdbcType="VARCHAR" typeHandler="blobHandler" />
+        <result property="sendtime" column="sendtime" javaType="Date" jdbcType="TIMESTAMP" />
+        <result property="flag" column="flag" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+</mapper>

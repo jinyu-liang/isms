@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="ExPersonInfoPay">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			pid,
+			identy_card_code,
+			name,
+			telephone,
+			work_type,
+			work_type_name,
+			work_count_type,
+			work_pay,
+			work_ws_cd,
+			work_ws_nm,
+			addtime,
+			start_time_am,
+			end_time_am,
+			start_time_pm,
+			end_time_pm,
+			start_time_other,
+			end_time_other,
+			work_timer,
+			team_name,
+			team_id,
+			remark,
+			work_status,
+			bank_card,
+			bank_card_name,
+			dayormonth
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			pid
+	    ]]>
+  	</sql>
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ex_person_pay
+			<where>	    
+			  	<if test="identy_card_code != null and identy_card_code != ''">
+					<![CDATA[and identy_card_code = #{identy_card_code}]]>
+				</if>			
+				<if test="pid != null and pid != ''">
+					<![CDATA[and pid = #{pid}]]>
+				</if>
+				<if test="name != null and name != ''">
+					<![CDATA[and name like concat('%', #{name},'%')]]>
+				</if>
+				<if test="telephone != null and telephone != ''">
+					<![CDATA[and telephone = #{telephone}]]>
+				</if>
+				<if test="work_type != null and work_type != ''">
+					<![CDATA[and work_type = #{work_type}]]>
+				</if>
+				<if test="work_type_name != null and work_type_name != ''">
+					<![CDATA[and work_type_name = #{work_type_name}]]>
+				</if>
+				<if test="work_count_type != null and work_count_type != ''">
+					<![CDATA[and work_count_type = #{work_count_type}]]>
+				</if>
+				<if test="work_ws_cd != null and work_ws_cd != ''">
+					<![CDATA[and work_ws_cd = #{work_ws_cd}]]>
+				</if>
+				<if test="work_ws_nm != null and work_ws_nm != ''">
+					<![CDATA[and work_ws_nm = #{work_ws_nm}]]>
+				</if>
+				<if test="start_time_am != null and start_time_am != ''">
+					<![CDATA[and start_time_am = #{start_time_am}]]>
+				</if>
+				<if test="end_time_am != null and end_time_am != ''">
+					<![CDATA[and end_time_am = #{end_time_am}]]>
+				</if>
+				<if test="start_time_pm != null and start_time_pm != ''">
+					<![CDATA[and start_time_pm = #{start_time_pm}]]>
+				</if>
+				<if test="end_time_pm != null and end_time_pm != ''">
+					<![CDATA[and end_time_pm >= #{end_time_pm}]]>
+				</if>
+				<if test="start_time_other != null and start_time_other != ''">
+					<![CDATA[and start_time_other <= #{start_time_other}]]>
+				</if>
+				<if test="end_time_other != null and end_time_other != ''">
+					<![CDATA[and end_time_other <= #{end_time_other}]]>
+				</if>
+				<if test="work_timer != null and work_timer != ''">
+					<![CDATA[and work_timer = #{work_timer}]]>
+				</if>
+				<if test="team_name != null and team_name != ''">
+					<![CDATA[and team_name = #{team_name}]]>
+				</if>
+				<if test="team_id != null and team_id != ''">
+					<![CDATA[and team_id = #{team_id}]]>
+				</if>
+				<if test="work_status != null and work_status != ''">
+					<![CDATA[and work_status = #{work_status}]]>
+				</if>
+				<if test="bank_card != null and bank_card != ''">
+					<![CDATA[and bank_card = #{bank_card}]]>
+				</if>
+				<if test="bank_card_name != null and bank_card_name != ''">
+					<![CDATA[and bank_card_name = #{bank_card_name}]]>
+				</if>
+				<if test="dayormonth != null and dayormonth != ''">
+					<![CDATA[and dayormonth = #{dayormonth}]]>
+				</if>
+			</where>
+	</sql>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.ExPersonInfoPay">
+      
+			delete from ex_person_pay 
+				<where>	 
+				<if test="pid != null and pid != ''">
+					<![CDATA[and pid = #{pid}]]>
+				</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.ExPersonInfoPay">
+	   
+			update ex_person_pay
+				<set>
+				<if test="start_time_am != null and start_time_am != ''">
+					<![CDATA[ start_time_am = #{start_time_am},]]>
+				</if>
+				<if test="end_time_am != null and end_time_am != ''">
+					<![CDATA[ end_time_am = #{end_time_am},]]>
+				</if>
+				<if test="start_time_pm != null and start_time_pm != ''">
+					<![CDATA[ start_time_pm = #{start_time_pm},]]>
+				</if>
+				<if test="end_time_pm != null and end_time_pm != ''">
+					<![CDATA[ end_time_pm = #{end_time_pm},]]>
+				</if>
+				<if test="start_time_other != null and start_time_other != ''">
+					<![CDATA[ start_time_other = #{start_time_other},]]>
+				</if>
+				<if test="end_time_other != null and end_time_other != ''">
+					<![CDATA[ end_time_other = #{end_time_other},]]>
+				</if>
+				<if test="work_timer != null and work_timer != ''">
+					<![CDATA[ work_timer = #{work_timer},]]>
+				</if>
+
+				<if test="work_status != null and work_status != ''">
+					<![CDATA[ work_status = #{work_status},]]>
+				</if>
+				<if test="remark != null and remark != ''">
+					<![CDATA[ remark = #{remark}]]>
+				</if>
+				</set>
+
+				where 1=1 
+				<if test="pid != null">
+					and pid = #{pid} 
+			 	</if>
+	</update>
+	
+	
+
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.ExPersonInfoPay" resultMap="pretrst.ExPersonInfoPayRM">
+        select <include refid="allColumns" />
+			from ex_person_pay
+			<where>	      				
+				<if test="pid != null and pid != ''">
+					<![CDATA[and pid = #{pid}]]>
+				</if>
+				<if test="telephone != null and telephone != ''">
+					<![CDATA[and telephone = #{telephone}]]>
+				</if>
+			</where>
+	  
+	</select>
+
+			<!-- 跟据条件更新数据 -->
+	<update id="perInfoDeal" parameterType="com.is.pretrst.entity.ExPersonInfoPay">
+
+			update ex_person_pay
+				<set>
+				<if test="work_status != null">
+					work_status = #{work_status}
+				</if>
+				</set>
+				where 1=1 
+				<if test="pid != null">
+					and  pid = #{pid} 
+			 	</if>
+				
+	</update>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.ExPersonInfoPayQuery" resultMap="pretrst.ExPersonInfoPayRM">
+			<include refid="querySql"/>
+			
+	</select>
+	<!-- 根据实体对象查询数据结果集
+	<select id="getPersonInfoListToMobile" parameterType="com.is.pretrst.entity.query.ExPersonInfoPayQuery" resultMap="pretrst.ExPersonInfoPayRM">
+			<include refid="getPersonInfoListToMobile"/>
+			
+	</select> -->
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.ExPersonInfoPayQuery" resultMap="pretrst.ExPersonInfoPayRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.ExPersonInfoPayQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ex_person_pay
+	</select>
+	
+	<!-- 查询区域部长 -->
+	<select id="getcuizhang" parameterType="com.is.pretrst.entity.query.MWorkshopExtQuery" resultMap="pretrst.ExPersonInfoPayRM">		
+		select work_ws_nm,work_ws_cd,work_status,addtime,a.start_time_am,a.end_time_am,SUM(work_timer) work_timer,SUM(work_pay) work_pay from ex_person_pay a
+		 where work_ws_cd in (SELECT b.ws_cd from m_workshop b where b.div_cd   like concat('', #{name},'%') ) and dayormonth = '2'  GROUP BY a.work_ws_cd  order by start_time_am desc
+	</select>
+	
+		<!-- 分页查询 -查询记录总数 -->
+	<select id="getcuizhangCount" parameterType="com.is.pretrst.entity.query.ExPersonInfoPayQuery" resultType="integer">
+		select count(1) from ex_person_pay a
+		 where work_ws_cd in (SELECT b.ws_cd from m_workshop b where b.div_cd   like concat('', #{name},'%') )and dayormonth = '2'
+	</select>
+	
+</mapper>

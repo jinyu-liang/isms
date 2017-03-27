@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+    <!-- 导入XFire基本配置文件 -->
+    <import resource="classpath:org/codehaus/xfire/spring/xfire.xml" />
+
+    <bean id="baseWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter" lazy-init="false" abstract="true">
+        <property name="serviceFactory" ref="xfire.serviceFactory" />
+        <property name="xfire" ref="xfire" />
+    </bean>
+    <!-- <bean id="mobileSecrityServiceImpl" class="com.is.ws.impl.MobileSecrityServiceImpl">
+    </bean>
+    <bean id="mobileSecrityService" parent="baseWebService">
+        <property name="serviceBean" ref="mobileSecrityServiceImpl" />
+        <property name="serviceClass" value="com.is.ws.MobileSecrityService" />
+    </bean> -->
+</beans>

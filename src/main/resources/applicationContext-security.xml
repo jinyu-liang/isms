@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:s="http://www.springframework.org/schema/security" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd "
+    default-lazy-init="true">
+
+    <description>SpringSecurity安全配置</description>
+
+    <!-- http安全配置 -->
+    <s:http auto-config="true" use-expressions="true" access-denied-page="/denied.jsp">
+        <s:intercept-url pattern="/css/**" filters="none" />
+        <s:intercept-url pattern="/img/**" filters="none" />
+        <s:intercept-url pattern="/js/**" filters="none" />
+        <s:intercept-url pattern="/**/*.jsp" filters="none" />
+        <s:intercept-url pattern="/scoket/**" filters="none" />
+        <s:intercept-url pattern="/login.action*" filters="none" />
+        <s:intercept-url pattern="/mobile/mobile-msg-interact**" filters="none" />
+        <!-- <s:intercept-url pattern="/sys/sys-attach**" filters="none" /> -->
+
+        <s:form-login login-page="/login.action" authentication-failure-url="/fail.action" always-use-default-target="false" />
+        <s:logout logout-success-url="/" invalidate-session="true" />
+        <!-- 失效时转向登陆,如果限制只能登陆一个客户端,登两个客户端后,先登陆的客户端访问权限内的url将返回登陆页 -->
+        <s:session-management invalid-session-url="/login.action">
+            <s:concurrency-control max-sessions="1" error-if-maximum-exceeded="false" expired-url="/login.action?error=3"
+                session-registry-ref="IsSessionRegistry" />
+        </s:session-management>
+        <!-- <s:remember-me key="e37f4b31-0c45-11dd-bd0b-0800200c9a66" /> -->
+
+        <!-- 增加一个自定义的filter，放在FILTER_SECURITY_INTERCEPTOR之前, 实现用户、角色、权限、资源的数据库管理。 -->
+        <s:custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" />
+    </s:http>
+
+    <!-- 一个自定义的filter，必须包含authenticationManager, accessDecisionManager,securityMetadataSource三个属性。 -->
+    <bean id="myFilter" class="com.base.security.MyFilterSecurityInterceptor">
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="accessDecisionManager" ref="myAccessDecisionManager" />
+        <property name="securityMetadataSource" ref="mySecurityMetadataSource" />
+    </bean>
+
+    <bean id="IsSessionRegistry" class="com.is.session.reg.IsSessionRegistry"></bean>
+
+    <!-- 认证配置, 使用userDetailsService提供的用户信息 -->
+    <s:authentication-manager alias="authenticationManager">
+        <s:authentication-provider user-service-ref="userDetailsService">
+            <s:password-encoder hash="plaintext" />
+        </s:authentication-provider>
+    </s:authentication-manager>
+
+    <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源。 -->
+    <bean id="myAccessDecisionManager" class="com.base.security.MyAccessDecisionManager"></bean>
+
+    <bean id="mySecurityMetadataSource" class="com.base.security.MyInvocationSecurityMetadataSourceService"></bean>
+
+    <!-- 项目实现的用户查询服务 -->
+    <bean id="userDetailsService" class="com.is.ggkz.service.GgkzUserInfoServiceImpl" />
+</beans>

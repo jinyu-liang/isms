@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="MWorkshopJoblog"> 
+<!-- <cache flushInterval="60000" readOnly="true"/> -->
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			ID,
+			fquserid,
+			fqusername,
+			ws_cd,
+			ws_name,
+			accepttime,
+			wheather,
+			starttime,
+			endtime,
+			jobcontent,
+			schedule,
+			Isplan,
+			daySituation,
+			nightSituation,
+			qualitySituation,
+			qualityMeasures,
+			SecuritySituation,
+			SecurityMeasures,
+			materialSituation,
+			materialMeasures,
+			DrawingSituation,
+			DrawingMeasures,
+			VisaSituation,
+			VisaMeasures,
+			OtherSituation,
+			problemTrack,
+			status
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			ID
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from m_workshop_joblog
+			<where>	      				
+				<if test="ID != null and ID != ''">
+					<![CDATA[and ID = #{ID}]]>
+				</if>
+				<if test="fquserid != null and fquserid != ''">
+					<![CDATA[and fquserid = #{fquserid}]]>
+				</if>
+				<if test="fqusername != null and fqusername != ''">
+					<![CDATA[and fqusername = #{fqusername}]]>
+				</if>
+				<if test="ws_name != null and ws_name != ''">
+					<![CDATA[and ws_name =#{ws_name}]]>
+				</if>
+				<if test="ws_cd != null and ws_cd != ''">
+					<![CDATA[and ws_cd like concat(#{ws_cd},'%')]]>
+				</if>
+				<if test="accepttime != null and accepttime != ''">
+					<![CDATA[and accepttime = #{accepttime}]]>
+				</if>
+				<if test="start_date != null and start_date != ''">
+					<![CDATA[and accepttime > #{start_date}]]>
+				</if>
+				<if test="end_date != null and end_date != ''">
+					<![CDATA[and accepttime < #{end_date}]]>
+				</if>
+				<if test="wheather != null and wheather != ''">
+					<![CDATA[and wheather = #{wheather}]]>
+				</if>
+				<if test="starttime != null and starttime != ''">
+					<![CDATA[and starttime = #{starttime}]]>
+				</if>
+				<if test="endtime != null and endtime != ''">
+					<![CDATA[and endtime = #{endtime}]]>
+				</if>
+				<if test="jobcontent != null and jobcontent != ''">
+					<![CDATA[and jobcontent = #{jobcontent}]]>
+				</if>
+				<if test="schedule != null and schedule != ''">
+					<![CDATA[and schedule = #{schedule}]]>
+				</if>
+				<if test="Isplan != null and Isplan != ''">
+					<![CDATA[and Isplan = #{Isplan}]]>
+				</if>
+				<if test="daySituation != null and daySituation != ''">
+					<![CDATA[and daySituation = #{daySituation}]]>
+				</if>
+				<if test="nightSituation != null and nightSituation != ''">
+					<![CDATA[and nightSituation = #{nightSituation}]]>
+				</if>
+				<if test="qualitySituation != null and qualitySituation != ''">
+					<![CDATA[and qualitySituation = #{qualitySituation}]]>
+				</if>
+				<if test="qualityMeasures != null and qualityMeasures != ''">
+					<![CDATA[and qualityMeasures = #{qualityMeasures}]]>
+				</if>
+				<if test="SecuritySituation  != null and   SecuritySituation != ''">
+					<![CDATA[and SecuritySituation  = #{SecuritySituation}]]>
+				</if>
+				<if test=" SecurityMeasures != null and  SecurityMeasures != ''">
+					<![CDATA[and SecurityMeasures  = #{SecurityMeasures}]]>
+				</if>
+				<if test=" materialSituation != null and  materialSituation != ''">
+					<![CDATA[and materialSituation  = #{materialSituation}]]>
+				</if>
+				<if test=" materialMeasures != null and  materialMeasures != ''">
+					<![CDATA[and  materialMeasures = #{materialMeasures}]]>
+				</if>
+				<if test=" DrawingSituation != null and  DrawingSituation != ''">
+					<![CDATA[and DrawingSituation = #{DrawingSituation}]]>
+				</if>
+				<if test=" DrawingMeasures != null and  DrawingMeasures != ''">
+					<![CDATA[and DrawingMeasures  = #{DrawingMeasures}]]>
+				</if>
+				<if test=" VisaSituation != null and  VisaSituation != ''">
+					<![CDATA[and VisaSituation = #{VisaSituation}]]>
+				</if>
+				<if test=" VisaMeasures != null and  VisaMeasures != ''">
+					<![CDATA[and VisaMeasures  = #{VisaMeasures}]]>
+				</if>
+				<if test=" OtherSituation != null and OtherSituation  != ''">
+					<![CDATA[and  OtherSituation = #{OtherSituation}]]>
+				</if>
+				<if test=" problemTrack != null and problemTrack  != ''">
+					<![CDATA[and  problemTrack = #{problemTrack}]]>
+				</if>
+				<if test=" status != null and status  != ''">
+					<![CDATA[and  status = #{status}]]>
+				</if>
+			</where>
+			order by accepttime desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MWorkshopJoblog">
+	    <![CDATA[
+			insert into m_workshop_joblog (
+				ID,
+				fquserid,
+				fqusername,
+				ws_cd,
+				ws_name,
+				accepttime,
+				wheather,
+				starttime,
+				endtime,
+				jobcontent,
+				schedule,
+				Isplan,
+				daySituation,
+				nightSituation,
+				qualitySituation,
+				qualityMeasures,
+				SecuritySituation,
+				SecurityMeasures,
+				materialSituation,
+				materialMeasures,
+				DrawingSituation,
+				DrawingMeasures,
+				VisaSituation,
+				VisaMeasures,
+				OtherSituation,
+				problemTrack,
+				status
+			) values (
+				#{ID},
+				#{fquserid},
+				#{fqusername},
+				#{ws_cd},
+				#{ws_name},
+				#{accepttime},
+				#{wheather},
+				#{starttime},
+				#{endtime},
+				#{jobcontent},
+				#{schedule},
+				#{Isplan},
+				#{daySituation},
+				#{nightSituation},
+				#{qualitySituation},
+				#{qualityMeasures},
+				#{SecuritySituation},
+				#{SecurityMeasures},
+				#{materialSituation},
+				#{materialMeasures},
+				#{DrawingSituation},
+				#{DrawingMeasures},
+				#{VisaSituation},
+				#{VisaMeasures},
+				#{OtherSituation},
+				#{problemTrack},
+				#{status}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MWorkshopJoblog">
+      
+			delete from m_workshop_joblog 
+				<where>
+					<if test="ID != null and ID != ''">
+						<![CDATA[and ID = #{ID}]]>
+					</if> 
+					<if test="ws_cd != null and ws_cd != ''">
+						<![CDATA[and ws_cd = #{ws_cd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MWorkshopJoblog">
+	   
+			update m_workshop_joblog 
+				<set>
+					<if test="fquserid != null ">
+					 fquserid = #{fquserid},
+				</if>
+				<if test="fqusername != null  ">
+					 fqusername = #{fqusername},
+				</if>
+				<if test="ws_name != null  ">
+					 ws_name =#{ws_name},
+				</if>
+				<if test="accepttime != null  ">
+					 accepttime = #{accepttime},
+				</if>
+				<if test="wheather != null ">
+					 wheather = #{wheather},
+				</if>
+				<if test="starttime != null ">
+					 starttime = #{starttime},
+				</if>
+				<if test="endtime != null ">
+					 endtime = #{endtime},
+				</if>
+				<if test="jobcontent != null ">
+					 jobcontent = #{jobcontent},
+				</if>
+				<if test="schedule != null ">
+					 schedule = #{schedule},
+				</if>
+				<if test="Isplan != null ">
+					 Isplan = #{Isplan},
+				</if>
+				<if test="daySituation != null ">
+					 daySituation = #{daySituation},
+				</if>
+				<if test="nightSituation != null ">
+					 nightSituation = #{nightSituation},
+				</if>
+				<if test="qualitySituation != null ">
+					 qualitySituation = #{qualitySituation},
+				</if>
+				<if test="qualityMeasures != null ">
+					 qualityMeasures = #{qualityMeasures},
+				</if>
+				<if test="SecuritySituation  != null ">
+					 SecuritySituation  = #{SecuritySituation},
+				</if>
+				<if test=" SecurityMeasures != null ">
+					 SecurityMeasures  = #{SecurityMeasures},
+				</if>
+				<if test=" materialSituation != null ">
+					 materialSituation  = #{materialSituation},
+				</if>
+				<if test=" materialMeasures != null ">
+					  materialMeasures = #{materialMeasures},
+				</if>
+				<if test=" DrawingSituation != null">
+					 DrawingSituation = #{DrawingSituation},
+				</if>
+				<if test=" DrawingMeasures != null">
+					 DrawingMeasures  = #{DrawingMeasures},
+				</if>
+				<if test=" VisaSituation != null">
+					 VisaSituation = #{VisaSituation},
+				</if>
+				<if test=" VisaMeasures != null">
+					 VisaMeasures  = #{VisaMeasures},
+				</if>
+				<if test=" OtherSituation != null">
+					  OtherSituation = #{OtherSituation},
+				</if>
+				<if test=" problemTrack != null">
+					  problemTrack = #{problemTrack},
+				</if>
+				<if test=" status != null">
+					  status = #{status}
+				</if>
+				</set>
+				
+				where 
+					ID = #{ID}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MWorkshopJoblog" resultMap="pretrst.MWorkshopJoblogRM">
+        select <include refid="allColumns" />
+	    
+			from m_workshop_joblog  m
+			
+			<where>
+				<if test="ID != null and ID != ''">
+					<![CDATA[and m.ID = #{ID}]]>
+				</if>	      				
+				<if test="ws_cd != null and ws_cd != ''">
+					<![CDATA[and m.ws_cd = #{ws_cd}]]>
+				</if>
+				<if test="ws_name != null and ws_name != ''">
+					<![CDATA[and m.ws_name = #{ws_name}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopJoblogQuery" resultMap="pretrst.MWorkshopJoblogRM">
+			<include refid="querySql"/>
+			
+	</select>
+
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MWorkshopJoblogQuery" resultMap="pretrst.MWorkshopJoblogRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MWorkshopJoblogQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_m_workshop_joblog
+	</select>	
+    
+</mapper>

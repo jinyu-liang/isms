@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace命名规则：项目或者构件的英文简写 -->
+<mapper namespace="sys">
+    <resultMap id="SysOperLogRM" type="com.is.sys.entity.SysOperLog">
+        <id property="logId" column="log_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="busiId" column="busi_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="modelId" column="model_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="modelName" column="model_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="operFuncCode" column="oper_func_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="operFuncName" column="oper_func_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="operEvent" column="oper_event" javaType="String" jdbcType="VARCHAR" />
+        <result property="operResult" column="oper_result" javaType="String" jdbcType="VARCHAR" />
+        <result property="operateTime" column="operate_time" javaType="Date" />
+        <result property="userId" column="user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="name" column="name" javaType="String" jdbcType="VARCHAR" />
+        <result property="operIp" column="oper_ip" javaType="String" jdbcType="VARCHAR" />
+        <result property="note" column="note" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+    </resultMap>
+    <resultMap id="SysDictTypeRM" type="com.is.sys.entity.SysDictType">
+        <id property="dictTypeCode" column="dict_type_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="dictTypeName" column="dict_type_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="serialNumber" column="serial_number" javaType="Integer" jdbcType="INTEGER" />
+        <!-- <collection property="sysDicts" column="{dictTypeCode=dict_type_code}" ofType="java.util.List" select="SysDict.selectByEntity"/> -->
+    </resultMap>
+
+    <resultMap id="SysDictRM" type="com.is.sys.entity.SysDict">
+        <result property="dictCode" column="dict_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="dictName" column="dict_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="dictTypeCode" column="dict_type_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="serialNumber" column="serial_number" javaType="integer" jdbcType="INTEGER" />
+        <collection property="sysDictTypes" column="{dictTypeCode=dict_type_code}" ofType="com.is.sys.entity.SysDictType" select="SysDictType.selectOneByEntity" />
+    </resultMap>
+    <resultMap id="SysAttachRM" type="com.is.sys.entity.SysAttach">
+        <id property="attachId" column="attach_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="attachName" column="attach_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="attachPath" column="attach_path" javaType="String" jdbcType="VARCHAR"/>
+        <result property="fileType" column="file_type" javaType="String" jdbcType="VARCHAR"/>
+        <result property="fileSize" column="file_size" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operName" column="oper_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="attachState" column="attach_state" javaType="String" jdbcType="VARCHAR"/>
+        <result property="attachDesc" column="attach_desc" javaType="String" jdbcType="VARCHAR"/>
+        <result property="modelCode" column="model_code" javaType="String" jdbcType="VARCHAR"/>
+        <collection property="AttachAuths" column="{attachId=attach_id}" ofType="java.util.List" select="SysAttachAuth.selectByEntity"/>
+    </resultMap>
+    <resultMap id="SysAttachAuthRM" type="com.is.sys.entity.SysAttachAuth">
+        <id property="busiId" column="busi_id" javaType="String" jdbcType="VARCHAR"/>
+        <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="attachId" column="attach_id" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+</mapper>

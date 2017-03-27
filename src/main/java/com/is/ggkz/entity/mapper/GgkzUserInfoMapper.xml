@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="GgkzUserInfo">
+	<!-- <cache flushInterval="300000" readOnly="true" /> -->
+	<sql id="allColumns">
+		user_id,
+		org_id,
+		login_name,
+		work_code,
+		name,
+		password,
+		sex,
+		user_state,
+		depart_id,
+		certificate_type,
+		certificate_code,
+		birth_date,
+		now_reside_address,
+		postcode,
+		new_password,
+		email,
+		office_tel,
+		mobile_tel,
+		mobile_id,
+		mobile_sn,
+		post,
+		head_user_cd,
+		create_tm,
+		update_tm
+	</sql>
+
+
+	<sql id="notSelfquerySql">
+		select
+		<include refid="allColumns" />
+		from ggkz_user_info
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id != #{userId}
+			</if>
+			<if test="post != null and post != ''">
+				and post = #{post}
+			</if>
+		</where>
+	</sql>
+
+
+
+	<sql id="querySql">
+		select
+		<include refid="allColumns" />
+		from ggkz_user_info
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and org_id = #{orgId}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and login_name = #{loginName}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and work_code = #{workCode}
+			</if>
+			<if test="name != null and name != ''">
+				and name like concat('%',#{name},'%')
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and depart_id = #{departId}
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and birth_date = #{birthDate}
+			</if>
+			<if test="birthDateStart != null and birthDateStart != ''">
+                <![CDATA[and birth_date >= #{birthDateStart}]]>
+			</if>
+			<if test="birthDateEnd != null and birthDateEnd != ''">
+                <![CDATA[and birth_date <= #{birthDateEnd}]]>
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and postcode = #{postcode}
+			</if>
+			<if test="newPassword != null and newPassword != ''">
+				and new_password = #{newPassword}
+			</if>
+			<if test="email != null and email != ''">
+				and email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and post like concat('%',#{post},'%')
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				and head_user_cd = #{headUserCd}
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and update_tm = #{updateTm}
+			</if>
+			<if test="excludeUser != null and excludeUser != ''">
+				and user_id &lt;&gt; #{excludeUser}
+			</if>
+		</where>
+	</sql>
+	<insert id="insert" parameterType="com.is.ggkz.entity.GgkzUserInfo">
+		insert into ggkz_user_info (
+		user_id,
+		org_id,
+		login_name,
+		work_code,
+		name,
+		password,
+		sex,
+		user_state,
+		depart_id,
+		certificate_type,
+		certificate_code,
+		birth_date,
+		now_reside_address,
+		postcode,
+		new_password,
+		email,
+		office_tel,
+		mobile_tel,
+		mobile_id,
+		mobile_sn,
+		post,
+		head_user_cd,
+		create_tm,
+		update_tm
+		) values (
+		#{userId},
+		#{orgId},
+		#{loginName},
+		#{workCode},
+		#{name},
+		#{password},
+		#{sex},
+		#{userState},
+		#{departId},
+		#{certificateType},
+		#{certificateCode},
+		#{birthDate},
+		#{nowResideAddress},
+		#{postcode},
+		#{newPassword},
+		#{email,jdbcType=VARCHAR},
+		#{officeTel,jdbcType=VARCHAR},
+		#{mobileTel,jdbcType=VARCHAR},
+		#{mobileId,jdbcType=VARCHAR},
+		#{mobileSn,jdbcType=VARCHAR},
+		#{post,jdbcType=VARCHAR},
+		#{headUserCd,jdbcType=VARCHAR},
+		#{createTm,jdbcType=TIMESTAMP},
+		#{updateTm,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	<delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzUserInfo">
+		delete from ggkz_user_info
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and org_id = #{orgId}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and login_name = #{loginName}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and work_code = #{workCode}
+			</if>
+			<if test="name != null and name != ''">
+				and name = #{name}
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and depart_id = #{departId}
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and birth_date = #{birthDate}
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and postcode = #{postcode}
+			</if>
+			<if test="email != null and email != ''">
+				and email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and post = #{post}
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				and head_user_cd = #{headUserCd}
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and update_tm = #{updateTm}
+			</if>
+		</where>
+	</delete>
+	<update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzUserInfo">
+		update ggkz_user_info
+		<set>
+			<if test="orgId != null">
+				org_id = #{orgId},
+			</if>
+			<if test="loginName != null">
+				login_name = #{loginName},
+			</if>
+			<if test="workCode != null">
+				work_code = #{workCode},
+			</if>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="sex != null">
+				sex = #{sex},
+			</if>
+			<if test="userState != null">
+				user_state = #{userState},
+			</if>
+			<if test="departId != null">
+				depart_id = #{departId},
+			</if>
+			<if test="certificateType != null">
+				certificate_type = #{certificateType},
+			</if>
+			<if test="certificateCode != null">
+				certificate_code = #{certificateCode},
+			</if>
+			<if test="birthDate != null">
+				birth_date = #{birthDate},
+			</if>
+			<if test="nowResideAddress != null">
+				now_reside_address = #{nowResideAddress},
+			</if>
+			<if test="postcode != null">
+				postcode = #{postcode},
+			</if>
+			<if test="newPassword != null">
+				new_password = #{newPassword},
+			</if>
+			<if test="email != null and email != ''">
+				email = #{email},
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				office_tel = #{officeTel},
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				mobile_tel = #{mobileTel},
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				mobile_id = #{mobileId},
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				mobile_sn = #{mobileSn},
+			</if>
+			<if test="post != null and post != ''">
+				post = #{post},
+			</if>
+            <if test="headUserCd != null and headUserCd != ''">
+			    head_user_cd = #{headUserCd},
+            </if>
+			<if test="createTm != null and createTm != ''">
+				create_tm = #{createTm},
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				update_tm = #{updateTm},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+
+	<update id="dealMobileData" parameterType="com.is.ggkz.entity.GgkzUserInfo">
+		update ggkz_user_info
+		<set>
+			<if test="orgId != null">
+				org_id = #{orgId},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+
+	<select id="selectUserCheckById" parameterType="com.is.ggkz.entity.GgkzUserInfo"
+		resultMap="ggkz.GgkzUserInfoRM">
+		select
+		<include refid="allColumns" />
+		from ggkz_user_info
+		<where>
+			<if test="userId != null and userId != ''">
+                <![CDATA[and user_id <> #{userId}]]>
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and org_id = #{orgId}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and login_name = #{loginName}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and work_code = #{workCode}
+			</if>
+			<if test="name != null and name != ''">
+				and name = #{name}
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and depart_id = #{departId}
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and birth_date = #{birthDate}
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and postcode = #{postcode}
+			</if>
+			<if test="email != null and email != ''">
+				and email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and post = #{post}
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				head_user_cd = #{headUserCd},
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and update_tm = #{updateTm}
+			</if>
+		</where>
+	</select>
+	<select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzUserInfo"
+		resultMap="ggkz.GgkzUserInfoRM">
+		select
+		<include refid="allColumns" />
+		from ggkz_user_info
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and org_id = #{orgId}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and login_name = #{loginName}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and work_code = #{workCode}
+			</if>
+			<if test="name != null and name != ''">
+				and name = #{name}
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and depart_id = #{departId}
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and birth_date = #{birthDate}
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and postcode = #{postcode}
+			</if>
+			<if test="email != null and email != ''">
+				and email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and post = #{post}
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				head_user_cd = #{headUserCd},
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and update_tm = #{updateTm}
+			</if>
+		</where>
+	</select>
+	<select id="selectLoginEntity" parameterType="com.is.ggkz.entity.GgkzUserInfo"
+		resultMap="ggkz.GgkzUserInfoRM">
+		select
+		<include refid="allColumns" />
+		from ggkz_user_info
+		<where>
+			<if test="userId != null and userId != ''">
+				and user_id = #{userId}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and org_id = #{orgId}
+			</if>
+			<if
+				test="loginName != null and loginName != '' and name != null and name != ''">
+				and (login_name = #{loginName} or name = #{name})
+			</if>
+			<if
+				test="loginName != null and loginName != '' and (name == null or name == '')">
+				and login_name = #{loginName}
+			</if>
+			<if
+				test="name != null and name != '' and (loginName == null or loginName == '')">
+				and name = #{name}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and work_code = #{workCode}
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and depart_id = #{departId}
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and birth_date = #{birthDate}
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and postcode = #{postcode}
+			</if>
+			<if test="email != null and email != ''">
+				and email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and post = #{post}
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				head_user_cd = #{headUserCd},
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and update_tm = #{updateTm}
+			</if>
+		</where>
+	</select>
+	<select id="selectByPage" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultMap="ggkz.GgkzUserInfoRM">
+		<include refid="querySql" />
+	</select>
+	<select id="selectByPageCount" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultType="integer">
+		select count(1) from (
+		<include refid="querySql" />
+		) as tmp_ggkz_user_info
+	</select>
+	<select id="selectByPostFilterByPage" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultMap="ggkz.GgkzUserInfoRM">
+		select u.user_id, u.org_id, u.login_name, u.work_code, u.name,
+		u.password, u.sex, u.user_state, u.depart_id, u.certificate_type,
+		u.certificate_code, u.birth_date, u.now_reside_address, u.postcode,
+		u.new_password, u.email, u.office_tel, u.mobile_tel, u.mobile_id,
+		u.mobile_sn, u.post,u.head_user_cd, u.create_tm, u.update_tm from
+		ggkz_user_info u inner join ggkz_post_info p on u.post=p.post_id
+		<where>
+			<if test="postName != null and postName != ''">
+				and p.post_name = #{postName}
+			</if>
+			<if test="userId != null and userId != ''">
+				and u.user_id = #{userId}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and u.org_id = #{orgId}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and u.login_name = #{loginName}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and u.work_code = #{workCode}
+			</if>
+			<if test="name != null and name != ''">
+				and u.name like concat('%',#{name},'%')
+			</if>
+			<if test="password != null and password != ''">
+				and u.password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and u.sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and u.user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and u.depart_id  like concat('',#{departId},'%')
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and u.certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and u.certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and u.birth_date = #{birthDate}
+			</if>
+			<if test="birthDateStart != null and birthDateStart != ''">
+                <![CDATA[and u.birth_date >= #{birthDateStart}]]>
+			</if>
+			<if test="birthDateEnd != null and birthDateEnd != ''">
+                <![CDATA[and u.birth_date <= #{birthDateEnd}]]>
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and u.now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and u.postcode = #{postcode}
+			</if>
+			<if test="newPassword != null and newPassword != ''">
+				and u.new_password = #{newPassword}
+			</if>
+			<if test="email != null and email != ''">
+				and u.email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and u.office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and u.mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and u.mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and u.mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and u.post = #{post}
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				head_user_cd = #{headUserCd},
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and u.create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and u.update_tm = #{updateTm}
+			</if>
+			<if test="excludeUser != null and excludeUser != ''">
+				and u.user_id &lt;&gt; #{excludeUser}
+			</if>
+		</where>
+	</select>
+	<select id="selectByPostFilterByPageCount" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultType="integer">
+		select count(u.user_id) from ggkz_user_info u inner join
+		ggkz_post_info p on u.post=p.post_id
+		<where>
+			<if test="postName != null and postName != ''">
+				and p.post_name = #{postName}
+			</if>
+			<if test="userId != null and userId != ''">
+				and u.user_id = #{userId}
+			</if>
+			<if test="orgId != null and orgId != ''">
+				and u.org_id = #{orgId}
+			</if>
+			<if test="loginName != null and loginName != ''">
+				and u.login_name = #{loginName}
+			</if>
+			<if test="workCode != null and workCode != ''">
+				and u.work_code = #{workCode}
+			</if>
+			<if test="name != null and name != ''">
+				and u.name like concat('%',#{name},'%')
+			</if>
+			<if test="password != null and password != ''">
+				and u.password = #{password}
+			</if>
+			<if test="sex != null and sex != ''">
+				and u.sex = #{sex}
+			</if>
+			<if test="userState != null and userState != ''">
+				and u.user_state = #{userState}
+			</if>
+			<if test="departId != null and departId != ''">
+				and u.depart_id = #{departId}
+			</if>
+			<if test="certificateType != null and certificateType != ''">
+				and u.certificate_type = #{certificateType}
+			</if>
+			<if test="certificateCode != null and certificateCode != ''">
+				and u.certificate_code = #{certificateCode}
+			</if>
+			<if test="birthDate != null and birthDate != ''">
+				and u.birth_date = #{birthDate}
+			</if>
+			<if test="birthDateStart != null and birthDateStart != ''">
+                <![CDATA[and u.birth_date >= #{birthDateStart}]]>
+			</if>
+			<if test="birthDateEnd != null and birthDateEnd != ''">
+                <![CDATA[and u.birth_date <= #{birthDateEnd}]]>
+			</if>
+			<if test="nowResideAddress != null and nowResideAddress != ''">
+				and u.now_reside_address = #{nowResideAddress}
+			</if>
+			<if test="postcode != null and postcode != ''">
+				and u.postcode = #{postcode}
+			</if>
+			<if test="newPassword != null and newPassword != ''">
+				and u.new_password = #{newPassword}
+			</if>
+			<if test="email != null and email != ''">
+				and u.email = #{email}
+			</if>
+			<if test="officeTel != null and officeTel != ''">
+				and u.office_tel = #{officeTel}
+			</if>
+			<if test="mobileTel != null and mobileTel != ''">
+				and u.mobile_tel = #{mobileTel}
+			</if>
+			<if test="mobileId != null and mobileId != ''">
+				and u.mobile_id = #{mobileId}
+			</if>
+			<if test="mobileSn != null and mobileSn != ''">
+				and u.mobile_sn = #{mobileSn}
+			</if>
+			<if test="post != null and post != ''">
+				and u.post = #{post}
+			</if>
+			<if test="headUserCd != null and headUserCd != ''">
+				head_user_cd = #{headUserCd},
+			</if>
+			<if test="createTm != null and createTm != ''">
+				and u.create_tm = #{createTm}
+			</if>
+			<if test="updateTm != null and updateTm != ''">
+				and u.update_tm = #{updateTm}
+			</if>
+			<if test="excludeUser != null and excludeUser != ''">
+				and u.user_id &lt;&gt; #{excludeUser}
+			</if>
+		</where>
+	</select>
+	<update id="resetPassword" parameterType="com.is.ggkz.entity.GgkzUserInfo"> update ggkz_user_info
+		set new_password = null where user_id = #{userId}
+	</update>
+	<!-- 设置对象的区域部长为null -->
+	<update id="updatePost" parameterType="String"> update ggkz_user_info u
+		set u.head_user_cd=null where u.head_user_cd= #{userId}
+	</update>
+	<select id="selectUsersByIds" parameterType="java.util.List"
+		resultMap="ggkz.GgkzUserInfoRM">
+		select
+		<include refid="allColumns" />
+		from ggkz_user_info info where info.user_state='1' and info.user_id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")"> #{item}
+		</foreach>
+	</select>
+	<select id="selectAll" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultMap="ggkz.GgkzUserInfoRM">
+		<include refid="querySql" />
+	</select>
+
+	<select id="selectMobileAll" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultMap="ggkz.UserInfoMobileRM">
+		select
+		user_id,
+		name,
+		user_state
+		from ggkz_user_info
+		<where>
+			<if test="updateTm != null">
+				and update_tm &gt;= #{updateTm}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultMap="ggkz.GgkzUserInfoRM">
+		<include refid="querySql" />
+
+	</select>
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntityNotSelf" parameterType="com.is.ggkz.entity.query.GgkzUserInfoQuery"
+		resultMap="ggkz.GgkzUserInfoRM">
+		<include refid="notSelfquerySql" />
+
+	</select>
+</mapper>

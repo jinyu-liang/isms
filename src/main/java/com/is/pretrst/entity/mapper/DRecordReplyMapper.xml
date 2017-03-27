@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DRecordReply">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			reply_id,
+			record_id,
+			record_type,
+			root_reply_id,
+			parent_reply_id,
+			title,
+			content,
+			reply_user_cd,
+			create_tm,
+			update_tm,
+			extra_flg,
+			delete_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			reply_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> ,
+            (select name from ggkz_user_info where user_id=reply_user_cd )as replyUserNm
+			from d_record_reply
+			<where>	      				
+				<if test="replyId != null and replyId != ''">
+					<![CDATA[and reply_id = #{replyId}]]>
+				</if>
+				<if test="recordId != null and recordId != ''">
+					<![CDATA[and record_id = #{recordId}]]>
+				</if>
+				<if test="recordType != null and recordType != ''">
+					<![CDATA[and reply_type = #{replyType}]]>
+				</if>
+				<if test="rootReplyId != null and rootReplyId != ''">
+					<![CDATA[and root_reply_id = #{rootReplyId}]]>
+				</if>
+				<if test="parentReplyId != null and parentReplyId != ''">
+					<![CDATA[and parent_reply_id = #{parentReplyId}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="content != null and content != ''">
+					<![CDATA[and content = #{content}]]>
+				</if>
+				<if test="replyUserCd != null and replyUserCd != ''">
+					<![CDATA[and reply_user_cd = #{replyUserCd}]]>
+				</if>
+				<if test="createTm != null and createTm != ''">
+					<![CDATA[and create_tm = #{createTm}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and update_tm = #{updateTm}]]>
+				</if>
+				<if test="extraFlg != null and extraFlg != ''">
+					<![CDATA[and extra_flg = #{extraFlg}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+            order by update_tm desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DRecordReply">
+	    <![CDATA[
+			insert into d_record_reply (
+				reply_id,
+				record_id,
+				record_type,
+				root_reply_id,
+				parent_reply_id,
+				title,
+				content,
+				reply_user_cd,
+				create_tm,
+				update_tm,
+				extra_flg,
+				delete_cd
+			) values (
+				#{replyId},
+				#{recordId},
+				#{recordType},
+				#{rootReplyId},
+				#{parentReplyId},
+				#{title},
+				#{content},
+				#{replyUserCd},
+				#{createTm},
+				#{updateTm},
+				#{extraFlg},
+				#{deleteCd}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DRecordReply">
+      
+			delete from d_record_reply 
+				<where>	 
+					<if test="replyId != null and replyId != ''">
+						<![CDATA[and reply_id = #{replyId}]]>
+					</if>
+					<if test="recordId != null and recordId != ''">
+						<![CDATA[and record_id = #{recordId}]]>
+					</if>
+					<if test="recordType != null and recordType != ''">
+						<![CDATA[and record_type = #{recordType}]]>
+					</if>
+					<if test="rootReplyId != null and rootReplyId != ''">
+						<![CDATA[and root_reply_id = #{rootReplyId}]]>
+					</if>
+					<if test="parentReplyId != null and parentReplyId != ''">
+						<![CDATA[and parent_reply_id = #{parentReplyId}]]>
+					</if>
+					<if test="title != null and title != ''">
+						<![CDATA[and title = #{title}]]>
+					</if>
+					<if test="content != null and content != ''">
+						<![CDATA[and content = #{content}]]>
+					</if>
+					<if test="replyUserCd != null and replyUserCd != ''">
+						<![CDATA[and reply_user_cd = #{replyUserCd}]]>
+					</if>
+					<if test="createTm != null and createTm != ''">
+						<![CDATA[and create_tm = #{createTm}]]>
+					</if>
+					<if test="updateTm != null and updateTm != ''">
+						<![CDATA[and update_tm = #{updateTm}]]>
+					</if>
+					<if test="extraFlg != null and extraFlg != ''">
+						<![CDATA[and extra_flg = #{extraFlg}]]>
+					</if>
+					<if test="deleteCd != null and deleteCd != ''">
+						<![CDATA[and delete_cd = #{deleteCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DRecordReply">
+	   
+			update d_record_reply 
+				<set>
+				<if test="recordId != null">
+					record_id = #{recordId},
+				</if>
+				<if test="recordType != null">
+					record_type = #{recordType},
+				</if>
+				<if test="rootReplyId != null">
+					root_reply_id = #{rootReplyId},
+				</if>
+				<if test="parentReplyId != null">
+					parent_reply_id = #{parentReplyId},
+				</if>
+				<if test="title != null">
+					title = #{title},
+				</if>
+				<if test="content != null">
+					content = #{content},
+				</if>
+				<if test="replyUserCd != null">
+					reply_user_cd = #{replyUserCd},
+				</if>
+				<if test="createTm != null">
+					create_tm = #{createTm},
+				</if>
+				<if test="updateTm != null">
+					update_tm = #{updateTm},
+				</if>
+				<if test="extraFlg != null">
+					extra_flg = #{extraFlg},
+				</if>
+				<if test="deleteCd != null">
+					delete_cd = #{deleteCd}
+				</if>
+				</set>
+				
+				where 
+					reply_id = #{replyId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DRecordReply" resultMap="pretrst.DRecordReplyRM">
+        select <include refid="allColumns" />
+	    
+			from d_record_reply 
+			<where>	      				
+				<if test="replyId != null and replyId != ''">
+					<![CDATA[and reply_id = #{replyId}]]>
+				</if>
+				<if test="recordId != null and recordId != ''">
+					<![CDATA[and record_id = #{recordId}]]>
+				</if>
+				<if test="recordType != null and recordType != ''">
+					<![CDATA[and record_type = #{recordType}]]>
+				</if>
+				<if test="rootReplyId != null and rootReplyId != ''">
+					<![CDATA[and root_reply_id = #{rootReplyId}]]>
+				</if>
+				<if test="parentReplyId != null and parentReplyId != ''">
+					<![CDATA[and parent_reply_id = #{parentReplyId}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="content != null and content != ''">
+					<![CDATA[and content = #{content}]]>
+				</if>
+				<if test="replyUserCd != null and replyUserCd != ''">
+					<![CDATA[and reply_user_cd = #{replyUserCd}]]>
+				</if>
+				<if test="createTm != null and createTm != ''">
+					<![CDATA[and create_tm = #{createTm}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and update_tm = #{updateTm}]]>
+				</if>
+				<if test="extraFlg != null and extraFlg != ''">
+					<![CDATA[and extra_flg = #{extraFlg}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DRecordReplyQuery" resultMap="pretrst.DRecordReplyRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DRecordReplyQuery" resultMap="pretrst.DRecordReplyRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DRecordReplyQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_record_reply
+	</select>
+	
+</mapper>

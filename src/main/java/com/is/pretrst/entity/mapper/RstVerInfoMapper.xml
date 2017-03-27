@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="RstVerInfo">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			ver_id,
+			ver_code,
+			prod_date,
+			finish_date,
+			status_cd,
+			memo,
+			file_name,
+			update_mode,
+			oper_user_id,
+			oper_user_name,
+			oper_time
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			ver_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from rst_ver_info
+			<where>	      				
+				<if test="verId != null and verId != ''">
+					<![CDATA[and ver_id = #{verId}]]>
+				</if>
+				<!-- <if test="verIdStart != null and verIdStart != ''">
+					<![CDATA[and ver_id >= #{verIdStart}]]>
+				</if>
+				<if test="verIdEnd != null and verIdEnd != ''">
+					<![CDATA[and ver_id <= #{verIdEnd}]]>
+				</if> -->
+				<if test="verCode != null and verCode != ''">
+					<![CDATA[and ver_code = #{verCode}]]>
+				</if>
+				<!-- <if test="prodDate != null and prodDate != ''">
+					<![CDATA[and prod_date = #{prodDate}]]>
+				</if>
+				<if test="prodDateStart != null and prodDateStart != ''">
+					<![CDATA[and prod_date >= #{prodDateStart}]]>
+				</if>
+				<if test="prodDateEnd != null and prodDateEnd != ''">
+					<![CDATA[and prod_date <= #{prodDateEnd}]]>
+				</if>
+				<if test="finishDate != null and finishDate != ''">
+					<![CDATA[and finish_date = #{finishDate}]]>
+				</if>
+				<if test="finishDateStart != null and finishDateStart != ''">
+					<![CDATA[and finish_date >= #{finishDateStart}]]>
+				</if>
+				<if test="finishDateEnd != null and finishDateEnd != ''">
+					<![CDATA[and finish_date <= #{finishDateEnd}]]>
+				</if> -->
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<!-- <if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="fileName != null and fileName != ''">
+					<![CDATA[and file_name = #{fileName}]]>
+				</if>
+				<if test="updateMode != null and updateMode != ''">
+					<![CDATA[and update_mode = #{updateMode}]]>
+				</if> -->
+			</where>
+            order by ver_id desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.RstVerInfo">
+	    <![CDATA[
+			insert into rst_ver_info (
+				ver_id,
+				ver_code,
+				prod_date,
+				finish_date,
+				status_cd,
+				memo,
+				file_name,
+				update_mode,
+				oper_user_id,
+				oper_user_name,
+				oper_time
+			) values (
+				#{verId},
+				#{verCode},
+				#{prodDate},
+				#{finishDate},
+				#{statusCd},
+				#{memo},
+				#{fileName},
+				#{updateMode},
+				#{operUserId},
+				#{operUserName},
+				#{operTime}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.RstVerInfo">
+      
+			delete from rst_ver_info 
+				<where>	 
+					<if test="verId != null and verId != ''">
+						<![CDATA[and ver_id = #{verId}]]>
+					</if>
+					<if test="verCode != null and verCode != ''">
+						<![CDATA[and ver_code = #{verCode}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.RstVerInfo">
+	   
+			update rst_ver_info 
+				<set>
+				<if test="verCode != null">
+					ver_code = #{verCode},
+				</if>
+				<if test="prodDate != null">
+					prod_date = #{prodDate},
+				</if>
+				<if test="finishDate != null">
+					finish_date = #{finishDate},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="fileName != null">
+					file_name = #{fileName},
+				</if>
+				<if test="updateMode != null">
+					update_mode = #{updateMode}
+				</if>
+				</set>
+				
+				where 
+					ver_id = #{verId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.RstVerInfo" resultMap="pretrst.RstVerInfoRM">
+        select <include refid="allColumns" />
+	    
+			from rst_ver_info 
+			<where>	      				
+				<if test="verId != null and verId != ''">
+					<![CDATA[and ver_id = #{verId}]]>
+				</if>
+				<if test="verCode != null and verCode != ''">
+					<![CDATA[and ver_code = #{verCode}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<select id="selectMaxVerId" parameterType="com.is.pretrst.entity.query.RstVerInfoQuery" resultType="integer">
+			select case when (max(ver_id) +1) is null then 1
+					else max(ver_id)+1
+					end
+					 from rst_ver_info
+	</select>
+	<select id="getMaxVerCode" parameterType="com.is.pretrst.entity.query.RstVerInfoQuery" resultMap="pretrst.RstVerInfoRM">
+        select *
+			from rst_ver_info  where ver_id=(select MAX(ver_id) from rst_ver_info where status_cd='1')
+	</select>
+	
+	
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.RstVerInfoQuery" resultMap="pretrst.RstVerInfoRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.RstVerInfoQuery" resultMap="pretrst.RstVerInfoRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.RstVerInfoQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_rst_ver_info
+	</select>
+	
+</mapper>

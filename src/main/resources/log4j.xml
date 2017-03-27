@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	<!-- app.log文件包含所有级别的日志信息 -->
+	<appender name="app" class="org.apache.log4j.ConsoleAppender">
+		<param name="File" value="./app.log" />
+		<param name="MaxFileSize" value="5MB" />
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%p] %-d{yyyy-MM-dd HH:mm:ss} at:%C.%M (%F:%L) %m %n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="FATAL" />
+			<param name="LevelMax" value="DEBUG" />
+			<param name="acceptOnMatch" value="true" />
+		</filter>
+	</appender>
+
+	<!-- error.log只包含大于等于ERROR级别的日志信息 -->
+	<appender name="error" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="./error.log" />
+		<param name="MaxFileSize" value="5MB" />
+		<param name="MaxBackupIndex" value="1" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%p] %-d{yyyy-MM-dd HH:mm:ss} at:%C.%M (%F:%L) %m %n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="debug" />
+			<param name="LevelMax" value="FATAL" />
+			<param name="acceptOnMatch" value="true" />
+		</filter>
+	</appender>
+
+	<!-- 控制台，控制台输出所有级别的日志文件 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%p] %-d{yyyy-MM-dd HH:mm:ss} at:%C.%M (%F:%L) %m %n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="debug" />
+			<param name="LevelMax" value="FATAL" />
+			<param name="acceptOnMatch" value="true" />
+		</filter>
+	</appender>
+
+	<logger name="org.apache.commons.beanutils">
+		<level value="error" />
+	</logger>
+
+	<logger name="org.apache.struts2">
+		<level value="error" />
+	</logger>
+	<logger name="com.opensymphony.xwork2">
+		<level value="error" />
+	</logger>
+	<logger name="freemarker">
+		<level value="error" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="error" />
+	</logger>
+
+	<!-- ibatis日志配置 -->
+	<logger name="org.apache.ibatis">
+		<level value="debug" />
+	</logger>
+	<logger name="org.mybatis">
+		<level value="debug" />
+	</logger>
+	<logger name="java.sql.Connection">
+		<level value="debug" />
+	</logger>
+	<logger name="java.sql.Statement">
+		<level value="debug" />
+	</logger>
+	<logger name="java.sql.PreparedStatement">
+		<level value="debug" />
+	</logger>
+	<logger name="java.sql.ResultSet">
+		<level value="debug" />
+	</logger>
+	<!-- ibatis日志配置结束 -->
+	<!-- jms日志配置 -->
+    <logger name="org.apache.activemq">
+        <level value="error" />
+    </logger>
+	<!-- jms日志配置结束 -->
+	<!-- springsecurity日志配置 -->
+    <logger name="org.springframework.security">
+        <level value="error" />
+    </logger>
+	<!-- springsecurity日志配置结束 -->
+
+	<logger name="com.is">
+		<level value="debug" />
+	</logger>
+	<logger name="com.sun.net.ssl">
+		<level value="FATAL" />
+	</logger>
+	
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+</log4j:configuration>

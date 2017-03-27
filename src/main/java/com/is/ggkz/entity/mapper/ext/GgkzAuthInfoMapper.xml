@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="GgkzAuthInfoExt">
+    <!-- 查询所有的权限名称 -->
+    <select id="selectAuthNameList" resultType="string">
+        select auth_name from ggkz_auth_info
+    </select>
+</mapper>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DScrapTransImage">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			photo_id,
+			trans_id,
+			file_name,
+			photo_tm,
+			memo,
+			check_tm,
+			check_user_cd,
+			status_cd,
+			check_by
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			photo_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_scrap_trans_image
+			<where>	      				
+				<if test="photoId != null and photoId != ''">
+					<![CDATA[and photo_id = #{photoId}]]>
+				</if>
+				<if test="photoIdStart != null and photoIdStart != ''">
+					<![CDATA[and photo_id >= #{photoIdStart}]]>
+				</if>
+				<if test="photoIdEnd != null and photoIdEnd != ''">
+					<![CDATA[and photo_id <= #{photoIdEnd}]]>
+				</if>
+				<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+				</if>
+				<if test="fileName != null and fileName != ''">
+					<![CDATA[and file_name = #{fileName}]]>
+				</if>
+				<if test="photoTm != null and photoTm != ''">
+					<![CDATA[and photo_tm = #{photoTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="checkTm != null and checkTm != ''">
+					<![CDATA[and check_tm = #{checkTm}]]>
+				</if>
+				<if test="checkUserCd != null and checkUserCd != ''">
+					<![CDATA[and check_user_cd = #{checkUserCd}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="checkBy != null and checkBy != ''">
+					<![CDATA[and check_by = #{checkBy}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DScrapTransImage">
+	    <![CDATA[
+			insert into d_scrap_trans_image (
+				photo_id,
+				trans_id,
+				file_name,
+				photo_tm,
+				memo,
+				check_tm,
+				check_user_cd,
+				status_cd,
+				check_by
+			) values (
+				#{photoId},
+				#{transId},
+				#{fileName},
+				#{photoTm},
+				#{memo},
+				#{checkTm},
+				#{checkUserCd},
+				#{statusCd},
+				#{checkBy}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DScrapTransImage">
+      
+			delete from d_scrap_trans_image 
+				<where>	 
+					<if test="photoId != null and photoId != ''">
+						<![CDATA[and photo_id = #{photoId}]]>
+					</if>
+					<if test="transId != null and transId != ''">
+						<![CDATA[and trans_id = #{transId}]]>
+					</if>
+					<if test="fileName != null and fileName != ''">
+						<![CDATA[and file_name = #{fileName}]]>
+					</if>
+					<if test="photoTm != null and photoTm != ''">
+						<![CDATA[and photo_tm = #{photoTm}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="checkTm != null and checkTm != ''">
+						<![CDATA[and check_tm = #{checkTm}]]>
+					</if>
+					<if test="checkUserCd != null and checkUserCd != ''">
+						<![CDATA[and check_user_cd = #{checkUserCd}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+					<if test="checkBy != null and checkBy != ''">
+						<![CDATA[and check_by = #{checkBy}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DScrapTransImage">
+	   
+			update d_scrap_trans_image 
+				<set>
+				<if test="transId != null">
+					trans_id = #{transId},
+				</if>
+				<if test="fileName != null">
+					file_name = #{fileName},
+				</if>
+				<if test="photoTm != null">
+					photo_tm = #{photoTm},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="checkTm != null">
+					check_tm = #{checkTm},
+				</if>
+				<if test="checkUserCd != null">
+					check_user_cd = #{checkUserCd},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd},
+				</if>
+				<if test="checkBy != null">
+					check_by = #{checkBy}
+				</if>
+				</set>
+				
+				where 
+					photo_id = #{photoId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DScrapTransImage" resultMap="pretrst.DScrapTransImageRM">
+        select <include refid="allColumns" />
+	    
+			from d_scrap_trans_image 
+			<where>	      				
+				<if test="photoId != null and photoId != ''">
+					<![CDATA[and photo_id = #{photoId}]]>
+				</if>
+				<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+				</if>
+				<if test="fileName != null and fileName != ''">
+					<![CDATA[and file_name = #{fileName}]]>
+				</if>
+				<if test="photoTm != null and photoTm != ''">
+					<![CDATA[and photo_tm = #{photoTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="checkTm != null and checkTm != ''">
+					<![CDATA[and check_tm = #{checkTm}]]>
+				</if>
+				<if test="checkUserCd != null and checkUserCd != ''">
+					<![CDATA[and check_user_cd = #{checkUserCd}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="checkBy != null and checkBy != ''">
+					<![CDATA[and check_by = #{checkBy}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DScrapTransImageQuery" resultMap="pretrst.DScrapTransImageRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DScrapTransImageQuery" resultMap="pretrst.DScrapTransImageRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DScrapTransImageQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_scrap_trans_image
+	</select>
+	
+</mapper>

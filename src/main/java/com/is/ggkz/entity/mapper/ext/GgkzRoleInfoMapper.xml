@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="GgkzRoleInfoExt">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			role_id,
+			role_name,
+			note,
+			oper_time,
+			oper_user_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectRolesByUserRole" parameterType="com.is.ggkz.entity.GgkzUserRole" resultMap="ggkz.GgkzRoleInfoRM">
+        select 
+        	role.role_id,
+			role.role_name
+			from ggkz_role_info role,ggkz_user_role user
+			where 
+				user.user_id = #{userId} and
+				user.role_id = role.role_id
+	</select>
+	
+</mapper>

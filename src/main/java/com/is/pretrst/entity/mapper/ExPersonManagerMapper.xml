@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="ExPersonManager">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			report_id,
+			work_center_id,
+			title,
+			team_cd,
+			report_user_cd,
+			report_user_name,
+			report_tm,
+			memo,
+			process_user_cd,
+			process_user_name,
+			process_tm,
+			deal_comment,
+			status_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			report_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> ,(select mobile_tel from ggkz_user_info where  user_id=report_user_cd) as reportUserTel
+			from ex_person_manager
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="workCenterId != null and workCenterId != ''">
+					<![CDATA[and work_center_id = #{workCenterId}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="teamCd != null and teamCd != ''">
+					<![CDATA[and team_cd = #{teamCd}]]>
+				</if>
+				<if test="reportUserCd != null and reportUserCd != ''">
+					<![CDATA[and report_user_cd = #{reportUserCd}]]>
+				</if>
+				<if test="reportUserName != null and reportUserName != ''">
+					<![CDATA[and report_user_name = #{reportUserName}]]>
+				</if>
+				<if test="reportTm != null and reportTm != ''">
+					<![CDATA[and report_tm = #{reportTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="processUserCd != null and processUserCd != ''">
+					<![CDATA[and process_user_cd = #{processUserCd}]]>
+				</if>
+				<if test="processUserName != null and processUserName != ''">
+					<![CDATA[and process_user_name = #{processUserName}]]>
+				</if>
+				<if test="processTm != null and processTm != ''">
+					<![CDATA[and process_tm = #{processTm}]]>
+				</if>
+				<if test="dealComment != null and dealComment != ''">
+					<![CDATA[and deal_comment = #{dealComment}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+			order by report_id desc
+	</sql>
+
+
+	
+		<!-- 根据实体的模糊查询对象进行查询的sql -->
+	<sql id="mhquerySql">
+		select person.* ,(select mobile_tel from ggkz_user_info where  user_id=report_user_cd) as reportUserTel
+			from ex_person_manager person
+			<if test="processUserCd != null and processUserCd != ''">
+			,ggkz_user_info user
+			</if>
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and person.report_id = #{reportId}]]>
+				</if>
+				<if test="workCenterId != null and workCenterId != ''">
+					<![CDATA[and person.work_center_id like concat ('%', #{workCenterId},'%')]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and person.title like concat('%', #{title},'%')]]>
+				</if>
+				<if test="teamCd != null and teamCd != ''">
+					<![CDATA[and person.team_cd = #{teamCd}]]>
+				</if>
+				<if test="reportUserCd != null and reportUserCd != ''">
+					<![CDATA[and person.report_user_cd = #{reportUserCd}]]>
+				</if>
+				<if test="reportUserName != null and reportUserName != ''">
+					<![CDATA[and person.report_user_name like  concat('%',#{reportUserName},'%')]]>
+				</if>
+				<if test="reportTm != null and reportTm != ''">
+					<![CDATA[and person.report_tm = #{reportTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and person.memo = #{memo}]]>
+				</if>
+				<if test="processUserCd != null and processUserCd != ''">
+					<![CDATA[and person.process_user_cd=`user`.user_id and `user`.`name`   like concat('%', #{processUserCd},'%')]]>
+				</if>
+				<if test="processTm != null and processTm != ''">
+					<![CDATA[and person.process_tm = #{processTm}]]>
+				</if>
+				<if test="dealComment != null and dealComment != ''">
+					<![CDATA[and person.deal_comment = #{dealComment}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and person.status_cd = #{statusCd}]]>
+				</if>
+			</where>
+			order by report_id desc
+	</sql>
+	
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.ExPersonManager">
+	    <![CDATA[
+			insert into ex_person_manager (
+				report_id,
+				work_center_id,
+				title,
+				team_cd,
+				report_user_cd,
+				report_user_name,
+				report_tm,
+				memo,
+				process_user_cd,
+				process_user_name,
+				process_tm,
+				deal_comment,
+				status_cd
+			) values (
+				#{reportId},
+				#{workCenterId},
+				#{title},
+				#{teamCd},
+				#{reportUserCd},
+				#{reportUserName},
+				#{reportTm},
+				#{memo},
+				#{processUserCd},
+				#{processUserName},
+				#{processTm},
+				#{dealComment},
+				#{statusCd}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.ExPersonManager">
+      
+			delete from ex_person_manager 
+				<where>	 
+					<if test="reportId != null and reportId != ''">
+						<![CDATA[and report_id = #{reportId}]]>
+					</if>
+					<if test="workCenterId != null and workCenterId != ''">
+						<![CDATA[and work_center_id = #{workCenterId}]]>
+					</if>
+					<if test="title != null and title != ''">
+						<![CDATA[and title = #{title}]]>
+					</if>
+					<if test="teamCd != null and teamCd != ''">
+						<![CDATA[and team_cd = #{teamCd}]]>
+					</if>
+					<if test="reportUserCd != null and reportUserCd != ''">
+						<![CDATA[and report_user_cd = #{reportUserCd}]]>
+					</if>
+					<if test="reportUserName != null and reportUserName != ''">
+						<![CDATA[and report_user_name = #{reportUserName}]]>
+					</if>
+					<if test="reportTm != null and reportTm != ''">
+						<![CDATA[and report_tm = #{reportTm}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="processUserCd != null and processUserCd != ''">
+						<![CDATA[and process_user_cd = #{processUserCd}]]>
+					</if>
+					<if test="processTm != null and processTm != ''">
+						<![CDATA[and process_tm = #{processTm}]]>
+					</if>
+					<if test="dealComment != null and dealComment != ''">
+						<![CDATA[and deal_comment = #{dealComment}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.ExPersonManager">
+	   
+			update ex_person_manager 
+				<set>
+				<if test="workCenterId != null">
+					work_center_id = #{workCenterId},
+				</if>
+				<if test="title != null">
+					title = #{title},
+				</if>
+				<if test="teamCd != null">
+					team_cd = #{teamCd},
+				</if>
+				<if test="reportUserCd != null">
+					report_user_cd = #{reportUserCd},
+				</if>
+				<if test="reportUserName != null">
+					report_user_name = #{reportUserName},
+				</if>
+				<if test="reportTm != null">
+					report_tm = #{reportTm},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="processUserCd != null">
+					process_user_cd = #{processUserCd},
+				</if>
+				<if test="processUserName != null">
+					process_user_name = #{processUserName},
+				</if>
+				<if test="processTm != null">
+					process_tm = #{processTm},
+				</if>
+				<if test="dealComment != null">
+					deal_comment = #{dealComment},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd}
+				</if>
+				</set>
+				
+				where 
+					report_id = #{reportId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.ExPersonManager" resultMap="rfid.ExPersonManagerRM">
+        select <include refid="allColumns" />,(select mobile_tel from ggkz_user_info where  user_id=report_user_cd) as reportUserTel
+	    
+			from ex_person_manager 
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="workCenterId != null and workCenterId != ''">
+					<![CDATA[and work_center_id = #{workCenterId}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="teamCd != null and teamCd != ''">
+					<![CDATA[and team_cd = #{teamCd}]]>
+				</if>
+				<if test="reportUserCd != null and reportUserCd != ''">
+					<![CDATA[and report_user_cd = #{reportUserCd}]]>
+				</if>
+				<if test="reportUserName != null and reportUserName != ''">
+					<![CDATA[and report_user_name = #{reportUserName}]]>
+				</if>
+				<if test="reportTm != null and reportTm != ''">
+					<![CDATA[and report_tm = #{reportTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="processUserCd != null and processUserCd != ''">
+					<![CDATA[and process_user_cd = #{processUserCd}]]>
+				</if>
+				<if test="processTm != null and processTm != ''">
+					<![CDATA[and process_tm = #{processTm}]]>
+				</if>
+				<if test="dealComment != null and dealComment != ''">
+					<![CDATA[and deal_comment = #{dealComment}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+	  
+	</select>
+	<select id="selectImagePathByReportId" parameterType="com.is.pretrst.entity.ExPersonManager" resultType="java.lang.String">
+        select file_name 
+			from d_report_image  
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.ExPersonManagerQuery" resultMap="pretrst.ExPersonManagerRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.ExPersonManagerQuery" resultMap="pretrst.ExPersonManagerRM">
+		<include refid="mhquerySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.ExPersonManagerQuery" resultType="integer">
+		select count(1) from ( <include refid="mhquerySql"/> ) as tmp_ex_person_manager
+	</select>
+	
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="SysAttachAuth">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			attach_id,
+			user_id,
+			busi_id
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+		busi_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from sys_attach_auth
+			<where>	      				
+				<if test="attachId != null and attachId != ''">
+					<![CDATA[and attach_id = #{attachId}]]>
+				</if>
+				<if test="userId != null and userId != ''">
+					<![CDATA[and user_id = #{userId}]]>
+				</if>
+				<if test="busiId != null and busiId != ''">
+					<![CDATA[and busi_id = #{busiId}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.sys.entity.SysAttachAuth">
+	    <![CDATA[
+			insert into sys_attach_auth (
+				attach_id,
+				user_id,
+				busi_id
+			) values (
+				#{attachId},
+				#{userId},
+				#{busiId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据主键删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.sys.entity.SysAttachAuth">
+        
+			delete from sys_attach_auth 
+				<where>	      				
+				<if test="attachId != null and attachId != ''">
+					<![CDATA[and attach_id = #{attachId}]]>
+				</if>
+				<if test="busiId != null and busiId != ''">
+					<![CDATA[and busi_id = #{busiId}]]>
+				</if>
+			</where>
+    	 
+    </delete>
+   
+	<!-- 跟据主键更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.sys.entity.SysAttachAuth">
+	    <![CDATA[
+			update sys_attach_auth set
+				attach_id = #{attachId},
+				user_id = #{userId},
+				busi_id = #{busiId}
+				where 
+				busi_id = #{busiId}
+    	]]>
+	</update>
+	
+	<!-- 根据主键查询对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.sys.entity.SysAttachAuth" resultMap="sys.SysAttachAuthRM">
+        select <include refid="allColumns" />
+	    <![CDATA[
+			from sys_attach_auth 
+	    ]]>
+	    <where>
+	    	<if test="attachId != null and attachId != ''">
+				<![CDATA[and attach_id = #{attachId}]]>
+			</if>
+	    </where>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.sys.entity.SysAttachAuth" resultMap="sys.SysAttachAuthRM">
+			<include refid="querySql"/>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.sys.entity.query.SysAttachAuthQuery" resultMap="sys.SysAttachAuthRM">
+		<include refid="querySql"/>
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.sys.entity.query.SysAttachAuthQuery" resultType="integer">
+		select count(<include refid="pkColumns"/>) from ( <include refid="querySql"/> ) as tmp_sys_attach_auth
+	</select>
+	
+</mapper>

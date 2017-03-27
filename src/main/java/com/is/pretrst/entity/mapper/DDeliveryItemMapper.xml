@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DDeliveryItem">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			item_id,
+			plan_id,
+			item_no,
+			class_cd,
+			class_nm,
+			category_cd,
+			category_nm,
+			material_cd,
+			material_nm,
+			model_no,
+			identification_cd,
+			identification_nm,
+			sender,
+			receiver,
+			send_amount,
+			received_amount,
+			unit,
+            use_place,
+			memo,
+			status_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			item_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_delivery_item
+			<where>	      				
+				<if test="itemId != null and itemId != ''">
+					<![CDATA[and item_id = #{itemId}]]>
+				</if>
+				<if test="itemIdStart != null and itemIdStart != ''">
+					<![CDATA[and item_id >= #{itemIdStart}]]>
+				</if>
+				<if test="itemIdEnd != null and itemIdEnd != ''">
+					<![CDATA[and item_id <= #{itemIdEnd}]]>
+				</if>
+				<if test="planId != null and planId != ''">
+					<![CDATA[and plan_id = #{planId}]]>
+				</if>
+				<if test="itemNo != null and itemNo != ''">
+					<![CDATA[and item_no = #{itemNo}]]>
+				</if>
+				<if test="itemNoStart != null and itemNoStart != ''">
+					<![CDATA[and item_no >= #{itemNoStart}]]>
+				</if>
+				<if test="itemNoEnd != null and itemNoEnd != ''">
+					<![CDATA[and item_no <= #{itemNoEnd}]]>
+				</if>
+				<if test="classCd != null and classCd != ''">
+					<![CDATA[and class_cd = #{classCd}]]>
+				</if>
+				<if test="classNm != null and classNm != ''">
+					<![CDATA[and class_nm = #{classNm}]]>
+				</if>
+				<if test="categoryCd != null and categoryCd != ''">
+					<![CDATA[and category_cd = #{categoryCd}]]>
+				</if>
+				<if test="categoryNm != null and categoryNm != ''">
+					<![CDATA[and category_nm = #{categoryNm}]]>
+				</if>
+				<if test="materialCd != null and materialCd != ''">
+					<![CDATA[and material_cd = #{materialCd}]]>
+				</if>
+				<if test="materialNm != null and materialNm != ''">
+					<![CDATA[and material_nm = #{materialNm}]]>
+				</if>
+				<if test="modelNo != null and modelNo != ''">
+					<![CDATA[and model_no = #{modelNo}]]>
+				</if>
+				<if test="identificationCd != null and identificationCd != ''">
+					<![CDATA[and identification_cd = #{identificationCd}]]>
+				</if>
+				<if test="identificationNm != null and identificationNm != ''">
+					<![CDATA[and identification_nm = #{identificationNm}]]>
+				</if>
+				<if test="sender != null and sender != ''">
+					<![CDATA[and sender = #{sender}]]>
+				</if>
+				<if test="receiver != null and receiver != ''">
+					<![CDATA[and receiver = #{receiver}]]>
+				</if>
+				<if test="sendAmount != null and sendAmount != ''">
+					<![CDATA[and send_amount = #{sendAmount}]]>
+				</if>
+				<if test="sendAmountStart != null and sendAmountStart != ''">
+					<![CDATA[and send_amount >= #{sendAmountStart}]]>
+				</if>
+				<if test="sendAmountEnd != null and sendAmountEnd != ''">
+					<![CDATA[and send_amount <= #{sendAmountEnd}]]>
+				</if>
+				<if test="receivedAmount != null and receivedAmount != ''">
+					<![CDATA[and received_amount = #{receivedAmount}]]>
+				</if>
+				<if test="receivedAmountStart != null and receivedAmountStart != ''">
+					<![CDATA[and received_amount >= #{receivedAmountStart}]]>
+				</if>
+				<if test="receivedAmountEnd != null and receivedAmountEnd != ''">
+					<![CDATA[and received_amount <= #{receivedAmountEnd}]]>
+				</if>
+				<if test="unit != null and unit != ''">
+					<![CDATA[and unit = #{unit}]]>
+				</if>
+                <if test="usePlace != null and usePlace != ''">
+                    <![CDATA[and use_place = #{usePlace}]]>
+                </if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DDeliveryItem">
+	    <![CDATA[
+			insert into d_delivery_item (
+				item_id,
+				plan_id,
+				item_no,
+				class_cd,
+				class_nm,
+				category_cd,
+				category_nm,
+				material_cd,
+				material_nm,
+				model_no,
+				identification_cd,
+				identification_nm,
+				sender,
+				receiver,
+				send_amount,
+				received_amount,
+				unit,
+                use_place,
+				memo,
+				status_cd
+			) values (
+				#{itemId},
+				#{planId},
+				#{itemNo},
+				#{classCd},
+				#{classNm},
+				#{categoryCd},
+				#{categoryNm},
+				#{materialCd},
+				#{materialNm},
+				#{modelNo},
+				#{identificationCd},
+				#{identificationNm},
+				#{sender},
+				#{receiver},
+				#{sendAmount},
+				#{receivedAmount},
+				#{unit},
+                #{usePlace},
+				#{memo},
+				#{statusCd}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DDeliveryItem">
+      
+			delete from d_delivery_item 
+				<where>	 
+					<if test="itemId != null and itemId != ''">
+						<![CDATA[and item_id = #{itemId}]]>
+					</if>
+					<if test="planId != null and planId != ''">
+						<![CDATA[and plan_id = #{planId}]]>
+					</if>
+					<if test="itemNo != null and itemNo != ''">
+						<![CDATA[and item_no = #{itemNo}]]>
+					</if>
+					<if test="classCd != null and classCd != ''">
+						<![CDATA[and class_cd = #{classCd}]]>
+					</if>
+					<if test="classNm != null and classNm != ''">
+						<![CDATA[and class_nm = #{classNm}]]>
+					</if>
+					<if test="categoryCd != null and categoryCd != ''">
+						<![CDATA[and category_cd = #{categoryCd}]]>
+					</if>
+					<if test="categoryNm != null and categoryNm != ''">
+						<![CDATA[and category_nm = #{categoryNm}]]>
+					</if>
+					<if test="materialCd != null and materialCd != ''">
+						<![CDATA[and material_cd = #{materialCd}]]>
+					</if>
+					<if test="materialNm != null and materialNm != ''">
+						<![CDATA[and material_nm = #{materialNm}]]>
+					</if>
+					<if test="modelNo != null and modelNo != ''">
+						<![CDATA[and model_no = #{modelNo}]]>
+					</if>
+					<if test="identificationCd != null and identificationCd != ''">
+						<![CDATA[and identification_cd = #{identificationCd}]]>
+					</if>
+					<if test="identificationNm != null and identificationNm != ''">
+						<![CDATA[and identification_nm = #{identificationNm}]]>
+					</if>
+					<if test="sender != null and sender != ''">
+						<![CDATA[and sender = #{sender}]]>
+					</if>
+					<if test="receiver != null and receiver != ''">
+						<![CDATA[and receiver = #{receiver}]]>
+					</if>
+					<if test="sendAmount != null and sendAmount != ''">
+						<![CDATA[and send_amount = #{sendAmount}]]>
+					</if>
+					<if test="receivedAmount != null and receivedAmount != ''">
+						<![CDATA[and received_amount = #{receivedAmount}]]>
+					</if>
+					<if test="unit != null and unit != ''">
+						<![CDATA[and unit = #{unit}]]>
+					</if>
+                    <if test="usePlace != null and usePlace != ''">
+                        <![CDATA[and use_place = #{usePlace}]]>
+                    </if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DDeliveryItem">
+	   
+			update d_delivery_item 
+				<set>
+				<if test="planId != null">
+					plan_id = #{planId},
+				</if>
+				<if test="itemNo != null">
+					item_no = #{itemNo},
+				</if>
+				<if test="classCd != null">
+					class_cd = #{classCd},
+				</if>
+				<if test="classNm != null">
+					class_nm = #{classNm},
+				</if>
+				<if test="categoryCd != null">
+					category_cd = #{categoryCd},
+				</if>
+				<if test="categoryNm != null">
+					category_nm = #{categoryNm},
+				</if>
+				<if test="materialCd != null">
+					material_cd = #{materialCd},
+				</if>
+				<if test="materialNm != null">
+					material_nm = #{materialNm},
+				</if>
+				<if test="modelNo != null">
+					model_no = #{modelNo},
+				</if>
+				<if test="identificationCd != null">
+					identification_cd = #{identificationCd},
+				</if>
+				<if test="identificationNm != null">
+					identification_nm = #{identificationNm},
+				</if>
+				<if test="sender != null">
+					sender = #{sender},
+				</if>
+				<if test="receiver != null">
+					receiver = #{receiver},
+				</if>
+				<if test="sendAmount != null">
+					send_amount = #{sendAmount},
+				</if>
+				<if test="receivedAmount != null">
+					received_amount = #{receivedAmount},
+				</if>
+				<if test="unit != null">
+					unit = #{unit},
+				</if>
+                <if test="usePlace != null">
+                    use_place = #{usePlace},
+                </if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd}
+				</if>
+				</set>
+				
+				where 
+					item_id = #{itemId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DDeliveryItem" resultMap="pretrst.DDeliveryItemRM">
+        select <include refid="allColumns" />
+	    
+			from d_delivery_item 
+			<where>	      				
+				<if test="itemId != null and itemId != ''">
+					<![CDATA[and item_id = #{itemId}]]>
+				</if>
+				<if test="planId != null and planId != ''">
+					<![CDATA[and plan_id = #{planId}]]>
+				</if>
+				<if test="itemNo != null and itemNo != ''">
+					<![CDATA[and item_no = #{itemNo}]]>
+				</if>
+				<if test="classCd != null and classCd != ''">
+					<![CDATA[and class_cd = #{classCd}]]>
+				</if>
+				<if test="classNm != null and classNm != ''">
+					<![CDATA[and class_nm = #{classNm}]]>
+				</if>
+				<if test="categoryCd != null and categoryCd != ''">
+					<![CDATA[and category_cd = #{categoryCd}]]>
+				</if>
+				<if test="categoryNm != null and categoryNm != ''">
+					<![CDATA[and category_nm = #{categoryNm}]]>
+				</if>
+				<if test="materialCd != null and materialCd != ''">
+					<![CDATA[and material_cd = #{materialCd}]]>
+				</if>
+				<if test="materialNm != null and materialNm != ''">
+					<![CDATA[and material_nm = #{materialNm}]]>
+				</if>
+				<if test="modelNo != null and modelNo != ''">
+					<![CDATA[and model_no = #{modelNo}]]>
+				</if>
+				<if test="identificationCd != null and identificationCd != ''">
+					<![CDATA[and identification_cd = #{identificationCd}]]>
+				</if>
+				<if test="identificationNm != null and identificationNm != ''">
+					<![CDATA[and identification_nm = #{identificationNm}]]>
+				</if>
+				<if test="sender != null and sender != ''">
+					<![CDATA[and sender = #{sender}]]>
+				</if>
+				<if test="receiver != null and receiver != ''">
+					<![CDATA[and receiver = #{receiver}]]>
+				</if>
+				<if test="sendAmount != null and sendAmount != ''">
+					<![CDATA[and send_amount = #{sendAmount}]]>
+				</if>
+				<if test="receivedAmount != null and receivedAmount != ''">
+					<![CDATA[and received_amount = #{receivedAmount}]]>
+				</if>
+				<if test="unit != null and unit != ''">
+					<![CDATA[and unit = #{unit}]]>
+				</if>
+                <if test="usePlace != null and usePlace != ''">
+                    <![CDATA[and use_place = #{usePlace}]]>
+                </if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+	  
+	</select>
+    
+    <!-- 批量插入发料产品对象 -->
+    <insert id="batchInsertItemInfo" parameterType="java.util.List" >
+        insert into d_delivery_item (
+                    item_id,
+			        plan_id,
+        			item_no,
+        			category_nm,
+        			material_nm,
+        			model_no,
+        			send_amount,
+        			unit,
+                    use_place,
+        			memo,
+        			status_cd
+                ) values 
+                <foreach item="item" index="index" collection="list"    separator=","  >
+                    (
+                        #{item.itemId},
+                        #{item.planId},
+                        #{item.itemNo},
+                        #{item.categoryNm},
+                        #{item.materialNm},
+                        #{item.modelNo},
+                        #{item.sendAmount},
+                        #{item.unit},
+                        #{item.usePlace},
+                        #{item.memo},
+                        #{item.statusCd}
+                    )
+                </foreach>
+    </insert>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DDeliveryItemQuery" resultMap="pretrst.DDeliveryItemRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DDeliveryItemQuery" resultMap="pretrst.DDeliveryItemRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DDeliveryItemQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_delivery_item
+	</select>
+	
+</mapper>

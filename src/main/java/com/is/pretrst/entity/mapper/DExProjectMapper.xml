@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DExProject">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			project_id,
+			ws_cd,
+			project_nm,
+			weight,
+			contract_start_date,
+			start_date,
+			contract_other_req,
+			last_report_dt,
+			last_report_id
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			project_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_ex_project
+			<where>	      				
+				<if test="projectId != null and projectId != ''">
+					<![CDATA[and project_id = #{projectId}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="projectNm != null and projectNm != ''">
+					<![CDATA[and project_nm   like concat('%',#{projectNm},'%')]]>
+				</if>
+				<if test="weight != null and weight != ''">
+					<![CDATA[and weight = #{weight}]]>
+				</if>
+				<if test="contractStartDate != null and contractStartDate != ''">
+					<![CDATA[and contract_start_date = #{contractStartDate}]]>
+				</if>
+				<if test="startDate != null and startDate != ''">
+					<![CDATA[and start_date = #{startDate}]]>
+				</if>
+				<if test="contractOtherReq != null and contractOtherReq != ''">
+					<![CDATA[and contract_other_req = #{contractOtherReq}]]>
+				</if>
+				<if test="lastReportDt != null and lastReportDt != ''">
+					<![CDATA[and last_report_dt = #{lastReportDt}]]>
+				</if>
+				<if test="lastReportId != null and lastReportId != ''">
+					<![CDATA[and last_report_id = #{lastReportId}]]>
+				</if>
+			</where>
+            order by last_report_dt   DESC
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DExProject">
+	    <![CDATA[
+			insert into d_ex_project (
+				project_id,
+				ws_cd,
+				project_nm,
+				weight,
+				contract_start_date,
+				start_date,
+				contract_other_req,
+				last_report_dt,
+				last_report_id
+			) values (
+				#{projectId},
+				#{wsCd},
+				#{projectNm},
+				#{weight},
+				#{contractStartDate},
+				#{startDate},
+				#{contractOtherReq},
+				#{lastReportDt},
+				#{lastReportId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DExProject">
+      
+			delete from d_ex_project 
+				<where>	 
+					<if test="projectId != null and projectId != ''">
+						<![CDATA[and project_id = #{projectId}]]>
+					</if>
+					<if test="wsCd != null and wsCd != ''">
+						<![CDATA[and ws_cd = #{wsCd}]]>
+					</if>
+					<if test="projectNm != null and projectNm != ''">
+						<![CDATA[and project_nm = #{projectNm}]]>
+					</if>
+					<if test="weight != null and weight != ''">
+						<![CDATA[and weight = #{weight}]]>
+					</if>
+					<if test="contractStartDate != null and contractStartDate != ''">
+						<![CDATA[and contract_start_date = #{contractStartDate}]]>
+					</if>
+					<if test="startDate != null and startDate != ''">
+						<![CDATA[and start_date = #{startDate}]]>
+					</if>
+					<if test="contractOtherReq != null and contractOtherReq != ''">
+						<![CDATA[and contract_other_req = #{contractOtherReq}]]>
+					</if>
+					<if test="lastReportDt != null and lastReportDt != ''">
+						<![CDATA[and last_report_dt = #{lastReportDt}]]>
+					</if>
+					<if test="lastReportId != null and lastReportId != ''">
+						<![CDATA[and last_report_id = #{lastReportId}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DExProject">
+	   
+			update d_ex_project 
+				<set>
+				<if test="wsCd != null">
+					ws_cd = #{wsCd},
+				</if>
+				<if test="projectNm != null">
+					project_nm = #{projectNm},
+				</if>
+				<if test="weight != null">
+					weight = #{weight},
+				</if>
+				<if test="contractStartDate != null">
+					contract_start_date = #{contractStartDate},
+				</if>
+				<if test="startDate != null">
+					start_date = #{startDate},
+				</if>
+				<if test="contractOtherReq != null">
+					contract_other_req = #{contractOtherReq},
+				</if>
+				<if test="lastReportDt != null">
+					last_report_dt = #{lastReportDt},
+				</if>
+				<if test="lastReportId != null">
+					last_report_id = #{lastReportId}
+				</if>
+				</set>
+				
+				where 
+					project_id = #{projectId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DExProject" resultMap="pretrst.DExProjectRM">
+        select <include refid="allColumns" />
+	    
+			from d_ex_project 
+			<where>	      				
+				<if test="projectId != null and projectId != ''">
+					<![CDATA[and project_id = #{projectId}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+                <if test="projectNm != null and projectNm != ''">
+                    <![CDATA[and project_nm = #{projectNm}]]>
+                </if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DExProjectQuery" resultMap="pretrst.DExProjectRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DExProjectQuery" resultMap="pretrst.DExProjectRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DExProjectQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_ex_project
+	</select>
+	
+	<!-- 查询正在进行中的工地所对应的项目（原来用的） -->
+	<select id="selectDoingProject" resultMap="pretrst.DExProjectRM">
+		select d.*  from m_workshop m ,d_ex_project d where m.end_time>=NOW() and m.ws_cd=d.ws_cd;
+    </select>
+    
+    <!--新的 -->
+	<!-- 查询所有正在进行中所有的扩展工地所对应的项目 -->
+	<select id="selectAllDoingProjectExt" parameterType="com.is.pretrst.entity.query.DExProjectExtQuery" resultMap="pretrst.DExprojectExtRM">
+		select
+			 
+            p.project_id,
+            p.project_nm,
+            p.weight,
+            p.start_date,
+            p.last_report_dt,
+            p.last_report_id,
+            p.ws_cd,
+            g.progress_status as progressStatus
+         from d_ex_project p  left join d_ex_progress g on  p.last_report_id=g.report_id  , m_workshop w where w.ws_cd=p.ws_cd  and  w.end_time>=NOW() ORDER BY p.last_report_dt DESC;
+    </select>
+	<!-- 查询当前userId所掌管的正在进行中的扩展工地所对应的项目 -->
+	<select id="selectSiteDoingProjectExt" parameterType="com.is.pretrst.entity.query.DExProjectExtQuery" resultMap="pretrst.DExprojectExtRM">
+       select 
+       		p.project_id,
+            p.project_nm,
+            p.weight,
+            p.start_date,
+            p.last_report_dt,
+            p.last_report_id,
+            p.ws_cd,
+            g.progress_status as progressStatus
+         from d_ex_project p  left join d_ex_progress g on  p.last_report_id=g.report_id, m_workshop w where w.manager_user_id=#{userId}  and w.ws_cd=p.ws_cd  and  w.end_time>=NOW() ORDER BY p.last_report_dt DESC;
+    </select>
+	<!-- 查询当前List<userId>所掌管的正在进行中的扩展工地所对应的项目 ，区域部长用-->
+	<select id="selectAreaDoingProjectExt" parameterType="com.is.pretrst.entity.query.DExProjectExtQuery" resultMap="pretrst.DExprojectExtRM">
+       select 
+       		p.project_id,
+            p.project_nm,
+            p.weight,
+            p.start_date,
+            p.last_report_dt,
+            p.last_report_id,
+            p.ws_cd,
+            g.progress_status as progressStatus
+         from d_ex_project p left join d_ex_progress g on  p.last_report_id=g.report_id ,m_workshop w,ggkz_user_info u 
+         where w.manager_user_id=u.user_id and u.head_user_cd=#{userId}
+          and w.ws_cd=p.ws_cd  and  w.end_time>=NOW() ORDER BY p.last_report_dt DESC
+          ;
+    </select>
+</mapper>

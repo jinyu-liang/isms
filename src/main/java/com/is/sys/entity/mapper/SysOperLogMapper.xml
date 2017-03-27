@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="SysOperLog">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			log_id,
+			busi_id,
+			model_id,
+			model_name,
+			oper_func_code,
+			oper_func_name,
+            oper_event,
+			oper_result,
+			operate_time,
+			user_id,
+			name,
+			oper_ip,
+			note
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			log_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from sys_oper_log
+			<where>	      				
+				<if test="logId != null and logId != ''">
+					<![CDATA[and log_id = #{logId}]]>
+				</if>
+				<if test="busiId != null and busiId != ''">
+					<![CDATA[and busi_id = #{busiId}]]>
+				</if>
+				<if test="modelId != null and modelId != ''">
+					<![CDATA[and model_id = #{modelId}]]>
+				</if>
+				<if test="modelName != null and modelName != ''">
+					<![CDATA[and model_name like concat('%',#{modelName},'%')]]>
+				</if>
+				<if test="operFuncCode != null and operFuncCode != ''">
+					<![CDATA[and oper_func_code = #{operFuncCode}]]>
+				</if>
+				<if test="operFuncName != null and operFuncName != ''">
+					<![CDATA[and oper_func_name = #{operFuncName}]]>
+                </if>
+				<if test="operEvent != null and operEvent != ''">
+					<![CDATA[and oper_event = #{operEvent}]]>
+				</if>
+				<if test="operResult != null and operResult != ''">
+					<![CDATA[and oper_result = #{operResult}]]>
+				</if>
+				<if test="operateTime != null and operateTime != ''">
+					<![CDATA[and operate_time = #{operateTime}]]>
+				</if>
+				<if test="operateTimeStart != null and operateTimeStart != ''">
+					<![CDATA[and operate_time >= #{operateTimeStart}]]>
+				</if>
+				<if test="operateTimeEnd != null and operateTimeEnd != ''">
+					<![CDATA[and operate_time <= #{operateTimeEnd}]]>
+				</if>
+				<if test="userId != null and userId != ''">
+					<![CDATA[and user_id = #{userId}]]>
+				</if>
+				<if test="name != null and name != ''">
+					<![CDATA[and name like concat('%',#{name},'%') ]]>
+				</if>
+				<if test="operIp != null and operIp != ''">
+					<![CDATA[and oper_ip = #{operIp}]]>
+				</if>
+				<if test="note != null and note != ''">
+					<![CDATA[and note = #{note}]]>
+				</if>
+			</where>
+			order by operate_time desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.sys.entity.SysOperLog">
+	    <![CDATA[
+			insert into sys_oper_log (
+				log_id,
+				busi_id,
+				model_id,
+				model_name,
+				oper_func_code,
+				oper_func_name,
+                oper_event,
+				oper_result,
+				operate_time,
+				user_id,
+				name,
+				oper_ip,
+				note
+			) values (
+				#{logId},
+				#{busiId},
+				#{modelId},
+				#{modelName},
+				#{operFuncCode},
+				#{operFuncName},
+				#{operEvent},
+				#{operResult},
+				#{operateTime},
+				#{userId},
+				#{name},
+				#{operIp},
+				#{note}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.sys.entity.SysOperLog">
+      
+			delete from sys_oper_log 
+				<where>	 
+					<if test="logId != null and logId != ''">
+						<![CDATA[and log_id = #{logId}]]>
+					</if>
+					<if test="busiId != null and busiId != ''">
+						<![CDATA[and busi_id = #{busiId}]]>
+					</if>
+					<if test="modelId != null and modelId != ''">
+						<![CDATA[and model_id = #{modelId}]]>
+					</if>
+					<if test="modelName != null and modelName != ''">
+						<![CDATA[and model_name = #{modelName}]]>
+					</if>
+					<if test="operFuncCode != null and operFuncCode != ''">
+						<![CDATA[and oper_func_code = #{operFuncCode}]]>
+					</if>
+					<if test="operFuncName != null and operFuncName != ''">
+						<![CDATA[and oper_func_name = #{operFuncName}]]>
+					</if>
+					<if test="operEvent != null and operEvent != ''">
+						<![CDATA[and oper_event = #{operEvent}]]>
+					</if>
+					<if test="operResult != null and operResult != ''">
+						<![CDATA[and oper_result = #{operResult}]]>
+					</if>
+					<if test="operateTime != null and operateTime != ''">
+						<![CDATA[and operate_time = #{operateTime}]]>
+					</if>
+					<if test="userId != null and userId != ''">
+						<![CDATA[and user_id = #{userId}]]>
+					</if>
+					<if test="name != null and name != ''">
+						<![CDATA[and name = #{name}]]>
+					</if>
+					<if test="operIp != null and operIp != ''">
+						<![CDATA[and oper_ip = #{operIp}]]>
+					</if>
+					<if test="note != null and note != ''">
+						<![CDATA[and note = #{note}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.sys.entity.SysOperLog">
+	   
+			update sys_oper_log 
+				<set>
+				<if test="busiId != null">
+					busi_id = #{busiId},
+				</if>
+				<if test="modelId != null">
+					model_id = #{modelId},
+				</if>
+				<if test="modelName != null">
+					model_name = #{modelName},
+				</if>
+				<if test="operFuncCode != null">
+					oper_func_code = #{operFuncCode},
+				</if>
+				<if test="operFuncName != null">
+					oper_func_name = #{operFuncName},
+				</if>
+				<if test="operEvent != null">
+					oper_event = #{operEvent},
+				</if>
+				<if test="operResult != null">
+					oper_result = #{operResult},
+				</if>
+				<if test="operateTime != null">
+					operate_time = #{operateTime},
+				</if>
+				<if test="userId != null">
+					user_id = #{userId},
+				</if>
+				<if test="name != null">
+					name = #{name},
+				</if>
+				<if test="operIp != null">
+					oper_ip = #{operIp},
+				</if>
+				<if test="note != null">
+					note = #{note}
+				</if>
+				</set>
+				
+				where 
+					log_id = #{logId}
+    	
+	</update>
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.sys.entity.query.SysOperLogQuery" resultMap="sys.SysOperLogRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.sys.entity.query.SysOperLogQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_sys_oper_log
+	</select>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.sys.entity.SysOperLog" resultMap="sys.SysOperLogRM">
+        select <include refid="allColumns" />
+	    
+			from sys_oper_log 
+			<where>	 
+					<if test="logId != null and logId != ''">
+						<![CDATA[and log_id = #{logId}]]>
+					</if>
+				</where>
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.sys.entity.query.SysOperLogQuery" resultMap="sys.SysOperLogRM">
+			<include refid="querySql"/>
+			
+	</select>
+</mapper>

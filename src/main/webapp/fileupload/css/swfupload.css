@@ -1,0 +1,163 @@
+.progressWrapper {
+	width: 357px;
+	overflow: hidden;
+	z-index: 10000;
+}
+.progressContainer {
+	margin: 5px;
+	padding: 4px;
+	border: solid 1px #E8E8E8;
+	background-color: #F7F7F7;
+	overflow: hidden;
+}
+a.progressCancel {
+	font-size: 0;
+	display: block;
+	height: 14px;
+	width: 14px;
+	background-image: url(../images/cancelbutton.gif);
+	background-repeat: no-repeat;
+	background-position: -14px 0px;
+	float: right;
+}
+a.progressCancel:hover {
+	background-position: 0px 0px;
+}
+.progressName {
+	font-size: 8pt;
+	font-weight: 700;
+	color: #555;
+	width: 323px;
+	height: 14px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.progressBarInProgress,
+.progressBarComplete,
+.progressBarError {
+	font-size: 0;
+	width: 0%;
+	height: 2px;
+	background-color: blue;
+	margin-top: 2px;
+}
+.progressBarStatus {
+	margin-top: 2px;
+	width: 337px;
+	font-size: 7pt;
+	font-family: Arial;
+	text-align: left;
+	white-space: nowrap;
+}
+.progressBarComplete {
+	width: 100%;
+	background-color: green;
+	visibility: hidden;
+}
+.progressBarError {
+	width: 100%;
+	background-color: red;
+	visibility: hidden;
+}
+.green {
+	border: solid 1px #DDF0DD;
+	background-color: #EBFFEB;
+}
+.blue {
+	border: solid 1px #CEE2F2;
+	background-color: #F0F5FF;
+}
+.red {
+	border: solid 1px #B50000;
+	background-color: #FFEBEB;
+}
+
+.swfupload {
+    filter: alpha(opacity = 100);
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
+    opacity: 1;
+    vertical-align: top;
+}
+.anatomy.action,
+a.anatomy.display,
+a.anatomy.icon,
+span.anatomy.display.del
+{
+    background: url("../images/anatomyicon.png") no-repeat 0 4px transparent;
+    padding: 5px 0;
+}
+a.msginteract.unread
+{
+    background: url("../images/mail.png") no-repeat scroll -48px 0 transparent;
+    padding: 2px 0;
+}
+a.msginteract.read
+{
+    background: url("../images/mail.png") no-repeat scroll -48px -16px transparent;
+    padding: 2px 0;
+}
+a.anatomy.display,
+span.anatomy.display.del
+{
+    margin-left: 10px;
+}
+a.anatomy.action:link,
+a.anatomy.display:link,
+span.anatomy.display.del a:link,
+a.anatomy.icon:link,
+a.msginteract.unread:link,
+a.msginteract.read:link
+{ text-decoration: none;}
+a.anatomy.action:active,
+a.anatomy.display:active,
+span.anatomy.display.del a:active,
+a.anatomy.icon:active,
+a.msginteract.unread:active,
+a.msginteract.read:active
+{ text-decoration: none}
+a.anatomy.action:hover,
+a.anatomy.display:hover,
+span.anatomy.display.del a:hover,
+a.anatomy.icon:hover,
+a.msginteract.unread:hover,
+a.msginteract.read:hover
+{ text-decoration: none;} 
+a.anatomy.action:visited,
+a.anatomy.display:visited,
+span.anatomy.display.del a:visited,
+a.anatomy.icon:visited,
+a.msginteract.unread:visited,
+a.msginteract.read:visited
+{ text-decoration: none;}
+.anatomy.action>var
+{
+    display: none;
+}
+.anatomy.action>span,
+a.anatomy.display>span,
+span.anatomy.display.del a>span
+{
+    color: #183152;
+    line-height: 25px;
+    font-weight:bold;
+    margin-left: 22px;
+    white-space: nowrap;
+}
+span.anatomy.display.del
+{
+    padding-left: 22px;
+}
+a.anatomy.display>span.del,
+a.anatomy.display>span.down,
+span.anatomy.display.del a>span.del,
+span.anatomy.display.del a>span.down
+{
+    margin-left: 12px;
+}
+a.anatomy.display>span.del,
+span.anatomy.display.del a>span.del
+{
+    color: red;
+}

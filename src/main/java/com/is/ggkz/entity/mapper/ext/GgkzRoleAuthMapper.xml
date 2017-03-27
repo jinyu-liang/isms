@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="GgkzRoleAuthExt">
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectAuthInfosByRoleAuth" parameterType="com.is.ggkz.entity.GgkzRoleAuth" resultMap="ggkz.GgkzAuthInfoRM">
+        select 
+        	auth.auth_id,
+			auth.auth_name
+			from ggkz_role_auth role,ggkz_auth_info auth
+			where 
+				role.role_id = #{roleId} and
+				role.auth_id = auth.auth_id
+	</select>
+	
+	<!-- 根据角色查找该角色下的权限id -->
+	<select id="selectAuthIdsByRoles" parameterType="java.util.List" resultType="string">
+		select distinct auth_id FROM ggkz_role_auth WHERE role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 根据角色查找该角色下的权限 -->
+	<select id="selectAuthByRoles" parameterType="java.util.List" resultMap="ggkz.GgkzAuthInfoRM">
+		select distinct info.auth_id,info.auth_name from ggkz_role_auth ra ,ggkz_auth_info info 
+        where ra.auth_id = info.auth_id and ra.role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

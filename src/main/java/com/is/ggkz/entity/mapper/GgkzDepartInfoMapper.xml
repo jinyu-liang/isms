@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="GgkzDepartInfo">
+    <!-- 表的所有字段 -->
+    <sql id="allColumns">
+		<![CDATA[
+			depart_id,
+			higher_depart_id,
+			depart_name,
+			depart_fullname,
+			depdns,
+			depdn,
+			ordernum,
+			addtime,
+			departtype,
+			basestatus,
+			note
+	    ]]>
+    </sql>
+
+    <!-- 表的主键字段 -->
+    <sql id="pkColumns">
+		<![CDATA[depart_id]]>
+    </sql>
+
+    <!-- 根据实体的查询对象进行查询的sql -->
+    <sql id="querySql">
+        select
+        <include refid="allColumns" />
+        from ggkz_depart_info
+        <where>
+            <if test="departId != null and departId != ''">
+				<![CDATA[and depart_id = #{departId}]]>
+            </if>
+            <if test="higherDepartId != null and higherDepartId != ''">
+				<![CDATA[and higher_depart_id = #{higherDepartId}]]>
+            </if>
+            <if test="departName != null and departName != ''">
+				<![CDATA[and depart_name = #{departName}]]>
+            </if>
+            <if test="note != null and note != ''">
+				<![CDATA[and note = #{note}]]>
+            </if>
+            <if test="departfullname != null and departfullname != ''">
+				<![CDATA[and depart_fullname = #{departfullname}]]>
+            </if>
+            <if test="depdns != null and depdns != ''">
+				<![CDATA[and depdns like concat('',#{depdns},'%')]]>
+            </if>
+            <if test="depdn != null and depdn != ''">
+				<![CDATA[and depdn = #{depdn}]]>
+            </if>
+            <if test="departtype != null and departtype != ''">
+				<![CDATA[and departtype = #{departtype}]]>
+            </if>
+        </where>
+        order by depdns ,depdn ASC
+    </sql>
+
+    <!-- 新增数据 -->
+    <select id="selectDeptIdProc" parameterType="com.is.ggkz.entity.GgkzDepartInfo" statementType="CALLABLE">
+        call selectDepartKey(
+            #{higherDepartId,mode=IN,jdbcType=VARCHAR},
+            #{departId,mode=OUT,jdbcType=VARCHAR},
+            #{result,mode=OUT,jdbcType=INTEGER}
+        )
+    </select>
+    <insert id="insert" parameterType="com.is.ggkz.entity.GgkzDepartInfo">
+        <![CDATA[
+            insert into ggkz_depart_info (
+            
+                higher_depart_id,
+                depart_name,
+                depart_fullname,
+                depdns,
+                depdn,
+                ordernum,
+                addtime,
+                departtype,
+                note
+            ) values (
+               
+                #{higherDepartId},
+                #{departName},
+                #{departfullname},
+                #{depdns},
+                #{depdn},
+                #{ordernum},
+                #{addtime},
+                #{departtype},
+                #{note}
+            )
+        ]]>
+    </insert>
+
+    <!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzDepartInfo">
+        delete from ggkz_depart_info
+        <where>
+            <if test="departId != null and departId != ''">
+				<![CDATA[and depart_id = #{departId}]]>
+            </if>
+            <if test="higherDepartId != null and higherDepartId != ''">
+				<![CDATA[and higher_depart_id = #{higherDepartId}]]>
+            </if>
+            <if test="departName != null and departName != ''">
+				<![CDATA[and depart_name = #{departName}]]>
+            </if>
+            <if test="note != null and note != ''">
+				<![CDATA[and note = #{note}]]>
+            </if>
+            <if test="departfullname != null and departfullname != ''">
+				<![CDATA[and depart_fullname = #{departfullname}]]>
+            </if>
+            <if test="depdns != null and depdns != ''">
+				<![CDATA[and depdns = #{depdns}]]>
+            </if>
+            <if test="depdn != null and depdn != ''">
+				<![CDATA[and depdn = #{depdn}]]>
+            </if>
+            <if test="ordernum != null and ordernum != ''">
+				<![CDATA[and ordernum = #{ordernum}]]>
+            </if>
+        </where>
+    </delete>
+    
+    <!-- 根据条件删除数据级联删除 -->
+    <delete id="deleteByEntityCascade" parameterType="com.is.ggkz.entity.GgkzDepartInfo">
+        <![CDATA[delete from ggkz_depart_info
+        where 
+        depart_id like #{departId}
+        and not exists(select(1) from ggkz_user_info u where u.depart_id like #{departId})
+        ]]>
+    </delete>
+
+    <!-- 跟据条件更新数据 -->
+    <update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzDepartInfo">
+        update ggkz_depart_info
+        <set>
+            <if test="higherDepartId != null">
+                higher_depart_id = #{higherDepartId},
+            </if>
+            <if test="departName != null">
+                depart_name = #{departName},
+            </if>
+            <if test="note != null">
+                note = #{note}
+            </if>
+            <if test="departfullname != null and departfullname != ''">
+				<![CDATA[and depart_fullname = #{departfullname}]]>
+            </if>
+            <if test="depdns != null and depdns != ''">
+				<![CDATA[and depdns = #{depdns}]]>
+            </if>
+            <if test="depdn != null and depdn != ''">
+				<![CDATA[and depdn = #{depdn}]]>
+            </if>
+            <if test="ordernum != null and ordernum != ''">
+				<![CDATA[and ordernum = #{ordernum}]]>
+            </if>
+        </set>
+        where
+        depart_id = #{departId}
+    </update>
+
+    <!-- 根据条件查询单个对象 -->
+    <select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzDepartInfo" resultMap="ggkz.GgkzDepartInfoRM">
+        select
+        <include refid="allColumns" />
+        from ggkz_depart_info
+        <where>
+            <if test="departId != null and departId != ''">
+				<![CDATA[and depart_id = #{departId}]]>
+            </if>
+            <if test="higherDepartId != null and higherDepartId != ''">
+				<![CDATA[and higher_depart_id = #{higherDepartId}]]>
+            </if>
+            <if test="departName != null and departName != ''">
+				<![CDATA[and depart_name = #{departName}]]>
+            </if>
+            <if test="note != null and note != ''">
+				<![CDATA[and note = #{note}]]>
+            </if>
+            <if test="departfullname != null and departfullname != ''">
+				<![CDATA[and depart_fullname = #{departfullname}]]>
+            </if>
+            <if test="depdns != null and depdns != ''">
+				<![CDATA[and depdns = #{depdns}]]>
+            </if>
+            <if test="depdn != null and depdn != ''">
+				<![CDATA[and depdn = #{depdn}]]>
+            </if>
+            <if test="ordernum != null and ordernum != ''">
+				<![CDATA[and ordernum = #{ordernum}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据实体对象查询数据结果集 -->
+    <select id="selectByEntity" parameterType="com.is.ggkz.entity.query.GgkzDepartInfoQuery" resultMap="ggkz.GgkzDepartInfoRM">
+        <include refid="querySql" />
+    </select>
+
+    <!-- 分页查询 -查询结果数据 -->
+    <select id="selectByPage" parameterType="com.is.ggkz.entity.query.GgkzDepartInfoQuery" resultMap="ggkz.GgkzDepartInfoRM">
+        <include refid="querySql" />
+    </select>
+
+    <!-- 分页查询 -查询记录总数 -->
+    <select id="selectByPageCount" parameterType="com.is.ggkz.entity.query.GgkzDepartInfoQuery" resultType="integer">
+        select count(1) from (
+        <include refid="querySql" />
+        ) as tmp_ggkz_depart_info
+    </select>
+    
+	<!-- 生成流水 -->
+	<select id="selectbaseid" parameterType="String" resultType="String">
+		select CONCAT(date_format(now(),'%y%m%d%k%I%S'),(round(round(rand(),4)*10000)))
+	</select>
+	
+	 <!-- 根据条件子节点最大值 -->
+    <select id="selectMaxEntity" parameterType="com.is.ggkz.entity.GgkzDepartInfo" resultMap="ggkz.GgkzDepartInfoRM">
+        SELECT MAX(a.depdn)+1 depdn,a.depart_fullname,a.depart_id,a.depart_name,IF((LENGTH('depdns') - LENGTH( REPLACE('depdns','.',''))) >1,depdns,LEFT(depdns, LENGTH(depdns) - LOCATE('.', REVERSE(depdns)))) depdns,a.ordernum,a.note from ggkz_depart_info a 
+        <where>
+            <if test="higherDepartId != null and higherDepartId != ''">
+				<![CDATA[and higher_depart_id = #{higherDepartId}]]>
+            </if>
+            <if test="departId != null  and departId == 'part'">
+				<![CDATA[and higher_depart_id = '' or higher_depart_id is null]]>
+            </if>            
+        </where>
+    </select>
+
+</mapper>

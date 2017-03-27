@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry location="E:/Workspaces10/ISMS/src/main/webapp/WEB-INF/lib/mysql-connector-java-5.1.17-bin.jar" />
+    <context id="context1">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/isms" userId="isms" password="isms" />
+        <javaModelGenerator targetPackage="com.is.pretrst1.entity" targetProject="src" />
+        <sqlMapGenerator targetPackage="com.is.ggkz.pretrst1.mapper" targetProject="src" />
+        <javaClientGenerator targetPackage="com.is.pretrst1.dao" targetProject="src" type="XMLMAPPER" />
+        <table schema="" tableName="m_workshop_quality" />
+        <!-- <table schema="???" tableName="???"> <columnOverride column="???" property="???" /> </table> -->
+    </context>
+</generatorConfiguration>

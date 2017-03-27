@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="GgkzPostInfo">
+    <!-- 表的所有字段 -->
+    <sql id="allColumns">
+		<![CDATA[
+			post_id,
+			higher_post_id,
+			post_name,
+			note
+	    ]]>
+    </sql>
+
+    <!-- 表的主键字段 -->
+    <sql id="pkColumns">
+		<![CDATA[post_id]]>
+    </sql>
+
+    <!-- 根据实体的查询对象进行查询的sql -->
+    <sql id="querySql">
+        select
+        <include refid="allColumns" />
+        from ggkz_post_info
+        <where>
+            <if test="postId != null and postId != ''">
+				<![CDATA[and post_id = #{postId}]]>
+            </if>
+            <if test="higherPostId != null and higherPostId != ''">
+				<![CDATA[and higher_post_id = #{higherPostId}]]>
+            </if>
+            <if test="postName != null and postName != ''">
+				<![CDATA[and post_name = #{postName}]]>
+            </if>
+            <if test="note != null and note != ''">
+				<![CDATA[and note = #{note}]]>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 新增数据 -->
+    <select id="selectDeptIdProc" parameterType="com.is.ggkz.entity.GgkzPostInfo" statementType="CALLABLE">
+        call selectPostKey(
+        #{higherPostId,mode=IN,jdbcType=VARCHAR},
+        #{postId,mode=OUT,jdbcType=VARCHAR},
+        #{result,mode=OUT,jdbcType=INTEGER}
+        )
+    </select>
+    <insert id="insert" parameterType="com.is.ggkz.entity.GgkzPostInfo">
+        <![CDATA[
+            insert into ggkz_post_info (
+                post_id,
+                higher_post_id,
+                post_name,
+                note
+            ) values (
+                #{postId},
+                #{higherPostId},
+                #{postName},
+                #{note}
+            )
+        ]]>
+    </insert>
+
+    <!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzPostInfo">
+        delete from ggkz_post_info
+        <where>
+            <if test="postId != null and postId != ''">
+				<![CDATA[and post_id = #{postId}]]>
+            </if>
+            <if test="higherPostId != null and higherPostId != ''">
+				<![CDATA[and higher_post_id = #{higherPostId}]]>
+            </if>
+            <if test="postName != null and postName != ''">
+				<![CDATA[and post_name = #{postName}]]>
+            </if>
+            <if test="note != null and note != ''">
+				<![CDATA[and note = #{note}]]>
+            </if>
+        </where>
+    </delete>
+
+    <!-- 根据条件删除数据级联删除 -->
+    <delete id="deleteByEntityCascade" parameterType="com.is.ggkz.entity.GgkzPostInfo">
+        <![CDATA[delete from ggkz_post_info
+        where 
+        post_id like #{postId}
+        and not exists(select(1) from ggkz_user_info u where u.post_id like #{postId})
+        ]]>
+    </delete>
+
+    <!-- 跟据条件更新数据 -->
+    <update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzPostInfo">
+        update ggkz_post_info
+        <set>
+            <if test="higherPostId != null">
+                higher_post_id = #{higherPostId},
+            </if>
+            <if test="postName != null">
+                post_name = #{postName},
+            </if>
+            <if test="note != null">
+                note = #{note}
+            </if>
+        </set>
+        where
+        post_id = #{postId}
+    </update>
+
+    <!-- 根据条件查询单个对象 -->
+    <select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzPostInfo" resultMap="ggkz.GgkzPostInfoRM">
+        select
+        <include refid="allColumns" />
+        from ggkz_post_info
+        <where>
+            <if test="postId != null and postId != ''">
+				<![CDATA[and post_id = #{postId}]]>
+            </if>
+            <if test="higherPostId != null and higherPostId != ''">
+				<![CDATA[and higher_post_id = #{higherPostId}]]>
+            </if>
+            <if test="postName != null and postName != ''">
+				<![CDATA[and post_name = #{postName}]]>
+            </if>
+            <if test="note != null and note != ''">
+				<![CDATA[and note = #{note}]]>
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据实体对象查询数据结果集 -->
+    <select id="selectByEntity" parameterType="com.is.ggkz.entity.query.GgkzPostInfoQuery" resultMap="ggkz.GgkzPostInfoRM">
+        <include refid="querySql" />
+    </select>
+
+    <!-- 分页查询 -查询结果数据 -->
+    <select id="selectByPage" parameterType="com.is.ggkz.entity.query.GgkzPostInfoQuery" resultMap="ggkz.GgkzPostInfoRM">
+        <include refid="querySql" />
+    </select>
+
+    <!-- 分页查询 -查询记录总数 -->
+    <select id="selectByPageCount" parameterType="com.is.ggkz.entity.query.GgkzPostInfoQuery" resultType="integer">
+        select count(1) from (
+        <include refid="querySql" />
+        ) as tmp_ggkz_post_info
+    </select>
+
+</mapper>

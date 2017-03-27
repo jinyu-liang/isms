@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="MWorkshopTrans">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			trans_id,
+			from_ws_cd,
+			trans_user_cd,
+			trans_user_name,
+			sender,
+			to_ws_cd,
+			receiver,
+			t_company_nm,
+			driver,
+			weight,
+			delivery_tm,
+			arrival_tm,
+			memo,
+			deal_comment,
+			status_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			trans_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from m_workshop_trans
+			<where>	      				
+				<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+				</if>
+				<if test="fromWsCd != null and fromWsCd != ''">
+					<![CDATA[and from_ws_cd = #{fromWsCd}]]>
+				</if>
+				<if test="transUserCd != null and transUserCd != ''">
+					<![CDATA[and trans_user_cd = #{transUserCd}]]>
+				</if>
+				<if test="transUserName != null and transUserName != ''">
+					<![CDATA[and trans_user_name like concat('%', #{transUserName},'%')]]>
+				</if>				
+				<if test="sender != null and sender != ''">
+					<![CDATA[and sender = #{sender}]]>
+				</if>
+				<if test="toWsCd != null and toWsCd != ''">
+					<![CDATA[and to_ws_cd = #{toWsCd}]]>
+				</if>
+				<if test="receiver != null and receiver != ''">
+					<![CDATA[and receiver = #{receiver}]]>
+				</if>
+				<if test="tCompanyNm != null and tCompanyNm != ''">
+					<![CDATA[and t_company_nm = #{tCompanyNm}]]>
+				</if>
+				<if test="driver != null and driver != ''">
+					<![CDATA[and driver = #{driver}]]>
+				</if>
+				<if test="weight != null and weight != ''">
+					<![CDATA[and weight = #{weight}]]>
+				</if>
+				<if test="deliveryTm != null and deliveryTm != ''">
+					<![CDATA[and delivery_tm = #{deliveryTm}]]>
+				</if>
+				<if test="arrivalTm != null and arrivalTm != ''">
+					<![CDATA[and arrival_tm = #{arrivalTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+            order by trans_id desc 
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MWorkshopTrans">
+	    <![CDATA[
+			insert into m_workshop_trans (
+				trans_id,
+				from_ws_cd,
+				trans_user_cd,
+				trans_user_name,
+				sender,
+				to_ws_cd,
+				receiver,
+				t_company_nm,
+				driver,
+				weight,
+				delivery_tm,
+				arrival_tm,
+				memo,
+				deal_comment,
+				status_cd
+			) values (
+				#{transId},
+				#{fromWsCd},
+				#{transUserCd},
+				#{transUserName},
+				#{sender},
+				#{toWsCd},
+				#{receiver},
+				#{tCompanyNm},
+				#{driver},
+				#{weight},
+				#{deliveryTm},
+				#{arrivalTm},
+				#{memo},
+				#{dealComment},
+				#{statusCd}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MWorkshopTrans">
+      
+			delete from m_workshop_trans 
+				<where>	 
+					<if test="transId != null and transId != ''">
+						<![CDATA[and trans_id = #{transId}]]>
+					</if>
+					<if test="fromWsCd != null and fromWsCd != ''">
+						<![CDATA[and from_ws_cd = #{fromWsCd}]]>
+					</if>
+					<if test="transUserCd != null and transUserCd != ''">
+						<![CDATA[and trans_user_cd = #{transUserCd}]]>
+					</if>
+					<if test="sender != null and sender != ''">
+						<![CDATA[and sender = #{sender}]]>
+					</if>
+					<if test="toWsCd != null and toWsCd != ''">
+						<![CDATA[and to_ws_cd = #{toWsCd}]]>
+					</if>
+					<if test="receiver != null and receiver != ''">
+						<![CDATA[and receiver = #{receiver}]]>
+					</if>
+					<if test="tCompanyNm != null and tCompanyNm != ''">
+						<![CDATA[and t_company_nm = #{tCompanyNm}]]>
+					</if>
+					<if test="driver != null and driver != ''">
+						<![CDATA[and driver = #{driver}]]>
+					</if>
+					<if test="weight != null and weight != ''">
+						<![CDATA[and weight = #{weight}]]>
+					</if>
+					<if test="deliveryTm != null and deliveryTm != ''">
+						<![CDATA[and delivery_tm = #{deliveryTm}]]>
+					</if>
+					<if test="arrivalTm != null and arrivalTm != ''">
+						<![CDATA[and arrival_tm = #{arrivalTm}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MWorkshopTrans">
+	   
+			update m_workshop_trans 
+				<set>
+				<if test="arrivalTm != null">
+					arrival_tm = #{arrivalTm},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="dealComment != null">
+					deal_comment = #{dealComment},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd}
+				</if>
+				</set>
+				where 
+					trans_id = #{transId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MWorkshopTrans" resultMap="pretrst.MWorkshopTransRM">
+        select <include refid="allColumns" />
+	    
+			from m_workshop_trans 
+			<where>	      				
+				<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+				</if>
+			</where>
+	  
+	</select>
+	<select id="selectImagePathByReportId" parameterType="com.is.pretrst.entity.MWorkshopTrans" resultType="java.lang.String">
+        select file_name 
+			from d_scrap_trans_image  
+			<where>	      				
+				<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+				</if>
+				
+			</where>
+	  
+	</select>
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopTransQuery" resultMap="pretrst.MWorkshopTransRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MWorkshopTransQuery" resultMap="pretrst.MWorkshopTransRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MWorkshopTransQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_m_workshop_trans
+	</select>
+	
+</mapper>

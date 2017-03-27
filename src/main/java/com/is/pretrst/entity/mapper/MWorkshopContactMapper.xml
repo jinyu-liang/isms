@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="MWorkshopContact"> 
+<!-- <cache flushInterval="60000" readOnly="true"/> -->
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			ID,
+			ws_cd,
+			ws_nm,
+			fquserid,
+			fqusername,
+			title,
+			detail,
+			addtime,
+			acceptdepname,
+			acceptdepID,
+			senderdepname,
+			senderdepID,
+			acceptdepmangername,
+			acceptdepmangerID,
+			acceptdepmangerdesc,
+			acceptdepmangertime,
+			leadername,
+			leaderID,
+			leaderdesc,
+			leadertime,
+			Isaccept,
+			accepttime,
+			acceptdesc,
+			status,
+			remark,
+			acceptuserID,
+			acceptusername
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			ID
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from m_workshop_contact
+			<where>	      				
+				<if test="ID != null and ID != ''">
+					<![CDATA[and ID = #{ID}]]>
+				</if>
+				<if test="fquserid != null and fquserid != ''">
+					<![CDATA[and fquserid = #{fquserid}]]>
+				</if>
+				<if test="ws_nm != null and ws_nm != ''">
+					<![CDATA[and ws_nm =#{ws_nm}]]>
+				</if>
+				<if test="fqusername != null and fqusername != ''">
+					<![CDATA[and fqusername = #{fqusername}]]>
+				</if>
+				<if test="ws_cd != null and ws_cd != ''">
+					<![CDATA[and ws_cd = #{ws_cd}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="detail != null and detail != ''">
+					<![CDATA[and detail = #{detail}]]>
+				</if>
+				<if test="addtime != null and addtime != ''">
+					<![CDATA[and addtime = #{addtime}]]>
+				</if>
+				<if test="acceptdepname != null and acceptdepname != ''">
+					<![CDATA[and acceptdepname = #{acceptdepname}]]>
+				</if>
+				<if test="acceptdepID != null and acceptdepID != ''">
+					<![CDATA[and acceptdepID = #{acceptdepID}]]>
+				</if>
+				<if test="senderdepname != null and senderdepname != ''">
+					<![CDATA[and senderdepname = #{senderdepname}]]>
+				</if>
+				<if test="senderdepID != null and senderdepID != ''">
+					<![CDATA[and senderdepID = #{senderdepID}]]>
+				</if>
+				<if test="acceptdepmangername != null and acceptdepmangername != ''">
+					<![CDATA[and acceptdepmangername = #{acceptdepmangername}]]>
+				</if>
+				<if test="acceptdepmangerID != null and acceptdepmangerID != ''">
+					<![CDATA[and acceptdepmangerID = #{acceptdepmangerID}]]>
+				</if>
+				<if test="acceptdepmangerdesc != null and acceptdepmangerdesc != ''">
+					<![CDATA[and acceptdepmangerdesc = #{acceptdepmangerdesc}]]>
+				</if>
+				<if test="acceptdepmangertime != null and acceptdepmangertime != ''">
+					<![CDATA[and acceptdepmangertime = #{acceptdepmangertime}]]>
+				</if>
+				<if test="leadername  != null and   leadername != ''">
+					<![CDATA[and leadername  = #{leadername}]]>
+				</if>
+				<if test=" leaderID != null and  leaderID != ''">
+					<![CDATA[and leaderID  = #{leaderID}]]>
+				</if>
+				<if test=" leaderdesc != null and  leaderdesc != ''">
+					<![CDATA[and leaderdesc  = #{leaderdesc}]]>
+				</if>
+				<if test=" leadertime != null and  leadertime != ''">
+					<![CDATA[and  leadertime = #{leadertime}]]>
+				</if>
+				<if test=" Isaccept != null and  Isaccept != ''">
+					<![CDATA[and Isaccept = #{Isaccept}]]>
+				</if>
+				<if test=" accepttime != null and  accepttime != ''">
+					<![CDATA[and accepttime  = #{accepttime}]]>
+				</if>
+				<if test=" acceptdesc != null and  acceptdesc != ''">
+					<![CDATA[and acceptdesc = #{acceptdesc}]]>
+				</if>
+				<if test=" status != null and  status != ''">
+					<![CDATA[and status  = #{status}]]>
+				</if>
+				<if test=" remark != null and remark  != ''">
+					<![CDATA[and  remark = #{remark}]]>
+				</if>
+				<if test=" acceptuserID != null and acceptuserID  != ''">
+					<![CDATA[and  acceptuserID = #{acceptuserID}]]>
+				</if>
+				<if test=" acceptusername != null and acceptusername  != ''">
+					<![CDATA[and  acceptusername = #{acceptusername}]]>
+				</if>
+			</where>
+			order by addtime desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MWorkshopContact">
+	    <![CDATA[
+			insert into m_workshop_contact (
+				ID,
+				ws_cd,
+				ws_nm,
+				fquserid,
+				fqusername,
+				title,
+				detail,
+				addtime,
+				acceptdepname,
+				acceptdepID,
+				senderdepname,
+				senderdepID,
+				acceptdepmangername,
+				acceptdepmangerID,
+				acceptdepmangerdesc,
+				acceptdepmangertime,
+				leadername,
+				leaderID,
+				leaderdesc,
+				leadertime,
+				Isaccept,
+				accepttime,
+				acceptdesc,
+				status,
+				remark,
+				acceptuserID,
+				acceptusername
+			) values (
+				#{ID},
+				#{ws_cd},
+				#{ws_nm},
+				#{fquserid},
+				#{fqusername},
+				#{title},
+				#{detail},
+				#{addtime},
+				#{acceptdepname},
+				#{acceptdepID},
+				#{senderdepname},
+				#{senderdepID},
+				#{acceptdepmangername},
+				#{acceptdepmangerID},
+				#{acceptdepmangerdesc},
+				#{acceptdepmangertime},
+				#{leadername},
+				#{leaderID},
+				#{leaderdesc},
+				#{leadertime},
+				#{Isaccept},
+				#{accepttime},
+				#{acceptdesc},
+				#{status},
+				#{remark},
+				#{acceptuserID},
+				#{acceptusername}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MWorkshopContact">
+      
+			delete from m_workshop_contact 
+				<where>
+					<if test="ID != null and ID != ''">
+						<![CDATA[and ID = #{ID}]]>
+					</if> 
+					<if test="ws_cd != null and ws_cd != ''">
+						<![CDATA[and ws_cd = #{ws_cd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MWorkshopContact">
+	   
+			update m_workshop_contact 
+			<set>
+				<if test="fquserid != null and fquserid != ''">
+					fquserid = #{fquserid},
+				</if>
+				<if test="ws_nm != null and ws_nm != ''">
+					ws_nm =#{ws_nm},
+				</if>
+				<if test="fqusername != null and fqusername != ''">
+					fqusername = #{fqusername},
+				</if>
+				<if test="ws_cd != null and ws_cd != ''">
+					ws_cd = #{ws_cd},
+				</if>
+				<if test="title != null and title != ''">
+					title = #{title},
+				</if>
+				<if test="detail != null and detail != ''">
+					detail = #{detail},
+				</if>
+				<if test="addtime != null and addtime != ''">
+					addtime = #{addtime},
+				</if>
+				<if test="acceptdepname != null and acceptdepname != ''">
+					acceptdepname = #{acceptdepname},
+				</if>
+				<if test="acceptdepID != null and acceptdepID != ''">
+					acceptdepID = #{acceptdepID},
+				</if>
+				<if test="senderdepname != null and senderdepname != ''">
+					senderdepname = #{senderdepname},
+				</if>
+				<if test="senderdepID != null and senderdepID != ''">
+					senderdepID = #{senderdepID},
+				</if>
+				<if test="acceptdepmangername != null and acceptdepmangername != ''">
+					acceptdepmangername = #{acceptdepmangername},
+				</if>
+				<if test="acceptdepmangerID != null and acceptdepmangerID != ''">
+					acceptdepmangerID = #{acceptdepmangerID},
+				</if>
+				<if test="acceptdepmangerdesc != null and acceptdepmangerdesc != ''">
+					acceptdepmangerdesc = #{acceptdepmangerdesc},
+				</if>
+				<if test="acceptdepmangertime != null and acceptdepmangertime != ''">
+					acceptdepmangertime = #{acceptdepmangertime},
+				</if>
+				<if test="leadername  != null and   leadername != ''">
+					leadername = #{leadername},
+				</if>
+				<if test=" leaderID != null and  leaderID != ''">
+					leaderID = #{leaderID},
+				</if>
+				<if test=" leaderdesc != null and  leaderdesc != ''">
+					leaderdesc = #{leaderdesc},
+				</if>
+				<if test=" leadertime != null and  leadertime != ''">
+					leadertime = #{leadertime},
+				</if>
+				<if test=" Isaccept != null and  Isaccept != ''">
+					Isaccept = #{Isaccept},
+				</if>
+				<if test=" accepttime != null and  accepttime != ''">
+					accepttime = #{accepttime},
+				</if>
+				<if test=" acceptdesc != null and  acceptdesc != ''">
+					acceptdesc = #{acceptdesc},
+				</if>
+				<if test=" status != null and  status != ''">
+					status = #{status},
+				</if>
+				<if test=" remark != null and remark  != ''">
+					remark = #{remark}
+				</if>
+				<if test=" acceptuserID != null and acceptuserID  != ''">
+					acceptuserID = #{acceptuserID}
+				</if>
+				<if test=" acceptusername != null and acceptusername  != ''">
+					acceptusername = #{acceptusername}
+				</if>
+			</set>
+				
+				where 
+					ID = #{ID}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MWorkshopContact" resultMap="pretrst.MWorkshopContactRM">
+        select <include refid="allColumns" />
+	    
+			from m_workshop_contact  m
+			
+			<where>
+				<if test="ID != null and ID != ''">
+					<![CDATA[and m.ID = #{ID}]]>
+				</if>	      				
+				<if test="ws_cd != null and ws_cd != ''">
+					<![CDATA[and m.ws_cd = #{ws_cd}]]>
+				</if>
+				<if test="ws_nm != null and ws_nm != ''">
+					<![CDATA[and m.ws_nm = #{ws_nm}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopContactQuery" resultMap="pretrst.MWorkshopContactRM">
+			<include refid="querySql"/>
+			
+	</select>
+
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MWorkshopContactQuery" resultMap="pretrst.MWorkshopContactRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MWorkshopContactQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_m_workshop_contact
+	</select>	
+    
+</mapper>

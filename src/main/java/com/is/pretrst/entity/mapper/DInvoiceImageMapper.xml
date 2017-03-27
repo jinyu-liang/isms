@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DInvoiceImage">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			photo_id,
+			invoice_id,
+			file_name,
+			pos_longitude,
+			pos_latitude,
+			pos_height,
+			photo_user_cd,
+			photo_tm,
+			upload_tm,
+			memo,
+			check_tm,
+			check_user_cd,
+			status_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			photo_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_invoice_image
+			<where>	      				
+				<if test="photoId != null and photoId != ''">
+					<![CDATA[and photo_id = #{photoId}]]>
+				</if>
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="fileName != null and fileName != ''">
+					<![CDATA[and file_name = #{fileName}]]>
+				</if>
+				<if test="posLongitude != null and posLongitude != ''">
+					<![CDATA[and pos_longitude = #{posLongitude}]]>
+				</if>
+				<if test="posLatitude != null and posLatitude != ''">
+					<![CDATA[and pos_latitude = #{posLatitude}]]>
+				</if>
+				<if test="posHeight != null and posHeight != ''">
+					<![CDATA[and pos_height = #{posHeight}]]>
+				</if>
+				<if test="photoUserCd != null and photoUserCd != ''">
+					<![CDATA[and photo_user_cd = #{photoUserCd}]]>
+				</if>
+				<if test="photoTm != null and photoTm != ''">
+					<![CDATA[and photo_tm = #{photoTm}]]>
+				</if>
+				<if test="uploadTm != null and uploadTm != ''">
+					<![CDATA[and upload_tm = #{uploadTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="checkTm != null and checkTm != ''">
+					<![CDATA[and check_tm = #{checkTm}]]>
+				</if>
+				<if test="checkUserCd != null and checkUserCd != ''">
+					<![CDATA[and check_user_cd = #{checkUserCd}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DInvoiceImage">
+	    <![CDATA[
+			insert into d_invoice_image (
+				photo_id,
+				invoice_id,
+				file_name,
+				pos_longitude,
+				pos_latitude,
+				pos_height,
+				photo_user_cd,
+				photo_tm,
+				upload_tm,
+				memo,
+				check_tm,
+				check_user_cd,
+				status_cd
+			) values (
+				#{photoId},
+				#{invoiceId},
+				#{fileName},
+				#{posLongitude},
+				#{posLatitude},
+				#{posHeight},
+				#{photoUserCd},
+				#{photoTm},
+				#{uploadTm},
+				#{memo},
+				#{checkTm},
+				#{checkUserCd},
+				#{statusCd}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DInvoiceImage">
+      
+			delete from d_invoice_image 
+				<where>	 
+					<if test="photoId != null and photoId != ''">
+						<![CDATA[and photo_id = #{photoId}]]>
+					</if>
+					<if test="invoiceId != null and invoiceId != ''">
+						<![CDATA[and invoice_id = #{invoiceId}]]>
+					</if>
+					<if test="fileName != null and fileName != ''">
+						<![CDATA[and file_name = #{fileName}]]>
+					</if>
+					<if test="posLongitude != null and posLongitude != ''">
+						<![CDATA[and pos_longitude = #{posLongitude}]]>
+					</if>
+					<if test="posLatitude != null and posLatitude != ''">
+						<![CDATA[and pos_latitude = #{posLatitude}]]>
+					</if>
+					<if test="posHeight != null and posHeight != ''">
+						<![CDATA[and pos_height = #{posHeight}]]>
+					</if>
+					<if test="photoUserCd != null and photoUserCd != ''">
+						<![CDATA[and photo_user_cd = #{photoUserCd}]]>
+					</if>
+					<if test="photoTm != null and photoTm != ''">
+						<![CDATA[and photo_tm = #{photoTm}]]>
+					</if>
+					<if test="uploadTm != null and uploadTm != ''">
+						<![CDATA[and upload_tm = #{uploadTm}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="checkTm != null and checkTm != ''">
+						<![CDATA[and check_tm = #{checkTm}]]>
+					</if>
+					<if test="checkUserCd != null and checkUserCd != ''">
+						<![CDATA[and check_user_cd = #{checkUserCd}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DInvoiceImage">
+	   
+			update d_invoice_image 
+				<set>
+				<if test="invoiceId != null">
+					invoice_id = #{invoiceId},
+				</if>
+				<if test="fileName != null">
+					file_name = #{fileName},
+				</if>
+				<if test="posLongitude != null">
+					pos_longitude = #{posLongitude},
+				</if>
+				<if test="posLatitude != null">
+					pos_latitude = #{posLatitude},
+				</if>
+				<if test="posHeight != null">
+					pos_height = #{posHeight},
+				</if>
+				<if test="photoUserCd != null">
+					photo_user_cd = #{photoUserCd},
+				</if>
+				<if test="photoTm != null">
+					photo_tm = #{photoTm},
+				</if>
+				<if test="uploadTm != null">
+					upload_tm = #{uploadTm},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="checkTm != null">
+					check_tm = #{checkTm},
+				</if>
+				<if test="checkUserCd != null">
+					check_user_cd = #{checkUserCd},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd}
+				</if>
+				</set>
+				
+				where 
+					photo_id = #{photoId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DInvoiceImage" resultMap="pretrst.DInvoiceImageRM">
+        select <include refid="allColumns" />
+	    
+			from d_invoice_image 
+			<where>	      				
+				<if test="photoId != null and photoId != ''">
+					<![CDATA[and photo_id = #{photoId}]]>
+				</if>
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="fileName != null and fileName != ''">
+					<![CDATA[and file_name = #{fileName}]]>
+				</if>
+				<if test="posLongitude != null and posLongitude != ''">
+					<![CDATA[and pos_longitude = #{posLongitude}]]>
+				</if>
+				<if test="posLatitude != null and posLatitude != ''">
+					<![CDATA[and pos_latitude = #{posLatitude}]]>
+				</if>
+				<if test="posHeight != null and posHeight != ''">
+					<![CDATA[and pos_height = #{posHeight}]]>
+				</if>
+				<if test="photoUserCd != null and photoUserCd != ''">
+					<![CDATA[and photo_user_cd = #{photoUserCd}]]>
+				</if>
+				<if test="photoTm != null and photoTm != ''">
+					<![CDATA[and photo_tm = #{photoTm}]]>
+				</if>
+				<if test="uploadTm != null and uploadTm != ''">
+					<![CDATA[and upload_tm = #{uploadTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="checkTm != null and checkTm != ''">
+					<![CDATA[and check_tm = #{checkTm}]]>
+				</if>
+				<if test="checkUserCd != null and checkUserCd != ''">
+					<![CDATA[and check_user_cd = #{checkUserCd}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DInvoiceImageQuery" resultMap="pretrst.DInvoiceImageRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DInvoiceImageQuery" resultMap="pretrst.DInvoiceImageRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DInvoiceImageQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_invoice_image
+	</select>
+	
+</mapper>

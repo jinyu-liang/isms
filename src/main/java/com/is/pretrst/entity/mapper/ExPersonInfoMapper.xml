@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="ExPersonInfo">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			identy_card_code,
+			report_id,
+			name,
+			telephone,
+			work_type,
+			work_type_name,
+			status_cd,
+			ws_cd,
+			ws_nm,
+			to_ws_cd,
+			to_ws_nm,
+			update_date,
+			flag,
+			team_name,
+			team_id,
+			bank_id,
+			bank_name
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			identy_card_code
+	    ]]>
+  	</sql>
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ex_person_info
+			<where>	      				
+				<if test="identyCardCode != null and identyCardCode != ''">
+					<![CDATA[and identy_card_code = #{identyCardCode}]]>
+				</if>
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="name != null and name != ''">
+					<![CDATA[and name like concat('%', #{name},'%')]]>
+				</if>
+				<if test="telephone != null and telephone != ''">
+					<![CDATA[and telephone = #{telephone}]]>
+				</if>
+				<if test="workType != null and workType != ''">
+					<![CDATA[and work_type = #{workType}]]>
+				</if>
+				<if test="workTypeName != null and workTypeName != ''">
+					<![CDATA[and work_type_name = #{workTypeName}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and ws_nm = #{wsNm}]]>
+				</if>
+				<if test="toWsCd != null and toWsCd != ''">
+					<![CDATA[and to_ws_cd = #{toWsCd}]]>
+				</if>
+				<if test="toWsNm != null and toWsNm != ''">
+					<![CDATA[and to_ws_nm = #{toWsNm}]]>
+				</if>
+				<if test="updateDate != null and updateDate != ''">
+					<![CDATA[and update_date = #{updateDate}]]>
+				</if>
+				<if test="updateDateStart != null and updateDateStart != ''">
+					<![CDATA[and update_date >= #{updateDateStart}]]>
+				</if>
+				<if test="updateDateEnd != null and updateDateEnd != ''">
+					<![CDATA[and update_date <= #{updateDateEnd}]]>
+				</if>
+				<if test="flag != null and flag != ''">
+					<![CDATA[and flag = #{flag}]]>
+				</if>
+				<if test="teamName != null and teamName != ''">
+					<![CDATA[and team_name = #{teamName}]]>
+				</if>
+				<if test="teamId != null and teamId != ''">
+					<![CDATA[and team_id = #{teamId}]]>
+				</if>
+			</where>
+	</sql>
+	<sql id="getPersonInfoListToMobile">
+		select <include refid="allColumns" /> 
+			from ex_person_info
+			<where>	      				
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and ws_nm = #{wsNm}]]>
+				</if>
+				<if test="toWsCd != null and toWsCd != ''">
+					<![CDATA[and to_ws_cd = #{toWsCd}]]>
+				</if>
+				<if test="toWsNm != null and toWsNm != ''">
+					<![CDATA[and to_ws_nm = #{toWsNm}]]>
+				</if>
+				and flag is null
+			</where>
+	</sql>
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.ExPersonInfo">
+	    <![CDATA[
+			insert into ex_person_info (
+				identy_card_code,
+				report_id,
+				name,
+				telephone,
+				work_type,
+				work_type_name,
+				status_cd,
+				ws_cd,
+				ws_nm,
+				to_ws_cd,
+				to_ws_nm,
+				update_date,
+				flag,
+				team_name,
+				team_id,
+				bank_id,
+				bank_name
+			) values (
+				#{identyCardCode},
+				#{reportId},
+				#{name},
+				#{telephone},
+				#{workType},
+				#{workTypeName},
+				#{statusCd},
+				#{wsCd},
+				#{wsNm},
+				#{toWsCd},
+				#{toWsNm},
+				#{updateDate},
+				#{flag},
+				#{teamName},
+				#{teamId},
+				#{bank_id},
+				#{bank_name}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.ExPersonInfo">
+      
+			delete from ex_person_info 
+				<where>	 
+					<if test="identyCardCode != null and identyCardCode != ''">
+						<![CDATA[and identy_card_code = #{identyCardCode}]]>
+					</if>
+					<if test="reportId != null and reportId != ''">
+						<![CDATA[and report_id = #{reportId}]]>
+					</if>
+					<if test="name != null and name != ''">
+						<![CDATA[and name = #{name}]]>
+					</if>
+					<if test="telephone != null and telephone != ''">
+						<![CDATA[and telephone = #{telephone}]]>
+					</if>
+					<if test="workType != null and workType != ''">
+						<![CDATA[and work_type = #{workType}]]>
+					</if>
+					<if test="workTypeName != null and workTypeName != ''">
+						<![CDATA[and work_type_name = #{workTypeName}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+					<if test="wsCd != null and wsCd != ''">
+						<![CDATA[and ws_cd = #{wsCd}]]>
+					</if>
+					<if test="wsNm != null and wsNm != ''">
+						<![CDATA[and ws_nm = #{wsNm}]]>
+					</if>
+					<if test="updateDate != null and updateDate != ''">
+						<![CDATA[and update_date = #{updateDate}]]>
+					</if>
+					<if test="flag != null and flag != ''">
+						<![CDATA[and flag = #{flag}]]>
+					</if>
+					<if test="teamName != null and teamName != ''">
+						<![CDATA[and team_name = #{teamName}]]>
+					</if>
+					<if test="teamId != null and teamId != ''">
+						<![CDATA[and team_id = #{teamId}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.ExPersonInfo">
+	   
+			update ex_person_info 
+				<set>
+				<if test="identyCardCode != null">
+					identy_card_code = #{identyCardCode},
+				</if>
+				<if test="reportId != null">
+					report_id = #{reportId},
+				</if>
+				<if test="name != null">
+					name = #{name},
+				</if>
+				<if test="telephone != null">
+					telephone = #{telephone},
+				</if>
+				<if test="workType != null">
+					work_type = #{workType},
+				</if>
+				<if test="workTypeName != null">
+					work_type_name = #{workTypeName},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd},
+				</if>
+				<if test="wsCd != null">
+					ws_cd = #{wsCd},
+				</if>
+				<if test="wsNm != null">
+					ws_nm = #{wsNm},
+				</if>
+				<if test="toWsCd != null">
+					to_ws_cd = #{toWsCd},
+				</if>
+				<if test="toWsNm != null">
+					to_ws_nm = #{toWsNm},
+				</if>
+				<if test="updateDate != null">
+					update_date = #{updateDate},
+				</if>
+				<if test="flag != null">
+					flag = #{flag},
+				</if>
+				<if test="teamName != null">
+					team_name = #{teamName},
+				</if>
+				<if test="teamId != null">
+					team_id = #{teamId}
+				</if>
+				</set>
+
+				where 1=1 
+				<if test="identyCardCode != null">
+					and identy_card_code = #{identyCardCode} 
+			 	</if>
+	</update>
+		<!-- 人员检出 -->
+	<update id="perInfocheckout" parameterType="com.is.pretrst.entity.ExPersonInfo">
+	   
+			update ex_person_info 
+				<set>
+					status_cd = '2',
+					ws_cd = null,
+					ws_nm = null,
+					team_id=null,
+					team_name=null,
+				<if test="updateDate != null">
+					update_date = #{updateDate},
+				</if>
+					flag = null,
+				</set>
+
+				where 1=1 
+				<if test="identyCardCode != null">
+					and identy_card_code = #{identyCardCode} 
+			 	</if>
+	</update>
+	
+			<!-- 跟据条件更新数据 -->
+	<update id="perInfoDeal" parameterType="com.is.pretrst.entity.ExPersonInfo">
+	   
+			update ex_person_info 
+				<set>
+				<if test="updateDate != null">
+					update_date = #{updateDate},
+				</if>
+					flag = null,
+				</set>
+				where 1=1 
+				<if test="reportId != null">
+					and report_id = #{reportId}
+				</if>
+				<if test="identyCardCode != null">
+					and identy_card_code = #{identyCardCode} 
+			 	</if>
+				
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.ExPersonInfo" resultMap="pretrst.ExPersonInfoRM">
+        select <include refid="allColumns" />
+			from ex_person_info 
+			<where>	      				
+				<if test="identyCardCode != null and identyCardCode != ''">
+					<![CDATA[and identy_card_code = #{identyCardCode}]]>
+				</if>
+				<if test="telephone != null and telephone != ''">
+					<![CDATA[and telephone = #{telephone}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	
+	
+	
+		<!-- 根据实体的查询对象进行查询的sql -->
+	<select id="getPersonInfoListByName" parameterType="com.is.pretrst.entity.ExPersonInfo" resultMap="pretrst.ExPersonInfoRM">
+		select *
+			from ex_person_info
+					 where flag is null and ws_cd is null
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.ExPersonInfoQuery" resultMap="pretrst.ExPersonInfoRM">
+			<include refid="querySql"/>
+			
+	</select>
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="getPersonInfoListToMobile" parameterType="com.is.pretrst.entity.query.ExPersonInfoQuery" resultMap="pretrst.ExPersonInfoRM">
+			<include refid="getPersonInfoListToMobile"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.ExPersonInfoQuery" resultMap="pretrst.ExPersonInfoRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.ExPersonInfoQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ex_person_info
+	</select>
+	
+</mapper>

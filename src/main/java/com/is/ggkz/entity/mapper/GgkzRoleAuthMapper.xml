@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="GgkzRoleAuth">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			role_id,
+			auth_id,
+			oper_time,
+			oper_user_id
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			role_id,
+			auth_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ggkz_role_auth
+			<where>	      				
+				<if test="roleId != null and roleId != ''">
+					<![CDATA[and role_id = #{roleId}]]>
+				</if>
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and oper_time = #{operTime}]]>
+				</if>
+				<!-- <if test="operTimeStart != null and operTimeStart != ''">
+					<![CDATA[and oper_time >= #{operTimeStart}]]>
+				</if>
+				<if test="operTimeEnd != null and operTimeEnd != ''">
+					<![CDATA[and oper_time <= #{operTimeEnd}]]>
+				</if> -->
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.ggkz.entity.GgkzRoleAuth">
+	    <![CDATA[
+			insert into ggkz_role_auth (
+				role_id,
+				auth_id,
+				oper_time,
+				oper_user_id
+			) values (
+				#{roleId},
+				#{authId},
+				#{operTime},
+				#{operUserId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzRoleAuth">
+      
+			delete from ggkz_role_auth 
+				<where>	 
+					<if test="roleId != null and roleId != ''">
+						<![CDATA[and role_id = #{roleId}]]>
+					</if>
+					<if test="authId != null and authId != ''">
+						<![CDATA[and auth_id = #{authId}]]>
+					</if>
+					<if test="operTime != null and operTime != ''">
+						<![CDATA[and oper_time = #{operTime}]]>
+					</if>
+					<if test="operUserId != null and operUserId != ''">
+						<![CDATA[and oper_user_id = #{operUserId}]]>
+					</if>
+				</where>
+    </delete>
+    	<!-- 通过主键集合批量删除记录 -->
+	<delete id="batchRemoveRoleAuthByPks" parameterType="java.util.List">
+			DELETE FROM ggkz_role_auth WHERE role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzRoleAuth">
+	   
+			update ggkz_role_auth 
+				<set>
+				<if test="operTime != null">
+					oper_time = #{operTime},
+				</if>
+				<if test="authId != null">
+					auth_id = #{authId},
+				</if>
+				<if test="operUserId != null">
+					oper_user_id = #{operUserId}
+				</if>
+				</set>
+				where 
+					role_id = #{roleId} 
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzRoleAuth" resultMap="ggkz.GgkzRoleAuthRM">
+        select <include refid="allColumns" />
+	    
+			from ggkz_role_auth 
+			<where>	      				
+				<if test="roleId != null and roleId != ''">
+					<![CDATA[and role_id = #{roleId}]]>
+				</if>
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and oper_time = #{operTime}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.ggkz.entity.GgkzRoleAuth" resultMap="ggkz.GgkzRoleAuthRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.ggkz.entity.GgkzRoleAuth" resultMap="ggkz.GgkzRoleAuthRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.ggkz.entity.GgkzRoleAuth" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ggkz_role_auth
+	</select>
+	
+</mapper>

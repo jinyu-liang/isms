@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+    <description>JMS高级应用配置(NON_PERSISTENT,DURIABLE,SELECTOR)</description>
+
+    <bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory">
+            <!-- 持久化主题订阅者ActiveMQ 连接工厂 -->
+            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+                <property name="brokerURL" value="${jms.broker_url}" />
+                <property name="userName" value="${jms.user_name}" />
+                <property name="password" value="${jms.password}" />
+                <!-- Durable订阅者必须设置ClientId -->
+                <property name="clientID" value="${jms.clicent_id}" />
+            </bean>
+        </property>
+        <property name="sessionCacheSize" value="1024" />
+    </bean>
+
+    <!-- Queue定义 -->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="pmsMsgInteractQueue" />
+    </bean>
+
+    <!-- Topic定义 -->
+    <bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">
+        <constructor-arg value="pmsMsgInteractTopic" />
+    </bean>
+
+    <bean id="pmsMessageJmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="cachingConnectionFactory" />
+        <!-- 使 deliveryMode, priority, timeToLive设置生效 -->
+        <property name="explicitQosEnabled" value="true" />
+        <!-- 设置NON_PERSISTENT模式, 默认为PERSISTENT -->
+        <property name="deliveryPersistent" value="true" />
+        <!-- 设置优先级, 默认为4 -->
+        <property name="priority" value="4" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="timeToLive" value="7776000000" />
+        <property name="sessionTransacted" value="true" />
+        <property name="sessionAcknowledgeMode" value="0" />
+    </bean>
+    <bean id="pmsMessageQueueProducer" class="com.is.mq.producer.PmsMessageQueueProducer">
+        <property name="pmsMessageJmsTemplate" ref="pmsMessageJmsQueueTemplate" />
+        <property name="queueDestination" ref="queueDestination" />
+    </bean>
+
+    <bean id="pmsMessageJmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="cachingConnectionFactory" />
+        <!-- 使 deliveryMode, priority, timeToLive设置生效 -->
+        <property name="explicitQosEnabled" value="true" />
+        <!-- 设置NON_PERSISTENT模式, 默认为PERSISTENT -->
+        <property name="deliveryPersistent" value="true" />
+        <!-- 设置优先级, 默认为4 -->
+        <property name="priority" value="4" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="timeToLive" value="7776000000" />
+        <property name="sessionTransacted" value="true" />
+        <property name="sessionAcknowledgeMode" value="0" />
+    </bean>
+    <bean id="pmsMessageTopicProducer" class="com.is.mq.producer.PmsMessageTopicProducer">
+        <property name="pmsMessageJmsTemplate" ref="pmsMessageJmsTopicTemplate" />
+        <property name="topicDestination" ref="topicDestination" />
+    </bean>
+
+    <bean id="pmsMessageJmsQueueConsumerTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="cachingConnectionFactory" />
+        <!-- 使 deliveryMode, priority, timeToLive设置生效 -->
+        <property name="explicitQosEnabled" value="true" />
+        <!-- 设置NON_PERSISTENT模式, 默认为PERSISTENT -->
+        <property name="deliveryPersistent" value="true" />
+        <!-- 设置优先级, 默认为4 -->
+        <property name="priority" value="4" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="timeToLive" value="7776000000" />
+        <property name="sessionTransacted" value="true" />
+        <property name="sessionAcknowledgeMode" value="0" />
+    </bean>
+    <bean id="pmsMessageQueueConsumer" class="com.is.mq.consumer.PmsMessageQueueConsumer">
+        <property name="pmsMessageJmsTemplate" ref="pmsMessageJmsQueueConsumerTemplate" />
+        <property name="queueDestination" ref="queueDestination" />
+    </bean>
+
+    <bean id="pmsMsgMobileQueueConsumer" class="com.is.mq.consumer.PmsMsgMobileQueueConsumer">
+        <property name="pmsMessageJmsTemplate" ref="pmsMessageJmsQueueConsumerTemplate" />
+        <property name="queueDestination" ref="queueDestination" />
+    </bean>
+
+    <bean id="pmsMessageJmsTopicConsumerTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="cachingConnectionFactory" />
+        <!-- 使 deliveryMode, priority, timeToLive设置生效 -->
+        <property name="explicitQosEnabled" value="true" />
+        <!-- 设置NON_PERSISTENT模式, 默认为PERSISTENT -->
+        <property name="deliveryPersistent" value="true" />
+        <!-- 设置优先级, 默认为4 -->
+        <property name="priority" value="4" />
+        <property name="receiveTimeout" value="-1" />
+        <property name="timeToLive" value="7776000000" />
+        <property name="sessionTransacted" value="true" />
+        <property name="sessionAcknowledgeMode" value="0" />
+    </bean>
+    <!-- <bean id="pmsMessageTopicConsumer" class="com.is.mq.consumer.PmsMessageTopicConsumer"> <property name="pmsMessageJmsTemplate" ref="pmsMessageJmsTopicConsumerTemplate" 
+        /> <property name="topicDestination" ref="topicDestination" /> </bean> -->
+
+    <bean id="pmsMessageQueueListener" class="com.is.mq.listener.msg.PmsMessageQueueListener" />
+    <bean id="pmsMessageQueueContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="cachingConnectionFactory" />
+        <property name="destination" ref="queueDestination" />
+        <property name="messageListener" ref="pmsMessageQueueListener" />
+        <property name="sessionAcknowledgeMode" value="0" />
+    </bean>
+
+    <bean id="subscribeConsumerService" class="com.is.mq.subscribe.SubscribeConsumerService">
+        <constructor-arg ref="cachingConnectionFactory" index="0"></constructor-arg>
+        <constructor-arg ref="ggkzUserInfoServiceImpl" index="1"></constructor-arg>
+        <constructor-arg ref="topicDestination" index="2"></constructor-arg>
+    </bean>
+
+    <!-- <bean id="pmsMessageTopicListener" class="com.is.mq.listener.msg.PmsMessageTopicListener" /> <bean id="pmsMessageTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer"> 
+        <property name="connectionFactory" ref="cachingConnectionFactory" /> <property name="destination" ref="topicDestination" /> <property name="messageListener" 
+        ref="pmsMessageTopicListener" /> JMS Selector消息过滤器 <property name="messageSelector" value="JMSType = 'textmsg'" /> 持久化订阅者 <property name="subscriptionDurable" 
+        value="true" /> <property name="sessionTransacted" value="true" /> <property name="sessionAcknowledgeMode" value="0" /> </bean> -->
+</beans>

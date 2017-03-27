@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+        "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <constant name="struts.convention.default.parent.package" value="crud-default" />
+    <constant name="struts.custom.i18n.resources" value="applicationResource"></constant>
+    <!-- <constant name="struts.convention.package.locators" value="is,action" /> <constant name="struts.convention.package.locators.basePackage" 
+        value="com.is" /> -->
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.ui.templateDir" value="template" />
+    <constant name="struts.ui.templateSuffix" value="ftl" />
+    <constant name="struts.multipart.saveDir" value="d:/upload"></constant>
+    <constant name="struts.locale" value="zh_CN"></constant>
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+    <constant name="struts.devMode" value="false" />
+    <!-- 配置调用静态方法 -->
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+    <!-- 配置限制上传文件的大小 -->
+    <constant name="struts.multipart.maxSize" value="1048576000" />
+<!--     <constant name="struts.custom.i18n.resources" value="application-format"></constant> -->
+    <!-- 用于CRUD Action的parent package -->
+    <package name="crud-default" extends="convention-default,json-default">
+        <interceptors>
+            <interceptor name="sessionout" class="com.base.iterceptor.SessionIterceptor"></interceptor>
+            <interceptor-stack name="crudStack">
+                <interceptor-ref name="store">
+                    <param name="operationMode">AUTOMATIC</param>
+                </interceptor-ref>
+                <interceptor-ref name="paramsPrepareParamsStack" />
+                <interceptor-ref name="sessionout" />
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="crudStack"></default-interceptor-ref>
+        <global-results>
+            <result type="json" name="jsondata">
+                <param name="includeProperties">
+                    jsondata,result,statusCode,message,infoMessage,warnMessage,lastTime
+                </param>
+                <param name="excludeNullProperties">true</param>
+                <!-- <param name="contentType">
+                    text/html
+                </param>  -->
+<!--                 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法  
+3.    默认将会序列所有有返回值的getter方法的值，而无论该方法是否有对应属性  
+4.    <param name="root">dataMap</param>  
+5.    指定是否序列化空的属性  
+6.    <param name="excludeNullProperties">true</param>  
+7.    这里指定将序列化dataMap中的那些属性  
+8.    <param name="includeProperties">userList.*</param>  
+9.    这里指定将要从dataMap中排除那些属性，这些排除的属性将不被序列化，一般不与上边的参数配置同时出现  
+10.    <param name="excludeProperties">SUCCESS</param> -->
+            </result>
+            <result name="success">/common/success.jsp</result>
+            <result name="multi">/common/multi.jsp</result>
+        </global-results>
+
+    </package>
+
+    <!-- 使用Convention插件,实现约定大于配置的零配置文件风格. 特殊的Result路径在Action类中使用@Result设定. -->
+</struts>

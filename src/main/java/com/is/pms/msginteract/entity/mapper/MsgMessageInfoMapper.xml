@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="MsgMessageInfo">
+    <!-- 表的所有字段 -->
+    <sql id="allColumns">
+        id,
+        sendid,
+        receiver,
+        sender,
+        owner,
+        theme,
+        attachment,
+        body,
+        sendtime,
+        flag
+    </sql>
+    <sql id="selection">
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="receiver != null and receiver != ''">
+                and receiver = #{receiver}
+            </if>
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme = #{theme}
+            </if>
+            <if test="attachment != null and attachment != ''">
+                and attachment = #{attachment}
+            </if>
+            <if test="body != null and body != ''">
+                and body like concat('%',#{body},'%')
+            </if>
+            <if test="sendtime != null">
+                and sendtime = #{sendtime}
+            </if>
+            <if test="flag != null and flag != ''">
+                and flag = #{flag}
+            </if>
+        </where>
+    </sql>
+    <sql id="values">
+        values(#{id},
+        #{sendid},
+        #{receiver},
+        #{sender},
+        #{owner},
+        #{theme},
+        #{attachment},
+        #{body},
+        #{sendtime},
+        #{flag})
+    </sql>
+    <sql id="updatevalues">
+        <set>
+            <if test="sendid != null and sendid != ''">
+                sendid = #{sendid},
+            </if>
+            <if test="receiver != null and receiver != ''">
+                receiver = #{receiver},
+            </if>
+            <if test="sender != null and sender != ''">
+                sender = #{sender},
+            </if>
+            <if test="owner != null and owner != ''">
+                owner = #{owner},
+            </if>
+            <if test="theme != null and theme != ''">
+                theme = #{theme},
+            </if>
+            <if test="attachment != null and attachment != ''">
+                attachment = #{attachment},
+            </if>
+            <if test="body != null and body != ''">
+                body = #{body},
+            </if>
+            <if test="sendtime != null">
+                sendtime = #{sendtime},
+            </if>
+            <if test="flag != null and flag != ''">
+                flag = #{flag},
+            </if>
+        </set>
+    </sql>
+
+    <!-- 新增数据 -->
+    <insert id="insertDrft" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        insert into msg_draft(
+        <include refid="allColumns" />
+        )
+        <include refid="values" />
+    </insert>
+    <insert id="insertGarbage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        insert into msg_garbage(
+        <include refid="allColumns" />
+        )
+        <include refid="values" />
+    </insert>
+    <insert id="insertReceive" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        insert into msg_receive(
+        <include refid="allColumns" />
+        )
+        <include refid="values" />
+    </insert>
+    <insert id="insertSend" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        insert into msg_send(
+        <include refid="allColumns" />
+        )
+        <include refid="values" />
+    </insert>
+
+    <insert id="insertDraftSelectSend" parameterType="java.util.List">
+        insert into msg_draft(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_send
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertDraftSelectGarbage" parameterType="java.util.List">
+        insert into msg_draft(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_garbage
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertDraftSelectReceive" parameterType="java.util.List">
+        insert into msg_draft(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_receive
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+
+    <insert id="insertGarbageSelectSend" parameterType="java.util.List">
+        insert into msg_garbage(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_send
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertGarbageSelectDraft" parameterType="java.util.List">
+        insert into msg_garbage(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_draft
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertGarbageSelectReceive" parameterType="java.util.List">
+        insert into msg_garbage(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_receive
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+
+    <insert id="insertReceiveSelectSend" parameterType="java.util.List">
+        insert into msg_receive(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_send
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertReceiveSelectDraft" parameterType="java.util.List">
+        insert into msg_receive(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_draft
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertReceiveSelectGarbage" parameterType="java.util.List">
+        insert into msg_receive(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_garbage
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+
+    <insert id="insertSendSelectReceive" parameterType="java.util.List">
+        insert into msg_send(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_receive
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertSendSelectDraft" parameterType="java.util.List">
+        insert into msg_send(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_draft
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="insertSendSelectGarbage" parameterType="java.util.List">
+        insert into msg_send(id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag)
+        (select
+        id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_garbage
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </insert>
+
+    <!-- 根据条件删除数据 -->
+    <delete id="deleteDraftByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        delete from msg_draft
+        <include refid="selection" />
+    </delete>
+    <delete id="deleteGarbageByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        delete from msg_garbage
+        <include refid="selection" />
+    </delete>
+    <delete id="deleteReceiveByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        delete from msg_receive
+        <include refid="selection" />
+    </delete>
+    <delete id="deleteSendByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        delete from msg_send
+        <include refid="selection" />
+    </delete>
+    <delete id="deleteSendByIds" parameterType="java.util.List">
+        delete from msg_send
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteDraftByIds" parameterType="java.util.List">
+        delete from msg_draft
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteGarbageByIds" parameterType="java.util.List">
+        delete from msg_garbage
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteReceiveByIds" parameterType="java.util.List">
+        delete from msg_receive
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteReceiveBySendIds" parameterType="java.util.List">
+        delete from msg_receive
+        where sendid in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 跟据条件更新数据 -->
+    <update id="updateDraftByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        update msg_draft
+        <include refid="updatevalues" />
+        where id = #{id}
+    </update>
+    <update id="updateGarbageByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        update msg_garbage
+        <include refid="updatevalues" />
+        where id = #{id}
+    </update>
+    <update id="updateReceiveByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        update msg_receive
+        <include refid="updatevalues" />
+        where id = #{id}
+    </update>
+    <update id="updateSendByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo">
+        update msg_send
+        <include refid="updatevalues" />
+        where id = #{id}
+    </update>
+
+    <!-- 根据条件查询单个对象 -->
+    <select id="selectDraftByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_draft
+        <include refid="selection" />
+    </select>
+    <select id="selectGarbageByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_garbage
+        <include refid="selection" />
+    </select>
+    <select id="selectReceiveByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_receive
+        <include refid="selection" />
+    </select>
+    <select id="selectSendByEntity" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_send
+        <include refid="selection" />
+    </select>
+
+    <select id="selectSendByIds" parameterType="java.util.List" resultMap="msg.MsgMessageInfoRM">
+        select id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_send
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectDraftByIds" parameterType="java.util.List" resultMap="msg.MsgMessageInfoRM">
+        select id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_draft
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectGarbageByIds" parameterType="java.util.List" resultMap="msg.MsgMessageInfoRM">
+        select id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_garbage
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectReceiveByIds" parameterType="java.util.List" resultMap="msg.MsgMessageInfoRM">
+        select id,sendid,receiver,sender,owner,theme,attachment,body,sendtime,flag from msg_receive
+        where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 分页查询 -查询结果数据 -->
+    <select id="selectDraftByPage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_draft
+        <include refid="selection" />
+        order by sendtime desc
+    </select>
+    <select id="selectGarbageByPage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_garbage
+        <include refid="selection" />
+        order by sendtime desc
+    </select>
+    <select id="selectReceiveByPage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        <if test="post !=null and post == 1">
+        select t.* from(
+        select
+        <include refid="allColumns" />
+        from msg_receive
+        <include refid="selection" />
+        union all
+        select
+        <include refid="allColumns" />
+        from msg_send
+        )t
+        group by t.sendid
+        order by t.sendtime desc
+        </if>
+        <if test="post == null or post != 1">
+        select
+        <include refid="allColumns" />
+        from msg_receive
+        <include refid="selection" />
+        order by sendtime desc
+        </if>
+    </select>
+    <select id="selectSendByPage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        <include refid="allColumns" />
+        from msg_send
+        <include refid="selection" />
+        order by sendtime desc
+    </select>
+    <select id="selectSerachByPage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        <if test="post != null and post == 1">
+        select t.* from(select
+        <include refid="allColumns" />
+        from msg_receive
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        union all
+        select
+        <include refid="allColumns" />
+        from msg_send
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>)t
+        group by t.sendid
+        </if>
+        <if test="post==null or post != 1">
+        select
+        <include refid="allColumns" />
+        from msg_receive
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        </if>
+        union all
+        select
+        <include refid="allColumns" />
+        from msg_send
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        union all
+        select
+        <include refid="allColumns" />
+        from msg_draft
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        union all
+        select
+        <include refid="allColumns" />
+        from msg_garbage
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        order by sendtime desc
+    </select>
+    <select id="selectAllByPage" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultMap="msg.MsgMessageInfoRM">
+        select
+        id,
+        sendid,
+        receiver,
+        sender,
+        owner,
+        theme,
+        attachment,
+        body,
+        sendtime,
+        flag
+        from msg_receive
+        where owner != #{owner}
+        group by sendid
+        order by sendtime desc
+    </select>
+    <!-- 分页查询 -查询记录总数 -->
+    <select id="selectDraftByPageCount" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultType="integer">
+        select count(1)
+        from msg_draft
+        <include refid="selection" />
+    </select>
+    <select id="selectGarbageByPageCount" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultType="integer">
+        select count(1)
+        from msg_garbage
+        <include refid="selection" />
+    </select>
+    <select id="selectReceiveByPageCount" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultType="integer">
+        select count(c.sendid)
+        from (
+        <if test="post != null and post == 1">
+        select t.* from(
+        select sendid
+        from msg_receive
+        <include refid="selection" />
+        union all
+        select sendid
+        from msg_send
+        )t
+        group by t.sendid
+        </if>
+        <if test="post == null or post != 1">
+        select sendid
+        from msg_receive
+        <include refid="selection" />
+        </if>
+        )c
+    </select>
+    <select id="selectSendByPageCount" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultType="integer">
+        select count(1)
+        from msg_send
+        <include refid="selection" />
+    </select>
+    <select id="selectSerachByPageCount" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultType="integer">
+        select sum(t.c)
+        from(
+        <if test="post != null and post == 1">
+        select count(1)c from(
+        select r.sendid from(select
+        sendid
+        from msg_receive
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        union all
+        select
+        sendid
+        from msg_send
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>)r
+        group by r.sendid)s
+        </if>
+        <if test="post == null or post != 1">
+        select
+        count(1)c
+        from msg_receive
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        </if>
+        union all
+        select
+        count(1)c
+        from msg_send
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        union all
+        select
+        count(1)c
+        from msg_draft
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        union all
+        select
+        count(1)c
+        from msg_garbage
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="sendid != null and sendid != ''">
+                and sendid = #{sendid}
+            </if>
+            <if test="owner != null and owner != ''">
+                and owner = #{owner}
+            </if>
+            <if test="theme != null and theme != ''">
+                and theme like concat('%',#{theme},'%')
+            </if>
+        </where>
+        )t
+    </select>
+    <select id="selectAllByPageCount" parameterType="com.is.pms.msginteract.entity.MsgMessageInfo" resultType="integer">
+        select count(t.sendid)
+        from (select sendid from msg_receive
+        where owner != #{owner}
+        group by sendid)t
+    </select>
+</mapper>

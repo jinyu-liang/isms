@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="GgkzAuthMobileInfo">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			auth_id,
+			auth_name
+	    ]]>
+  	</sql>
+	
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ggkz_auth_mobile_info
+			<where>	      				
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				<if test="authName != null and authName != ''">
+					<![CDATA[and auth_name = #{authName}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.ggkz.entity.GgkzAuthMobileInfo">
+	    <![CDATA[
+			insert into ggkz_auth_mobile_info (
+				auth_id,
+				auth_name
+			) values (
+				#{authId},
+				#{authName}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzAuthMobileInfo">
+      
+			delete from ggkz_auth_mobile_info 
+				<where>	 
+					<if test="authId != null and authId != ''">
+						<![CDATA[and auth_id = #{authId}]]>
+					</if>
+					<if test="authName != null and authName != ''">
+						<![CDATA[and auth_name = #{authName}]]>
+					</if>
+					
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzAuthMobileInfo">
+	   
+			update ggkz_auth_mobile_info 
+				<set>
+				<if test="authName != null">
+					auth_name = #{authName},
+				</if>
+				</set>
+				
+				where 
+					auth_id = #{authId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzAuthMobileInfo" resultMap="ggkz.GgkzAuthMobileInfoRM">
+        select <include refid="allColumns" />
+	    
+			from ggkz_auth_mobile_info 
+			<where>	      				
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				<if test="authName != null and authName != ''">
+					<![CDATA[and auth_name = #{authName}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.ggkz.entity.query.GgkzAuthMobileInfoQuery" resultMap="ggkz.GgkzAuthMobileInfoRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.ggkz.entity.query.GgkzAuthMobileInfoQuery" resultMap="ggkz.GgkzAuthMobileInfoRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.ggkz.entity.query.GgkzAuthMobileInfoQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ggkz_auth_mobile_info
+	</select>
+	
+</mapper>

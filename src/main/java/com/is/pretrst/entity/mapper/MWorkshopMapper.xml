@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="MWorkshop"> 
+<!-- <cache flushInterval="60000" readOnly="true"/> -->
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			ws_cd,
+			ws_nm,
+			div_cd,
+			type_cd,
+			manager_user_id,
+			begin_time,
+			end_time,
+			delete_cd,
+			filenames
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			ws_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from m_workshop
+			<where>	      				
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and ws_nm = #{wsNm}]]>
+				</if>
+				<if test="divCd != null and divCd != ''">
+					<![CDATA[and div_cd like concat('',#{divCd},'%')]]>
+				</if>
+				<if test="typeCd != null and typeCd != ''">
+					<![CDATA[and type_cd = #{typeCd}]]>
+				</if>
+				<if test="managerUserId != null and managerUserId != ''">
+					<![CDATA[and manager_user_id = #{managerUserId}]]>
+				</if>
+				<if test="beginTime != null and beginTime != ''">
+					<![CDATA[and begin_time = #{beginTime}]]>
+				</if>
+				<if test="endTime != null and endTime != ''">
+					<![CDATA[and end_time = #{endTime}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+			order by ws_cd desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MWorkshop">
+	    <![CDATA[
+			insert into m_workshop (
+				ws_cd,
+				ws_nm,
+				div_cd,
+				type_cd,
+				manager_user_id,
+				begin_time,
+				end_time,
+				delete_cd,
+				filenames
+			) values (
+				#{wsCd},
+				#{wsNm},
+				#{divCd},
+				#{typeCd},
+				#{managerUserId},
+				#{beginTime},
+				#{endTime},
+				#{deleteCd},
+				#{filenames}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MWorkshop">
+      
+			delete from m_workshop 
+				<where>	 
+					<if test="wsCd != null and wsCd != ''">
+						<![CDATA[and ws_cd = #{wsCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MWorkshop">
+	   
+			update m_workshop 
+				<set>
+				<if test="wsNm != null">
+					ws_nm = #{wsNm},
+				</if>
+				<if test="divCd != null">
+					div_cd = #{divCd},
+				</if>
+				<if test="typeCd != null">
+					type_cd = #{typeCd},
+				</if>
+				<if test="managerUserId != null">
+					manager_user_id = #{managerUserId},
+				</if>
+				<if test="beginTime != null">
+					begin_time = #{beginTime},
+				</if>
+				<if test="endTime != null">
+					end_time = #{endTime},
+				</if>
+				<if test="deleteCd != null">
+					delete_cd = #{deleteCd}
+				</if>
+				<if test="filenames != null">
+					filenames = #{filenames}
+				</if>
+				</set>
+				
+				where 
+					ws_cd = #{wsCd}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MWorkshop" resultMap="pretrst.MWorkshopRM">
+        select m.*,(select mobile_tel from ggkz_user_info where user_id=m.manager_user_id) as mobileTel
+	    
+			from m_workshop  m
+			<if test="managerUserId != null and managerUserId != ''">
+			,ggkz_user_info user
+			</if>
+			<where>	      				
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and m.ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and m.ws_nm = #{wsNm}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopQuery" resultMap="pretrst.MWorkshopRM">
+			<include refid="querySql"/>
+			
+	</select>
+		<select id="getWorkShopImg" parameterType="com.is.pretrst.entity.query.MWorkshopQuery" resultType="java.lang.String">
+        select filename 
+			from d_contract_image  
+			<where>	      				
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				
+			</where>
+			</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectWorkExByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopExtQuery" resultMap="pretrst.MWorkshopExtRM">
+			select 
+			ws_cd,
+			ws_nm,
+			div_cd,
+			manager_user_id,
+			begin_time,
+			end_time,
+			(select count(*) from d_contract_image where ws_cd=shop.ws_cd) flag,
+			(select last_report_dt from d_ex_project where ws_cd=shop.ws_cd) newtime
+			from m_workshop shop
+			<where>	
+			<if test="divCd != null and divCd != ''">
+					<![CDATA[and div_cd like concat('',#{divCd},'%')]]>
+				</if>      				
+				<if test="managerUserId != null and managerUserId != ''">
+					<![CDATA[and manager_user_id = #{managerUserId}]]>
+				</if>
+			</where>
+			order by ws_cd desc
+	</select>
+	<!-- 查询区域部长 -->
+		<select id="selectQyBZWorkshopByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopExtQuery" resultMap="pretrst.MWorkshopExtRM">
+			select 
+			shop.ws_cd,
+			shop.ws_nm,
+			shop.manager_user_id,
+			shop.begin_time,
+			shop.end_time,
+			(select count(*) from d_contract_image where ws_cd=shop.ws_cd) flag,
+			(select last_report_dt from d_ex_project where ws_cd=shop.ws_cd) newtime
+			from m_workshop shop,ggkz_user_info user
+			where shop.manager_user_id=user.user_id 	
+				and user.head_user_cd = #{managerUserId}
+		UNION
+		select 
+			shop.ws_cd,
+			shop.ws_nm,
+			shop.manager_user_id,
+			shop.begin_time,
+			shop.end_time,
+			(select count(*) from d_contract_image where ws_cd=shop.ws_cd) flag,
+			(select last_report_dt from d_ex_project where ws_cd=shop.ws_cd) newtime
+			from m_workshop shop,ggkz_user_info user
+			where   shop.manager_user_id = #{managerUserId}
+      		order by ws_cd desc
+	</select>
+    <!-- 根据wscd查询当前进行的项目结果集 -->
+    <select id="selectEntityByNow" parameterType="com.is.pretrst.entity.MWorkshop" resultMap="pretrst.MWorkshopRM">
+            select <include refid="allColumns" /> 
+			from m_workshop m
+			<where>	      				
+				<if test="managerUserId != null and managerUserId != ''">
+					<![CDATA[and manager_user_id = #{managerUserId}]]>
+				</if>
+                and  m.end_time>NOW()
+			</where>
+            
+    </select>
+   <!-- 查询所有当前进行的项目结果集 -->
+    <select id="selectAllEntityByNow"  resultMap="pretrst.MWorkshopRM">
+            select <include refid="allColumns" /> 
+            from m_workshop m
+            <where>                     
+                 m.end_time>NOW()
+            </where>
+            
+    </select>
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MWorkshopQuery" resultMap="pretrst.MWorkshopRM">
+		<include refid="mhquerySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MWorkshopQuery" resultType="integer">
+		select count(1) from ( <include refid="mhquerySql"/> ) as tmp_m_workshop
+	</select>
+	<!-- 根据工地名称查询负责人名称 -->
+    <select id="selectMangeName" parameterType="String" resultType="String">
+        select (select g.name from ggkz_user_info g where g.user_id=m.manager_user_id) as name from  m_workshop m where ws_nm=#{wsNm};
+    </select>
+	<!-- 根据工地名称查询工地Wscd -->
+    <select id="selectShopWsCd" parameterType="String" resultType="String">
+        select m.ws_cd  from  m_workshop m where ws_nm=#{wsNm};
+    </select>
+    
+    	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="mhquerySql">
+		select m.* ,(select mobile_tel from ggkz_user_info where user_id=m.manager_user_id) as mobileTel
+			from m_workshop m
+			<if test="managerUserId != null and managerUserId != ''">
+			,ggkz_user_info user
+			</if>
+			<where>	      				
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and m.ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and m.ws_nm like concat('%',#{wsNm},'%')]]>
+				</if>
+				<if test="divCd != null and divCd != ''">
+					<![CDATA[and div_cd like concat('',#{divCd},'%')]]>
+				</if>
+				<if test="typeCd != null and typeCd != ''">
+					<![CDATA[and m.type_cd = #{typeCd}]]>
+				</if>
+				<if test="managerUserId != null and managerUserId != ''">
+					<![CDATA[and m.manager_user_id=`user`.user_id and `user`.`name`   like concat('%', #{managerUserId},'%')]]>
+				</if>
+				<if test="beginTime != null and beginTime != ''">
+					<![CDATA[and m.begin_time = #{beginTime}]]>
+				</if>
+				<if test="endTime != null and endTime != ''">
+					<![CDATA[and m.end_time = #{endTime}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and m.delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+			order by m.ws_cd desc
+	</sql>
+    
+    
+</mapper>

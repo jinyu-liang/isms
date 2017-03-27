@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="MTeam">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			team_cd,
+			team_nm,
+			ws_cd,
+			ws_nm,
+			worker_count,
+			mobile_tel,
+			identy_card_code,
+			oper_user_id,
+			oper_user_name,
+			oper_time
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			team_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> ,(select MAX(e.update_date) from ex_person_info e where t.team_cd=e.team_id) as updateDate
+			from m_team t
+			<where>	      				
+				<if test="teamCd != null and teamCd != ''">
+					<![CDATA[and t.team_cd = #{teamCd}]]>
+				</if>
+				<if test="teamNm != null and teamNm != ''">
+					<![CDATA[and t.team_nm = #{teamNm}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and t.ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and t.ws_nm = #{wsNm}]]>
+				</if>
+				<if test="workerCount != null and workerCount != ''">
+					<![CDATA[and t.worker_count = #{workerCount}]]>
+				</if>
+				<if test="workerCountStart != null and workerCountStart != ''">
+					<![CDATA[and t.worker_count >= #{workerCountStart}]]>
+				</if>
+				<if test="workerCountEnd != null and workerCountEnd != ''">
+					<![CDATA[and t.worker_count <= #{workerCountEnd}]]>
+				</if>
+				<if test="identyCardCode != null and identyCardCode != ''">
+					<![CDATA[and t.identy_card_code = #{identyCardCode}]]>
+				</if>
+				<if test="mobileTel != null and mobileTel != ''">
+					<![CDATA[and t.mobile_tel = #{mobileTel}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and t.oper_user_id = #{operUserId}]]>
+				</if>
+				<if test="operUserName != null and operUserName != ''">
+					<![CDATA[and t.oper_user_name = #{operUserName}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and t.oper_time = #{operTime}]]>
+				</if>
+				<if test="operTimeStart != null and operTimeStart != ''">
+					<![CDATA[and t.oper_time >= #{operTimeStart}]]>
+				</if>
+				<if test="operTimeEnd != null and operTimeEnd != ''">
+					<![CDATA[and t.oper_time <= #{operTimeEnd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MTeam">
+	    <![CDATA[
+			insert into m_team (
+				team_cd,
+				team_nm,
+				ws_cd,
+				ws_nm,
+				worker_count,
+				mobile_tel,
+				identy_card_code,
+				oper_user_id,
+				oper_user_name,
+				oper_time
+			) values (
+				#{teamCd},
+				#{teamNm},
+				#{wsCd},
+				#{wsNm},
+				#{workerCount},
+				#{mobileTel},
+				#{identyCardCode},
+				#{operUserId},
+				#{operUserName},
+				#{operTime}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MTeam">
+      
+			delete from m_team 
+				<where>	 
+					<if test="teamCd != null and teamCd != ''">
+						<![CDATA[and team_cd = #{teamCd}]]>
+					</if>
+					<if test="teamNm != null and teamNm != ''">
+						<![CDATA[and team_nm = #{teamNm}]]>
+					</if>
+					<if test="wsCd != null and wsCd != ''">
+						<![CDATA[and ws_cd = #{wsCd}]]>
+					</if>
+					<if test="wsNm != null and wsNm != ''">
+						<![CDATA[and ws_nm = #{wsNm}]]>
+					</if>
+					<if test="workerCount != null and workerCount != ''">
+						<![CDATA[and worker_count = #{workerCount}]]>
+					</if>
+					<if test="operUserId != null and operUserId != ''">
+						<![CDATA[and oper_user_id = #{operUserId}]]>
+					</if>
+					<if test="operUserName != null and operUserName != ''">
+						<![CDATA[and oper_user_name = #{operUserName}]]>
+					</if>
+					<if test="identyCardCode != null and identyCardCode != ''">
+						<![CDATA[and identy_card_code = #{identyCardCode}]]>
+					</if>
+					<if test="mobileTel != null and mobileTel != ''">
+						<![CDATA[and mobile_tel = #{mobileTel}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MTeam">
+	   
+			update m_team 
+				<set>
+				<if test="teamNm != null">
+					team_nm = #{teamNm},
+				</if>
+				<if test="wsCd != null">
+					ws_cd = #{wsCd},
+				</if>
+				<if test="wsNm != null">
+					ws_nm = #{wsNm},
+				</if>
+				<if test="workerCount != null">
+					worker_count = #{workerCount},
+				</if>
+				<if test="operUserId != null">
+					oper_user_id = #{operUserId},
+				</if>
+				<if test="operUserName != null">
+					oper_user_name = #{operUserName},
+				</if>
+				<if test="identyCardCode != null">
+					<![CDATA[and identy_card_code = #{identyCardCode}]]>
+				</if>
+				<if test="mobileTel != null">
+					<![CDATA[and mobile_tel = #{mobileTel}]]>
+				</if>
+				</set>
+				
+				where 
+					team_cd = #{teamCd}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MTeam" resultMap="pretrst.MTeamRM">
+        select <include refid="allColumns" />
+	    
+			from m_team 
+			<where>	      				
+				<if test="teamCd != null and teamCd != ''">
+					<![CDATA[and team_cd = #{teamCd}]]>
+				</if>
+				<if test="teamNm != null and teamNm != ''">
+					<![CDATA[and team_nm = #{teamNm}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="wsNm != null and wsNm != ''">
+					<![CDATA[and ws_nm = #{wsNm}]]>
+				</if>
+				<if test="workerCount != null and workerCount != ''">
+					<![CDATA[and worker_count = #{workerCount}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+				<if test="operUserName != null and operUserName != ''">
+					<![CDATA[and oper_user_name = #{operUserName}]]>
+				</if>
+				<if test="identyCardCode != null">
+					<![CDATA[and identy_card_code = #{identyCardCode}]]>
+				</if>
+				<if test="mobileTel != null">
+					<![CDATA[and mobile_tel = #{mobileTel}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MTeamQuery" resultMap="pretrst.MTeamRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MTeamQuery" resultMap="pretrst.MTeamRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MTeamQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_m_team
+	</select>
+</mapper>

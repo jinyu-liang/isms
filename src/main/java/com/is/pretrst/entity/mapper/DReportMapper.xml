@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DReport">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			report_id,
+			title,
+			project_code,
+			proj_name,
+			unit_price,
+			amount,
+			number,
+			memo,
+			report_user_cd,
+			report_user_name,
+			report_tm,
+			process_user_cd,
+			process_user_name,
+			process_tm,
+			deal_result,
+			comment,
+			status_cd,
+			verified_user_cd,
+			verified_user_name,
+			verified_head_tm,
+			verified_head_memo,
+			verified_head_status
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_report
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title like concat('%', #{title},'%')]]>
+				</if>
+				<if test="projectCode != null and projectCode != ''">
+					<![CDATA[and project_code = #{projectCode}]]>
+				</if>
+				<if test="projName != null and projName != ''">
+					<![CDATA[and proj_name like concat('%', #{projName},'%')]]>
+				</if>
+				<if test="unitPrice != null and unitPrice != ''">
+					<![CDATA[and unit_price = #{unitPrice}]]>
+				</if>
+				<if test="amount != null and amount != ''">
+					<![CDATA[and amount = #{amount}]]>
+				</if>
+				<if test="number != null and number != ''">
+					<![CDATA[and number = #{number}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="reportUserCd != null and reportUserCd != ''">
+					<![CDATA[and report_user_cd = #{reportUserCd}]]>
+				</if>
+				<if test="reportUserName != null and reportUserName != ''">
+					<![CDATA[and report_user_name concat('%',  #{reportUserName},'%')]]>
+				</if>
+				<if test="reportTm != null and reportTm != ''">
+					<![CDATA[and report_tm = #{reportTm}]]>
+				</if>
+				<if test="processUserCd != null and processUserCd != ''">
+					<![CDATA[and process_user_cd = #{processUserCd}]]>
+				</if>
+				<if test="processUserName != null and processUserName != ''">
+					<![CDATA[and process_user_name concat('%',  #{processUserName},'%')]]>
+				</if>				
+				<if test="processTm != null and processTm != ''">
+					<![CDATA[and process_tm = #{processTm}]]>
+				</if>
+				<if test="dealResult != null and dealResult != ''">
+					<![CDATA[and deal_result = #{dealResult}]]>
+				</if>
+				<if test="comment != null and comment != ''">
+					<![CDATA[and comment = #{comment}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="verifiedUserCd != null and verifiedUserCd != ''">
+					<![CDATA[and verified_user_cd = #{verifiedUserCd}]]>
+				</if>
+				<if test="verifiedUserName != null and verifiedUserName != ''">
+					<![CDATA[and verified_user_name like concat('%', #{verifiedUserName},'%')]]>
+				</if>				
+				<if test="verifiedHeadTm != null and verifiedHeadTm != ''">
+					<![CDATA[and verified_head_tm = #{verifiedHeadTm}]]>
+				</if>
+				<if test="verifiedHeadMemo != null and verifiedHeadMemo != ''">
+					<![CDATA[and verified_head_memo = #{verifiedHeadMemo}]]>
+				</if>
+				<if test="verifiedHeadStatus != null and verifiedHeadStatus != ''">
+					<![CDATA[and verified_head_status = #{verifiedHeadStatus}]]>
+				</if>
+			</where>
+			order by report_id desc
+	</sql>
+	
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DReport">
+	    <![CDATA[
+			insert into d_report (
+				report_id,
+				title,
+				project_code,
+				proj_name,
+				unit_price,
+				amount,
+				number,
+				memo,
+				report_user_cd,
+				report_user_name,
+				report_tm,
+				process_user_cd,
+				process_user_name,
+				process_tm,
+				deal_result,
+				comment,
+				status_cd,
+				verified_user_cd,
+				verified_user_name,
+				verified_head_tm,
+				verified_head_memo,
+				verified_head_status
+			) values (
+				#{reportId},
+				#{title},
+				#{projectCode},
+				#{projName},
+				#{unitPrice},
+				#{amount},
+				#{number},
+				#{memo},
+				#{reportUserCd},
+				#{reportUserName},
+				#{reportTm},
+				#{processUserCd},
+				#{processUserName},
+				#{processTm},
+				#{dealResult},
+				#{comment},
+				#{statusCd},
+				#{verifiedUserCd},
+				#{verifiedUserName},
+				#{verifiedHeadTm},
+				#{verifiedHeadMemo},
+				#{verifiedHeadStatus}
+			)
+		]]>
+	</insert>
+	
+   <!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DReport">
+            delete from d_report 
+                <where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+			</where>
+    
+    </delete>
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DReport">
+	   
+			update d_report 
+				<set>
+				<if test="reportId != null">
+					report_id = #{reportId},
+				</if>
+				<if test="title != null">
+					title = #{title},
+				</if>
+				<if test="projectCode != null">
+					project_code = #{projectCode},
+				</if>
+				<if test="projName != null">
+					proj_name = #{projName},
+				</if>
+				<if test="unitPrice != null">
+					unit_price = #{unitPrice},
+				</if>
+				<if test="amount != null">
+					amount = #{amount},
+				</if>
+				<if test="number != null">
+					number = #{number},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="reportUserCd != null">
+					report_user_cd = #{reportUserCd},
+				</if>
+				<if test="reportTm != null">
+					report_tm = #{reportTm},
+				</if>
+				<if test="processUserCd != null">
+					process_user_cd = #{processUserCd},
+				</if>
+				<if test="processUserName != null">
+					process_user_name = #{processUserName},
+				</if>
+				<if test="processTm != null">
+					process_tm = #{processTm},
+				</if>
+				<if test="dealResult != null">
+					deal_result = #{dealResult},
+				</if>
+				
+				<if test="comment != null">
+					comment = #{comment},
+				</if>				
+				<if test="statusCd != null">
+					status_cd = #{statusCd},
+				</if>
+				<if test="verifiedUserCd != null">
+					verified_user_cd = #{verifiedUserCd},
+				</if>
+				<if test="verifiedHeadTm != null">
+					verified_head_tm = #{verifiedHeadTm},
+				</if>
+				<if test="verifiedHeadMemo != null">
+					verified_head_memo = #{verifiedHeadMemo},
+				</if>
+				<if test="verifiedHeadStatus != null">
+					verified_head_status = #{verifiedHeadStatus}
+				</if>
+				</set>
+				
+				where 
+    			report_id = #{reportId}
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DReport" resultMap="rfid.DReportRM">
+        select <include refid="allColumns" />
+	    
+			from d_report 
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				
+			</where>
+	  
+	</select>
+	<select id="selectImagePathByReportId" parameterType="com.is.pretrst.entity.DReport" resultType="java.lang.String">
+        select file_name 
+			from d_report_image  
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				
+			</where>
+	  
+	</select>
+	
+	
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DReportQuery" resultMap="rfid.DReportRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DReportQuery" resultMap="rfid.DReportRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DReportQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_report
+	</select>
+	
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="ggkz">
+    <resultMap id="GgkzUserInfoRM" type="com.is.ggkz.entity.GgkzUserInfo">
+        <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="orgId" column="org_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="loginName" column="login_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="workCode" column="work_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="name" column="name" javaType="String" jdbcType="VARCHAR" />
+        <result property="password" column="password" javaType="String" jdbcType="VARCHAR" />
+        <result property="sex" column="sex" javaType="String" jdbcType="VARCHAR" />
+        <result property="userState" column="user_state" javaType="String" jdbcType="VARCHAR" />
+        <result property="departId" column="depart_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="certificateType" column="certificate_type" javaType="String" jdbcType="VARCHAR" />
+        <result property="certificateCode" column="certificate_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="birthDate" column="birth_date" jdbcType="DATE" javaType="Date"/>
+        <result property="nowResideAddress" column="now_reside_address" javaType="String" jdbcType="VARCHAR" />
+        <result property="postcode" column="postcode" javaType="String" jdbcType="VARCHAR" />
+        <result property="newPassword" column="new_password" javaType="String" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="office_tel" property="officeTel" jdbcType="VARCHAR" />
+        <result column="mobile_tel" property="mobileTel" jdbcType="VARCHAR" />
+        <result column="mobile_id" property="mobileId" jdbcType="VARCHAR" />
+        <result column="mobile_sn" property="mobileSn" jdbcType="VARCHAR" />
+        <result column="post" property="post" jdbcType="VARCHAR" />
+        <result column="head_user_cd" property="headUserCd" jdbcType="VARCHAR" />
+        <result column="create_tm" property="createTm"  javaType="Date"/>
+        <result column="update_tm" property="updateTm"  javaType="Date"/>
+        <collection property="ggkzUserRoles" column="{userId=user_id}" ofType="java.util.List" select="GgkzUserRole.selectByEntity" />
+        <collection property="ggzkRoleBeans" column="{userId=user_id}" ofType="java.util.List" select="GgkzRoleInfoExt.selectRolesByUserRole"></collection>
+    </resultMap>
+    <resultMap id="UserInfoMobileRM" type="com.is.ggkz.entity.UserInfoMobile">
+        <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="name" column="name" javaType="String" jdbcType="VARCHAR" />
+        <result property="userState" column="user_state" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap type="com.is.ggkz.entity.GgkzUserRole" id="GgkzUserRoleRM">
+        <id property="roleId" column="role_id" javaType="String" jdbcType="VARCHAR" />
+        <id property="userId" column="user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap type="com.is.ggkz.entity.GgkzRoleAuth" id="GgkzRoleAuthRM">
+        <id property="roleId" column="role_id" javaType="String" jdbcType="VARCHAR" />
+        <id property="authId" column="auth_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap type="com.is.ggkz.entity.GgkzRoleMobileAuth" id="GgkzRoleMobileAuthRM">
+        <result property="roleId" column="role_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="authId" column="auth_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap type="com.is.ggkz.entity.GgkzRoleInfo" id="GgkzRoleInfoRM">
+        <id property="roleId" column="role_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="roleName" column="role_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="note" column="note" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR" />
+        <collection property="ggkzAuthInfos" column="{roleId=role_id}" ofType="java.util.List" select="GgkzRoleAuthExt.selectAuthInfosByRoleAuth" />
+    </resultMap>
+
+    <resultMap id="GgkzResourceInfoRM" type="com.is.ggkz.entity.GgkzResourceInfo">
+        <id property="resourceId" column="resource_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="higerResourceCode" column="higer_resource_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="resourceName" column="resource_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="resourceType" column="resource_type" javaType="String" jdbcType="VARCHAR" />
+        <result property="shortName" column="short_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="resourceUrl" column="resource_url" javaType="String" jdbcType="VARCHAR" />
+        <result property="orderNum" column="order_num" javaType="String" jdbcType="VARCHAR" />
+        <result property="modelCode" column="model_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="validState" column="valid_state" javaType="String" jdbcType="VARCHAR" />
+        <result property="note" column="note" javaType="String" jdbcType="VARCHAR" />
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="GgkzAuthInfoRM" type="com.is.ggkz.entity.GgkzAuthInfo">
+        <id property="authId" column="auth_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="authName" column="auth_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="shortName" column="short_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="note" column="note" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="GgkzAuthMobileInfoRM" type="com.is.ggkz.entity.GgkzAuthMobileInfo">
+        <result property="authId" column="auth_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="authName" column="auth_name" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="GgkzAuthResourceRM" type="com.is.ggkz.entity.GgkzAuthResource">
+        <id property="authId" column="auth_id" javaType="String" jdbcType="VARCHAR" />
+        <id property="resourceId" column="resource_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="operTime" column="oper_time" javaType="Date" />
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="GgkzAuthMobileResourceRM" type="com.is.ggkz.entity.GgkzAuthMobileResource">
+        <result property="authId" column="auth_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="resourceId" column="resource_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="GgkzDepartInfoRM" type="com.is.ggkz.entity.GgkzDepartInfo">
+        <id property="departId" column="depart_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="higherDepartId" column="higher_depart_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="departName" column="depart_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="note" column="note" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="GgkzPostInfoRM" type="com.is.ggkz.entity.GgkzPostInfo">
+        <id property="postId" column="post_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="higherPostId" column="higher_post_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="postName" column="post_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="note" column="note" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+
+</mapper>

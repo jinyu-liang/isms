@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DProgressReport">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			report_id,
+			ws_cd,
+			report_dt,
+			user_cd,
+			create_tm,
+			update_tm
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			report_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_progress_report
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="reportDt != null and reportDt != ''">
+					<![CDATA[and report_dt = #{reportDt}]]>
+				</if>
+				<if test="reportDtStart != null and reportDtStart != ''">
+					<![CDATA[and report_dt >= #{reportDtStart}]]>
+				</if>
+				<if test="reportDtEnd != null and reportDtEnd != ''">
+					<![CDATA[and report_dt <= #{reportDtEnd}]]>
+				</if>
+				<if test="userCd != null and userCd != ''">
+					<![CDATA[and user_cd = #{userCd}]]>
+				</if>
+				<if test="createTm != null and createTm != ''">
+					<![CDATA[and create_tm = #{createTm}]]>
+				</if>
+				<if test="createTmStart != null and createTmStart != ''">
+					<![CDATA[and create_tm >= #{createTmStart}]]>
+				</if>
+				<if test="createTmEnd != null and createTmEnd != ''">
+					<![CDATA[and create_tm <= #{createTmEnd}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and update_tm = #{updateTm}]]>
+				</if>
+				<if test="updateTmStart != null and updateTmStart != ''">
+					<![CDATA[and update_tm >= #{updateTmStart}]]>
+				</if>
+				<if test="updateTmEnd != null and updateTmEnd != ''">
+					<![CDATA[and update_tm <= #{updateTmEnd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DProgressReport">
+	    <![CDATA[
+			insert into d_progress_report (
+				report_id,
+				ws_cd,
+				report_dt,
+				user_cd,
+				create_tm,
+				update_tm
+			) values (
+				#{reportId},
+				#{wsCd},
+				#{reportDt},
+				#{userCd},
+				#{createTm},
+				#{updateTm}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DProgressReport">
+      
+			delete from d_progress_report 
+				<where>	 
+					<if test="reportId != null and reportId != ''">
+						<![CDATA[and report_id = #{reportId}]]>
+					</if>
+					<if test="wsCd != null and wsCd != ''">
+						<![CDATA[and ws_cd = #{wsCd}]]>
+					</if>
+					<if test="reportDt != null and reportDt != ''">
+						<![CDATA[and report_dt = #{reportDt}]]>
+					</if>
+					<if test="userCd != null and userCd != ''">
+						<![CDATA[and user_cd = #{userCd}]]>
+					</if>
+					<if test="createTm != null and createTm != ''">
+						<![CDATA[and create_tm = #{createTm}]]>
+					</if>
+					<if test="updateTm != null and updateTm != ''">
+						<![CDATA[and update_tm = #{updateTm}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DProgressReport">
+	   
+			update d_progress_report 
+				<set>
+				<if test="wsCd != null">
+					ws_cd = #{wsCd},
+				</if>
+				<if test="reportDt != null">
+					report_dt = #{reportDt},
+				</if>
+				<if test="userCd != null">
+					user_cd = #{userCd},
+				</if>
+				<if test="createTm != null">
+					create_tm = #{createTm},
+				</if>
+				<if test="updateTm != null">
+					update_tm = #{updateTm}
+				</if>
+				</set>
+				
+				where 
+					report_id = #{reportId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DProgressReport" resultMap="pretrst.DProgressReportRM">
+        select <include refid="allColumns" />
+	    
+			from d_progress_report 
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+				</if>
+				<if test="reportDt != null and reportDt != ''">
+					<![CDATA[and report_dt = #{reportDt}]]>
+				</if>
+				<if test="userCd != null and userCd != ''">
+					<![CDATA[and user_cd = #{userCd}]]>
+				</if>
+				<if test="createTm != null and createTm != ''">
+					<![CDATA[and create_tm = #{createTm}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and update_tm = #{updateTm}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DProgressReportQuery" resultMap="pretrst.DProgressReportRM">
+			<include refid="querySql"/>
+			
+	</select>
+    
+        <!-- 查询有几个月份 -->
+    <select id="selectByMonth"  resultType="String">
+            select distinct CONCAT(YEAR(report_dt),'y',MONTH(report_dt),'m') dateFlag  from d_progress_report ORDER BY dateFlag asc 
+            
+    </select>
+        <!-- 根据月份查询有几个报告 -->
+    <select id="selectReport"   parameterType="java.lang.String" resultMap="pretrst.DProgressReportRM">
+           <!--  select  *  from d_progress_report where  CONCAT(YEAR(report_dt),'y',MONTH(report_dt),'m') =#{dateFlag}  -->
+           select  DISTINCT user_cd  ,CONCAT(YEAR(report_dt),'-',MONTH(report_dt)) ws_cd,0 report_id, null report_dt, null create_tm,null update_tm   
+           from d_progress_report where  CONCAT(YEAR(report_dt),'y',MONTH(report_dt),'m')=#{dateFlag}
+            
+    </select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DProgressReportQuery" resultMap="pretrst.DProgressReportRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DProgressReportQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_progress_report
+	</select>
+	
+</mapper>

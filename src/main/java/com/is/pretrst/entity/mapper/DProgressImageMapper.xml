@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DProgressImage">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			image_id,
+			report_id,
+			ws_cd,
+            filename,
+			pos_longitude,
+			pos_latitude,
+			pos_height,
+			photo_user_cd,
+			photo_tm,
+			upload_tm
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			image_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_progress_image
+			<where>	      				
+				<if test="imageId != null and imageId != ''">
+					<![CDATA[and image_id = #{imageId}]]>
+				</if>
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="filename != null and filename != ''">
+					<![CDATA[and filename = #{filename}]]>
+				</if>
+				<if test="posLongitude != null and posLongitude != ''">
+					<![CDATA[and pos_longitude = #{posLongitude}]]>
+				</if>
+				<if test="posLatitude != null and posLatitude != ''">
+					<![CDATA[and pos_latitude = #{posLatitude}]]>
+				</if>
+				<if test="posHeight != null and posHeight != ''">
+					<![CDATA[and pos_height = #{posHeight}]]>
+				</if>
+				<if test="photoUserCd != null and photoUserCd != ''">
+					<![CDATA[and photo_user_cd = #{photoUserCd}]]>
+				</if>
+				<if test="photoTm != null and photoTm != ''">
+					<![CDATA[and photo_tm = #{photoTm}]]>
+				</if>
+				<if test="uploadTm != null and uploadTm != ''">
+					<![CDATA[and upload_tm = #{uploadTm}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DProgressImage">
+	    <![CDATA[
+			insert into d_progress_image (
+				image_id,
+				report_id,
+				filename,
+				pos_longitude,
+				pos_latitude,
+				pos_height,
+				photo_user_cd,
+				photo_tm,
+				upload_tm
+			) values (
+				#{imageId},
+				#{reportId},
+				#{filename},
+				#{posLongitude},
+				#{posLatitude},
+				#{posHeight},
+				#{photoUserCd},
+				#{photoTm},
+				#{uploadTm}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DProgressImage">
+      
+			delete from d_progress_image 
+				<where>	 
+					<if test="imageId != null and imageId != ''">
+						<![CDATA[and image_id = #{imageId}]]>
+					</if>
+					<if test="reportId != null and reportId != ''">
+						<![CDATA[and report_id = #{reportId}]]>
+					</if>
+					<if test="filename != null and filename != ''">
+						<![CDATA[and filename = #{filename}]]>
+					</if>
+					<if test="posLongitude != null and posLongitude != ''">
+						<![CDATA[and pos_longitude = #{posLongitude}]]>
+					</if>
+					<if test="posLatitude != null and posLatitude != ''">
+						<![CDATA[and pos_latitude = #{posLatitude}]]>
+					</if>
+					<if test="posHeight != null and posHeight != ''">
+						<![CDATA[and pos_height = #{posHeight}]]>
+					</if>
+					<if test="photoUserCd != null and photoUserCd != ''">
+						<![CDATA[and photo_user_cd = #{photoUserCd}]]>
+					</if>
+					<if test="photoTm != null and photoTm != ''">
+						<![CDATA[and photo_tm = #{photoTm}]]>
+					</if>
+					<if test="uploadTm != null and uploadTm != ''">
+						<![CDATA[and upload_tm = #{uploadTm}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DProgressImage">
+	   
+			update d_progress_image 
+				<set>
+				<if test="reportId != null">
+					report_id = #{reportId},
+				</if>
+				<if test="filename != null">
+					filename = #{filename},
+				</if>
+				<if test="posLongitude != null">
+					pos_longitude = #{posLongitude},
+				</if>
+				<if test="posLatitude != null">
+					pos_latitude = #{posLatitude},
+				</if>
+				<if test="posHeight != null">
+					pos_height = #{posHeight},
+				</if>
+				<if test="photoUserCd != null">
+					photo_user_cd = #{photoUserCd},
+				</if>
+				<if test="photoTm != null">
+					photo_tm = #{photoTm},
+				</if>
+				<if test="uploadTm != null">
+					upload_tm = #{uploadTm},
+				</if>
+				</set>
+				
+				where 
+					image_id = #{imageId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DProgressImage" resultMap="pretrst.DProgressImageRM">
+        select <include refid="allColumns" />
+	    
+			from d_progress_image 
+			<where>	      				
+				<if test="imageId != null and imageId != ''">
+					<![CDATA[and image_id = #{imageId}]]>
+				</if>
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="filename != null and filename != ''">
+					<![CDATA[and filename = #{filename}]]>
+				</if>
+				<if test="posLongitude != null and posLongitude != ''">
+					<![CDATA[and pos_longitude = #{posLongitude}]]>
+				</if>
+				<if test="posLatitude != null and posLatitude != ''">
+					<![CDATA[and pos_latitude = #{posLatitude}]]>
+				</if>
+				<if test="posHeight != null and posHeight != ''">
+					<![CDATA[and pos_height = #{posHeight}]]>
+				</if>
+				<if test="photoUserCd != null and photoUserCd != ''">
+					<![CDATA[and photo_user_cd = #{photoUserCd}]]>
+				</if>
+				<if test="photoTm != null and photoTm != ''">
+					<![CDATA[and photo_tm = #{photoTm}]]>
+				</if>
+				<if test="uploadTm != null and uploadTm != ''">
+					<![CDATA[and upload_tm = #{uploadTm}]]>
+				</if>
+			</where>
+	  
+	</select>
+    <!-- 根据 reportId查询filename集合-->
+    <select id="selectFilenameByReportId"  parameterType="com.is.pretrst.entity.query.DProgressImageQuery" resultType="java.lang.String">
+        select filename
+        
+            from d_progress_image 
+            <where>                     
+                <if test="reportId != null and reportId != ''">
+                    <![CDATA[and report_id = #{reportId}]]>
+                </if>
+            </where>
+      
+    </select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DProgressImageQuery" resultMap="pretrst.DProgressImageRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DProgressImageQuery" resultMap="pretrst.DProgressImageRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DProgressImageQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_progress_image
+	</select>
+	
+</mapper>

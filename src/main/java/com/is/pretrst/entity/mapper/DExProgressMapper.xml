@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DExProgress">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			report_id,
+			project_id,
+			progress_status,
+			fb_workshop,
+			fb_delivery,
+			fb_quality,
+			fb_security,
+			fb_manner,
+			fb_mmaterial,
+			fb_smaterial,
+			fb_equipment,
+			total_cost,
+			current_cost,
+			total_expense,
+			current_expense,
+			team_leader,
+			welder,
+			riveter,
+			worker_count,
+			vice_manager,
+			ws_leader,
+			memo
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			report_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+        select gress.*
+            from d_ex_progress gress,d_progress_report report,d_ex_project project where gress.report_id=report.report_id and project.project_id=gress.project_id 
+            <if test="(fbManner!=null and fbManner!='')">
+                <![CDATA[and report.report_dt like concat ('%',#{fbManner},'%')]]>
+            </if>
+            <if test="(fbMmaterial!=null and fbMmaterial!='')">
+                <![CDATA[ and report.user_cd=#{fbMmaterial} ]]>
+            </if>
+            <if test="projectId != null and projectId != ''">
+                    <![CDATA[and project.project_nm like concat ('%',trim(#{projectId}),'%')]]>
+                </if>  
+            <if test="teamLeader != null and teamLeader != ''">
+                    <![CDATA[and team_leader like concat ('%',trim(#{teamLeader}),'%')]]>
+                </if>  
+            <if test="viceManager != null and viceManager != ''">
+                    <![CDATA[and vice_manager like concat ('%',trim(#{viceManager}),'%')]]>
+                </if>  
+            <if test="wsLeader != null and wsLeader != ''">
+                    <![CDATA[and ws_leader like concat ('%',trim(#{wsLeader}),'%')]]>
+                </if>
+                
+                 order by gress.report_id   DESC
+	</sql>
+    <!-- 模糊查询实体对象的sql -->
+    <sql id="mhquerySql">
+          select p.* from d_ex_project j left join d_ex_progress p on j.project_id=p.project_id 
+          
+          <where> 
+            <!-- p.team_leader like '%%' and p.vice_manager like'%%' and p.ws_leader like '%%' and j.project_nm like'%四川%'; -->
+            
+            <if test="projectId != null and projectId != ''">
+                    <![CDATA[and j.project_nm like concat ('%',trim(#{projectId}),'%')]]>
+                </if>  
+            <if test="teamLeader != null and teamLeader != ''">
+                    <![CDATA[and p.team_leader like concat ('%',trim(#{teamLeader}),'%')]]>
+                </if>  
+            <if test="viceManager != null and viceManager != ''">
+                    <![CDATA[and p.vice_manager like concat ('%',trim(#{viceManager}),'%')]]>
+                </if>  
+            <if test="wsLeader != null and wsLeader != ''">
+                    <![CDATA[and p.ws_leader like concat ('%',trim(#{wsLeader}),'%')]]>
+                </if>  
+                 order by p.report_id   DESC
+     <!--   select progress.* 
+            from d_ex_progress progress, d_ex_project project
+            <where>                     
+                 <if test="projectId != null and projectId != ''">
+                    <![CDATA[and progress.project_id = project.project_id and project.project_nm like concat ('%',#{projectId},'%')]]>
+                </if>
+                 <if test="progressStatus != null and progressStatus != ''">
+                    <![CDATA[and progress_status = #{progressStatus}]]>
+                </if>
+                <if test="fbWorkshop != null and fbWorkshop != ''">
+                    <![CDATA[and fb_workshop = #{fbWorkshop}]]>
+                </if>
+                <if test="fbDelivery != null and fbDelivery != ''">
+                    <![CDATA[and fb_delivery = #{fbDelivery}]]>
+                </if>
+                <if test="fbQuality != null and fbQuality != ''">
+                    <![CDATA[and fb_quality = #{fbQuality}]]>
+                </if>
+                <if test="fbSecurity != null and fbSecurity != ''">
+                    <![CDATA[and fb_security = #{fbSecurity}]]>
+                </if>
+                <if test="fbManner != null and fbManner != ''">
+                    <![CDATA[and fb_manner = #{fbManner}]]>
+                </if>
+                <if test="fbMmaterial != null and fbMmaterial != ''">
+                    <![CDATA[and fb_mmaterial = #{fbMmaterial}]]>
+                </if>
+                <if test="fbSmaterial != null and fbSmaterial != ''">
+                    <![CDATA[and fb_smaterial = #{fbSmaterial}]]>
+                </if>
+                <if test="fbEquipment != null and fbEquipment != ''">
+                    <![CDATA[and fb_equipment = #{fbEquipment}]]>
+                </if>
+                <if test="totalCost != null and totalCost != ''">
+                    <![CDATA[and total_cost = #{totalCost}]]>
+                </if>
+                <if test="currentCost != null and currentCost != ''">
+                    <![CDATA[and current_cost = #{currentCost}]]>
+                </if>
+                <if test="totalExpense != null and totalExpense != ''">
+                    <![CDATA[and total_expense = #{totalExpense}]]>
+                </if>
+                <if test="currentExpense != null and currentExpense != ''">
+                    <![CDATA[and current_expense = #{currentExpense}]]>
+                </if>
+                <if test="teamLeader != null and teamLeader != ''">
+                    <![CDATA[and team_leader   like concat('%',#{teamLeader},'%')]]>
+                </if>
+                <if test="welder != null and welder != ''">
+                    <![CDATA[and welder = #{welder}]]>
+                </if>
+                <if test="riveter != null and riveter != ''">
+                    <![CDATA[and riveter = #{riveter}]]>
+                </if>
+                <if test="workerCount != null and workerCount != ''">
+                    <![CDATA[and worker_count = #{workerCount}]]>
+                </if>
+                <if test="viceManager != null and viceManager != ''">
+                    <![CDATA[and vice_manager like concat('%',#{viceManager},'%')]]>
+                </if>
+                <if test="wsLeader != null and wsLeader != ''">
+                    <![CDATA[and ws_leader like concat('%',#{wsLeader},'%') ]]>
+                </if>
+                <if test="memo != null and memo != ''">
+                    <![CDATA[and memo = #{memo}]]>
+                </if> -->
+            </where>
+    </sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DExProgress">
+	    <![CDATA[
+			insert into d_ex_progress (
+				report_id,
+				project_id,
+				progress_status,
+				fb_workshop,
+				fb_delivery,
+				fb_quality,
+				fb_security,
+				fb_manner,
+				fb_mmaterial,
+				fb_smaterial,
+				fb_equipment,
+				total_cost,
+				current_cost,
+				total_expense,
+				current_expense,
+				team_leader,
+				welder,
+				riveter,
+				worker_count,
+				vice_manager,
+				ws_leader,
+				memo
+			) values (
+				#{reportId},
+				#{projectId},
+				#{progressStatus},
+				#{fbWorkshop},
+				#{fbDelivery},
+				#{fbQuality},
+				#{fbSecurity},
+				#{fbManner},
+				#{fbMmaterial},
+				#{fbSmaterial},
+				#{fbEquipment},
+				#{totalCost},
+				#{currentCost},
+				#{totalExpense},
+				#{currentExpense},
+				#{teamLeader},
+				#{welder},
+				#{riveter},
+				#{workerCount},
+				#{viceManager},
+				#{wsLeader},
+				#{memo}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DExProgress">
+      
+			delete from d_ex_progress 
+				<where>	 
+					<if test="reportId != null and reportId != ''">
+						<![CDATA[and report_id = #{reportId}]]>
+					</if>
+					<if test="projectId != null and projectId != ''">
+						<![CDATA[and project_id = #{projectId}]]>
+					</if>
+					<if test="progressStatus != null and progressStatus != ''">
+						<![CDATA[and progress_status = #{progressStatus}]]>
+					</if>
+					<if test="fbWorkshop != null and fbWorkshop != ''">
+						<![CDATA[and fb_workshop = #{fbWorkshop}]]>
+					</if>
+					<if test="fbDelivery != null and fbDelivery != ''">
+						<![CDATA[and fb_delivery = #{fbDelivery}]]>
+					</if>
+					<if test="fbQuality != null and fbQuality != ''">
+						<![CDATA[and fb_quality = #{fbQuality}]]>
+					</if>
+					<if test="fbSecurity != null and fbSecurity != ''">
+						<![CDATA[and fb_security = #{fbSecurity}]]>
+					</if>
+					<if test="fbManner != null and fbManner != ''">
+						<![CDATA[and fb_manner = #{fbManner}]]>
+					</if>
+					<if test="fbMmaterial != null and fbMmaterial != ''">
+						<![CDATA[and fb_mmaterial = #{fbMmaterial}]]>
+					</if>
+					<if test="fbSmaterial != null and fbSmaterial != ''">
+						<![CDATA[and fb_smaterial = #{fbSmaterial}]]>
+					</if>
+					<if test="fbEquipment != null and fbEquipment != ''">
+						<![CDATA[and fb_equipment = #{fbEquipment}]]>
+					</if>
+					<if test="totalCost != null and totalCost != ''">
+						<![CDATA[and total_cost = #{totalCost}]]>
+					</if>
+					<if test="currentCost != null and currentCost != ''">
+						<![CDATA[and current_cost = #{currentCost}]]>
+					</if>
+					<if test="totalExpense != null and totalExpense != ''">
+						<![CDATA[and total_expense = #{totalExpense}]]>
+					</if>
+					<if test="currentExpense != null and currentExpense != ''">
+						<![CDATA[and current_expense = #{currentExpense}]]>
+					</if>
+					<if test="teamLeader != null and teamLeader != ''">
+						<![CDATA[and team_leader = #{teamLeader}]]>
+					</if>
+					<if test="welder != null and welder != ''">
+						<![CDATA[and welder = #{welder}]]>
+					</if>
+					<if test="riveter != null and riveter != ''">
+						<![CDATA[and riveter = #{riveter}]]>
+					</if>
+					<if test="workerCount != null and workerCount != ''">
+						<![CDATA[and worker_count = #{workerCount}]]>
+					</if>
+					<if test="viceManager != null and viceManager != ''">
+						<![CDATA[and vice_manager = #{viceManager}]]>
+					</if>
+					<if test="wsLeader != null and wsLeader != ''">
+						<![CDATA[and ws_leader = #{wsLeader}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DExProgress">
+	   
+			update d_ex_progress 
+				<set>
+				<if test="projectId != null">
+					project_id = #{projectId},
+				</if>
+				<if test="progressStatus != null">
+					progress_status = #{progressStatus},
+				</if>
+				<if test="fbWorkshop != null">
+					fb_workshop = #{fbWorkshop},
+				</if>
+				<if test="fbDelivery != null">
+					fb_delivery = #{fbDelivery},
+				</if>
+				<if test="fbQuality != null">
+					fb_quality = #{fbQuality},
+				</if>
+				<if test="fbSecurity != null">
+					fb_security = #{fbSecurity},
+				</if>
+				<if test="fbManner != null">
+					fb_manner = #{fbManner},
+				</if>
+				<if test="fbMmaterial != null">
+					fb_mmaterial = #{fbMmaterial},
+				</if>
+				<if test="fbSmaterial != null">
+					fb_smaterial = #{fbSmaterial},
+				</if>
+				<if test="fbEquipment != null">
+					fb_equipment = #{fbEquipment},
+				</if>
+				<if test="totalCost != null">
+					total_cost = #{totalCost},
+				</if>
+				<if test="currentCost != null">
+					current_cost = #{currentCost},
+				</if>
+				<if test="totalExpense != null">
+					total_expense = #{totalExpense},
+				</if>
+				<if test="currentExpense != null">
+					current_expense = #{currentExpense},
+				</if>
+				<if test="teamLeader != null">
+					team_leader = #{teamLeader},
+				</if>
+				<if test="welder != null">
+					welder = #{welder},
+				</if>
+				<if test="riveter != null">
+					riveter = #{riveter},
+				</if>
+				<if test="workerCount != null">
+					worker_count = #{workerCount},
+				</if>
+				<if test="viceManager != null">
+					vice_manager = #{viceManager},
+				</if>
+				<if test="wsLeader != null">
+					ws_leader = #{wsLeader},
+				</if>
+				<if test="memo != null">
+					memo = #{memo}
+				</if>
+				</set>
+				
+				where 
+					report_id = #{reportId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DExProgress" resultMap="pretrst.DExProgressRM">
+        select <include refid="allColumns" />
+	    
+			from d_ex_progress 
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="projectId != null and projectId != ''">
+					<![CDATA[and project_id = #{projectId}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	
+		<select id="selectGressByLastReportId" parameterType="com.is.pretrst.entity.DExProgress" resultMap="pretrst.DExProgressRM">
+	select gress.report_id,
+			gress.project_id,
+			gress.progress_status,
+			gress.fb_workshop,
+			gress.fb_delivery,
+			gress.fb_quality,
+			gress.fb_security,
+			gress.fb_manner,
+			gress.fb_mmaterial,
+			gress.fb_smaterial,
+			gress.fb_equipment,
+			gress.total_cost,
+			gress.current_cost,
+			gress.total_expense,
+			gress.current_expense,
+			gress.team_leader,
+			gress.welder,
+			gress.riveter,
+			gress.worker_count,
+			case when vice_manager is null then (select name from ggkz_user_info where user_id=user.head_user_cd)  
+else vice_manager
+  end vice_manager,
+			case when ws_leader is null then `user`.name  else ws_leader end ws_leader,
+			gress.memo 
+from d_ex_progress gress left join d_ex_project project 
+
+on gress.project_id=project.project_id left join m_workshop shop 
+
+
+on project.ws_cd=shop.ws_cd left join ggkz_user_info user on shop.manager_user_id=`user`.user_id
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and gress.report_id = #{reportId}]]>
+				</if>
+				<if test="projectId != null and projectId != ''">
+					<![CDATA[and gress.project_id = #{projectId}]]>
+				</if>
+
+			</where>
+	  
+	</select>
+	
+	<!-- 手机根据条件查询单个对象，没有关联查询 -->
+	<select id="selectOneByEntityMobile" parameterType="com.is.pretrst.entity.DExProgress" resultMap="pretrst.DExProgressMobileRM">
+        select <include refid="allColumns" />
+	    
+			from d_ex_progress 
+			<where>	      				
+				<if test="reportId != null and reportId != ''">
+					<![CDATA[and report_id = #{reportId}]]>
+				</if>
+				<if test="projectId != null and projectId != ''">
+					<![CDATA[and project_id = #{projectId}]]>
+				</if>
+			</where>
+	</select>
+    
+   <!--  <select id="selectProgressAndProjectByUserId" parameterType="java.lang.String" resultMap="pretrst.DExProgressRM">
+       		
+		select 
+			b.project_id pProjectId,
+			b.ws_cd  pWsCd,
+			b.project_nm pProjectNm,
+			b.weight pWeight,
+			b.contract_start_date pContractStartDate,
+			b.start_date pStartDate,
+			b.contract_other_req pContractOtherReq,
+			b.last_report_dt pLastReportDt,
+			b.last_report_id pLastReportId,
+			
+			a.report_id,
+			a.project_id,
+			a.progress_status,
+			a.fb_workshop,
+			a.fb_delivery,
+			a.fb_quality,
+			a.fb_security,
+			b.ws_cd fb_manner,
+			b.project_nm fb_mmaterial,
+			a.fb_smaterial,
+			a.fb_equipment,
+			a.total_cost,
+			a.current_cost,
+			a.total_expense,
+			a.current_expense,
+			a.team_leader,
+			a.welder,
+			a.riveter,
+			a.worker_count,
+			a.vice_manager,
+			a.ws_leader,
+			a.memo 
+			           from m_workshop c , d_ex_project b  left join d_ex_progress a
+			              on b.last_report_id=a.report_id
+			              
+			              where c.manager_user_id=#{userId} and c.ws_Cd=b.ws_cd
+
+
+
+      
+    </select> -->
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DExProgressQuery" resultMap="pretrst.DExProgressRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DExProgressQuery" resultMap="pretrst.DExProgressRM">
+		<include refid="mhquerySql"/>
+    </select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DExProgressQuery" resultType="integer">
+		select count(1) from ( <include refid="mhquerySql"/> ) as tmp_d_ex_progress
+	</select>
+	   <!-- 分页查询 树 -查询结果数据 -->
+    <select id="selectByPageTree" parameterType="com.is.pretrst.entity.query.DExProgressQuery" resultMap="pretrst.DExProgressRM">
+        <include refid="querySql"/>
+    </select>
+        <!-- 分页查询 树 -查询记录总数 -->
+    <select id="selectByPageTreeCount" parameterType="com.is.pretrst.entity.query.DExProgressQuery" resultType="integer">
+        select count(1) from ( <include refid="querySql"/> ) as tmp_d_ex_progress
+    </select>
+    
+   <!-- 根据项目wscd查询负责人id -->
+    <select id="selectMangerIdByWsCd" parameterType="String" resultType="java.lang.String">
+        select w.manager_user_id from m_workshop w where w.ws_cd=#{wsCd}
+    </select>
+    <!--根据reportId查询进度信息  -->
+     <select id="selectProgressByReportId" parameterType="String" resultMap="pretrst.DExProgressExtRM">
+        select 
+            g.report_id,
+            g.progress_status,
+            g.fb_workshop,
+            g.fb_delivery,
+            g.fb_quality,
+            g.fb_security,
+            g.fb_manner,
+            g.fb_mmaterial,
+            g.fb_smaterial,
+            g.fb_equipment,
+            g.total_cost,
+            g.current_cost,
+            g.total_expense,
+            g.current_expense,
+            g.team_leader,
+            g.welder,
+            g.riveter,
+            g.worker_count,
+            g.vice_manager,
+            g.ws_leader,
+            g.memo,
+            j.start_date as startDate,
+            j.contract_start_date as contractStartDate,
+            j.contract_other_req as contractOtherReq,
+            j.project_id as projectId
+            
+         from d_ex_progress g,d_ex_project j where g.report_id=#{reportId} and g.project_id=j.project_id
+    </select>
+    <!-- 根据进度报告id查询图片 -->
+    <select id="selectImgByReportId" parameterType="String" resultType="java.lang.String">
+        select 
+           filename
+         from d_progress_image where report_id=#{reportId}
+    </select>
+    <!-- 根据工程ID查询工地产品详情 -->
+    <select id="selectItemByProjectId" parameterType="String" resultMap="pretrst.DExItemExtRM">
+        select 
+            item_nm,
+			amount,
+			memo
+          from d_ex_item where project_id=#{projectId}
+    </select>
+        <!-- 根据工程ID查询工程信息 -->
+    <select id="selectProjectByProjectId" parameterType="String" resultMap="pretrst.DExProgressExtRM">
+        select 
+            project_id as projectId,
+            start_date as startDate,
+            contract_start_date as contractStartDate,
+            contract_other_req as contractOtherReq
+            
+          from d_ex_project  where project_id=#{projectId}
+    </select>
+</mapper>

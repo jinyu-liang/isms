@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!-- namespace命名规则：项目或者构件的英文简写 -->
+<mapper namespace="pretrst">
+    <resultMap id="DDeliveryPlanRM" type="com.is.pretrst.entity.DDeliveryPlan">
+        <id property="planId" column="plan_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="sellOrderCode" column="sell_order_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="title" column="title" javaType="String" jdbcType="VARCHAR" />
+        <result property="toWsCd" column="to_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="unloadPlaceNm" column="unload_place_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="deliveryPlanTm" column="delivery_plan_tm" javaType="Date" />
+        <result property="verifiedSiteUserCd" column="verified_site_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedSiteTm" column="verified_site_tm" javaType="Date" />
+        <result property="verifiedSiteStatus" column="verified_site_status" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedSiteMemo" column="verified_site_memo" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedHeadUserCd" column="verified_head_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedHeadTm" column="verified_head_tm" javaType="Date" />
+        <result property="verifiedHeadStatus" column="verified_head_status" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedHeadMemo" column="verified_head_memo" javaType="String" jdbcType="VARCHAR" />
+        <result property="downSendTm" column="down_send_tm" javaType="Date" />
+        <result property="deliveryReqTm" column="delivery_req_tm" javaType="Date" />
+        <result property="deliveryDoneTm" column="delivery_done_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="planFilePath" column="plan_file_path" javaType="String" jdbcType="VARCHAR" />
+        <result property="planImagePath" column="plan_Image_path" javaType="String" jdbcType="VARCHAR" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="createUserCd" column="create_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="createTm" column="create_tm" javaType="Date" />
+        <result property="updateTm" column="update_tm" javaType="Date" />
+        <result property="deleteCd" column="delete_cd" javaType="String" jdbcType="VARCHAR" />
+        <collection property="dRecordUserMappingList" column="{recordId=plan_id}" ofType="java.util.List" select="DRecordUserMapping.selectByEntity" />
+       <!--  <collection property="dInvoices" column="{planId=plan_id}" ofType="java.util.List" select="DInvoice.selectByEntity" />
+        <collection property="dDeliveryItems" column="{planId=plan_id}" ofType="java.util.List" select="DDeliveryItem.selectByEntity" /> -->
+    </resultMap>
+    <resultMap id="DExItemRM" type="com.is.pretrst.entity.DExItem">
+        <id property="itemId" column="item_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectId" column="project_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="itemNm" column="item_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="amount" column="amount" javaType="Integer" jdbcType="INTEGER" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+    </resultMap>
+    <resultMap id="DExProjectRM" type="com.is.pretrst.entity.DExProject">
+        <id property="projectId" column="project_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectNm" column="project_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="weight" column="weight" javaType="Double" jdbcType="DOUBLE" />
+        <result property="contractStartDate" column="contract_start_date" javaType="String" jdbcType="VARCHAR" />
+        <result property="startDate" column="start_date" javaType="String" jdbcType="VARCHAR" />
+        <result property="contractOtherReq" column="contract_other_req" javaType="String" jdbcType="VARCHAR" />
+        <result property="lastReportDt" column="last_report_dt" javaType="Date" />
+        <result property="lastReportId" column="last_report_id" javaType="String" jdbcType="VARCHAR" />
+       <!--  <collection property="dExProgresss" column="{reportId=last_report_id}" ofType="com.is.pretrst.entity.DExProgress" select="DExProgress.selectOneByEntity" /> -->
+        <collection property="dExItems" column="{projectId=project_id}" ofType="java.util.List" select="DExItem.selectByEntity" />
+    </resultMap>
+    <resultMap id="DInvoiceRM" type="com.is.pretrst.entity.DInvoice">
+        <id property="invoiceId" column="invoice_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="planId" column="plan_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="sellOrderCode" column="sell_order_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="title" column="title" javaType="String" jdbcType="VARCHAR" />
+        <result property="tcompanyNm" column="t_company_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="tcompanyTel" column="t_company_tel" javaType="String" jdbcType="VARCHAR" />
+        <result property="driver" column="driver" javaType="String" jdbcType="VARCHAR" />
+        <result property="truckNum" column="truck_num" javaType="String" jdbcType="VARCHAR" />
+        <result property="driverTel" column="driver_tel" javaType="String" jdbcType="VARCHAR" />
+        <result property="fromWsCd" column="from_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="toWsCd" column="to_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedBy" column="verified_by" javaType="String" jdbcType="VARCHAR" />
+        <result property="invoiceUserId" column="invoice_user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="approvalReqTm" column="approval_req_tm" javaType="Date" />
+        <result property="sureDeliveryTm" column="sure_delivery_tm" javaType="Date" />
+        <result property="approvalTm" column="approval_tm" javaType="Date" />
+        <result property="approvalUserCd" column="approval_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="dinvoiceImagePath" column="dinvoice_image_path" javaType="String" jdbcType="VARCHAR" />
+        <result property="deliveryTm" column="delivery_tm" javaType="Date" />
+        <result property="arrivalTm" column="arrival_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="updateTm" column="update_tm" javaType="Date" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="deleteCd" column="delete_cd" javaType="String" jdbcType="VARCHAR" />
+        <!-- <collection property="dInvoiceItems" column="{invoiceId=invoice_id}" ofType="java.util.List" select="DInvoiceItem.selectByEntity" /> -->
+        <collection property="dinvoiceImages" column="{invoiceId=invoice_id}" ofType="java.util.List" select="DInvoice.selectImagePathByInvoiceId" /> 
+    </resultMap>
+    <resultMap id="DInvoiceItemRM" type="com.is.pretrst.entity.DInvoiceItem">
+        <id property="itemId" column="item_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="invoiceId" column="invoice_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="itemNo" column="item_no" javaType="Integer" jdbcType="INTEGER" />
+        <result property="categoryCd" column="category_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="materialCd" column="material_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="modelNo" column="model_no" javaType="String" jdbcType="VARCHAR" />
+        <result property="identificationCd" column="identification_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="sender" column="sender" javaType="String" jdbcType="VARCHAR" />
+        <result property="receiver" column="receiver" javaType="String" jdbcType="VARCHAR" />
+        <result property="sendAmount" column="send_amount" javaType="Integer" jdbcType="INTEGER" />
+        <result property="receivedAmount" column="received_amount" javaType="Integer" jdbcType="INTEGER" />
+        <result property="unit" column="unit" javaType="String" jdbcType="VARCHAR" />
+        <result property="usePlace" column="use_place" javaType="String" jdbcType="VARCHAR" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="materialNm" column="material_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="categoryNm" column="category_nm" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DInvoiceImageRM" type="com.is.pretrst.entity.DInvoiceImage">
+        <id property="photoId" column="photo_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="invoiceId" column="invoice_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="fileName" column="file_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="posLongitude" column="pos_longitude" javaType="Float" jdbcType="DOUBLE" />
+        <result property="posLatitude" column="pos_latitude" javaType="Float" jdbcType="DOUBLE" />
+        <result property="posHeight" column="pos_height" javaType="Float" jdbcType="DOUBLE" />
+        <result property="photoUserCd" column="photo_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="photoTm" column="photo_tm" javaType="Date" />
+        <result property="uploadTm" column="upload_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="checkTm" column="check_tm" javaType="Date" />
+        <result property="checkUserCd" column="check_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DProgressImageRM" type="com.is.pretrst.entity.DProgressImage">
+        <id property="imageId" column="image_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="filename" column="filename" javaType="String" jdbcType="VARCHAR" />
+        <result property="posLongitude" column="pos_longitude" javaType="Float" jdbcType="DOUBLE" />
+        <result property="posLatitude" column="pos_latitude" javaType="Float" jdbcType="DOUBLE" />
+        <result property="posHeight" column="pos_height" javaType="Float" jdbcType="DOUBLE" />
+        <result property="photoUserCd" column="photo_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="photoTm" column="photo_tm" javaType="Date" />
+        <result property="uploadTm" column="upload_tm" javaType="Date" />
+    </resultMap>
+    <resultMap id="DProgressReportRM" type="com.is.pretrst.entity.DProgressReport">
+        <id property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportDt" column="report_dt" javaType="Date" />
+        <result property="userCd" column="user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="createTm" column="create_tm" javaType="Date" />
+        <result property="updateTm" column="update_tm" javaType="Date" />
+        <collection property="progressImage" column="{reportId=report_id}" ofType="java.util.List" select="DProgressImage.selectByEntity" />
+    </resultMap>
+    <resultMap id="DExProgressRM" type="com.is.pretrst.entity.DExProgress">
+        <id property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectId" column="project_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="progressStatus" column="progress_status" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbWorkshop" column="fb_workshop" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbDelivery" column="fb_delivery" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbQuality" column="fb_quality" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbSecurity" column="fb_security" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbManner" column="fb_manner" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbMmaterial" column="fb_mmaterial" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbSmaterial" column="fb_smaterial" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbEquipment" column="fb_equipment" javaType="String" jdbcType="VARCHAR" />
+        <result property="totalCost" column="total_cost" javaType="Float" jdbcType="DOUBLE" />
+        <result property="currentCost" column="current_cost" javaType="Float" jdbcType="DOUBLE" />
+        <result property="totalExpense" column="total_expense" javaType="Float" jdbcType="DOUBLE" />
+        <result property="currentExpense" column="current_expense" javaType="Float" jdbcType="DOUBLE" />
+        <result property="teamLeader" column="team_leader" javaType="String" jdbcType="VARCHAR" />
+        <result property="welder" column="welder" javaType="String" jdbcType="VARCHAR" />
+        <result property="riveter" column="riveter" javaType="String" jdbcType="VARCHAR" />
+        <result property="workerCount" column="worker_count" javaType="Integer" jdbcType="INTEGER" />
+        <result property="viceManager" column="vice_manager" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsLeader" column="ws_leader" javaType="String" jdbcType="VARCHAR" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+         <collection property="progressReport" column="{reportId=report_id}" ofType="com.is.pretrst.entity.DProgressReport" select="DProgressReport.selectOneByEntity" />
+         <collection property="dexProject" column="{projectId=project_id}" ofType="com.is.pretrst.entity.DExProject" select="DExProject.selectOneByEntity" />
+        <collection property="exItems" column="{projectId=project_id}" ofType="java.util.List" select="DExItem.selectByEntity" /> 
+        <collection property="dprogressImage" column="{reportId=report_id}" ofType="java.util.List" select="DProgressImage.selectByEntity" />
+    </resultMap>
+    
+    <resultMap id="DRecordReplyRM" type="com.is.pretrst.entity.DRecordReply">
+        <id property="replyId" column="reply_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="recordId" column="record_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="replyType" column="reply_type" javaType="String" jdbcType="VARCHAR" />
+        <result property="rootReplyId" column="root_reply_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="parentReplyId" column="parent_reply_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="title" column="title" javaType="String" jdbcType="VARCHAR" />
+        <result property="content" column="content" javaType="String" jdbcType="VARCHAR" />
+        <result property="replyUserCd" column="reply_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="createTm" column="create_tm" javaType="Date" />
+        <result property="updateTm" column="update_tm" javaType="Date" />
+        <result property="extraFlg" column="extra_flg" javaType="String" jdbcType="VARCHAR" />
+        <result property="deleteCd" column="delete_cd" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DRecordUserMappingRM" type="com.is.pretrst.entity.DRecordUserMapping">
+        <id property="mappingId" column="mapping_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="recordId" column="record_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="recordType" column="record_type" javaType="String" jdbcType="VARCHAR" />
+        <result property="mappingUserCd" column="mapping_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="levelFlg" column="level_flg" javaType="String" jdbcType="VARCHAR" />
+        <result property="createTm" column="create_tm" javaType="Date" />
+        <result property="updateTm" column="update_tm" javaType="Date" />
+        <result property="deleteCd" column="delete_cd" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DReportRM" type="com.is.pretrst.entity.DReport">
+        <result property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="title" column="title" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectCode" column="project_code" javaType="String" jdbcType="VARCHAR" />
+        <result property="projName" column="proj_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="unitPrice" column="unit_price" javaType="Float" jdbcType="DOUBLE" />
+        <result property="amount" column="amount" javaType="Double" jdbcType="NUMERIC" />
+        <result property="number" column="number" javaType="Integer" jdbcType="INTEGER" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="reportUserCd" column="report_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportUserName" column="report_user_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportTm" column="report_tm" javaType="Date" />
+        <result property="processUserCd" column="process_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="processUserName" column="process_user_name" javaType="String" jdbcType="VARCHAR" />
+         <result property="dealResult" column="deal_result" javaType="String" jdbcType="VARCHAR" />
+        <result property="processTm" column="process_tm" javaType="Date" />
+        <result property="comment" column="comment" javaType="String" jdbcType="VARCHAR" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedUserCd" column="verified_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedUserName" column="verified_user_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedHeadTm" column="verified_head_tm" javaType="Date" />
+        <result property="verifiedHeadMemo" column="verified_head_memo" javaType="String" jdbcType="VARCHAR" />
+        <result property="verifiedHeadStatus" column="verified_head_status" javaType="String" jdbcType="VARCHAR" />
+        <collection property="fileName" column="{reportId=report_id}" ofType="java.util.List" select="DReport.selectImagePathByReportId" />
+    </resultMap>
+    <resultMap id="DReportImageRM" type="com.is.pretrst.entity.DReportImage">
+        <id property="photoId" column="photo_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="fileName" column="file_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="posLongitude" column="pos_longitude" javaType="Float" jdbcType="DOUBLE" />
+        <result property="posLatitude" column="pos_latitude" javaType="Float" jdbcType="DOUBLE" />
+        <result property="posHeight" column="pos_height" javaType="Float" jdbcType="DOUBLE" />
+        <result property="photoUserCd" column="photo_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="photoTm" column="photo_tm" javaType="Date" />
+        <result property="uploadTm" column="upload_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="checkTm" column="check_tm" javaType="Date" />
+        <result property="checkUserCd" column="check_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DScrapTransImageRM" type="com.is.pretrst.entity.DScrapTransImage">
+        <id property="photoId" column="photo_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="fileName" column="file_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="photoTm" column="photo_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="checkTm" column="check_tm" javaType="Date" />
+        <result property="checkUserCd" column="check_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="checkBy" column="check_by" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DDeliveryItemRM" type="com.is.pretrst.entity.DDeliveryItem">
+        <id property="itemId" column="item_id" javaType="Integer" jdbcType="INTEGER" />
+        <result property="planId" column="plan_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="itemNo" column="item_no" javaType="Integer" jdbcType="INTEGER" />
+        <result property="classCd" column="class_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="classNm" column="class_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="categoryCd" column="category_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="categoryNm" column="category_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="materialCd" column="material_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="materialNm" column="material_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="modelNo" column="model_no" javaType="String" jdbcType="VARCHAR" />
+        <result property="identificationCd" column="identification_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="identificationNm" column="identification_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="sender" column="sender" javaType="String" jdbcType="VARCHAR" />
+        <result property="receiver" column="receiver" javaType="String" jdbcType="VARCHAR" />
+        <result property="sendAmount" column="send_amount" javaType="Integer" jdbcType="INTEGER" />
+        <result property="receivedAmount" column="received_amount" javaType="Integer" jdbcType="INTEGER" />
+        <result property="unit" column="unit" javaType="String" jdbcType="VARCHAR" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="usePlace" column="use_place" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DScrapTransRM" type="com.is.pretrst.entity.DScrapTrans">
+        <id property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="fromWsCd" column="from_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="transUserCd" column="trans_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="transUserName" column="trans_user_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="sender" column="sender" javaType="String" jdbcType="VARCHAR" />
+        <result property="toWsCd" column="to_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="receiver" column="receiver" javaType="String" jdbcType="VARCHAR" />
+        <result property="receiverId" column="receiver_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="tCompanyNm" column="t_company_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="driver" column="driver" javaType="String" jdbcType="VARCHAR" />
+        <result property="weight" column="weight" javaType="Float" jdbcType="DOUBLE" />
+        <result property="deliveryTm" column="delivery_tm" javaType="Date" />
+        <result property="arrivalTm" column="arrival_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+         <collection property="fileName" column="{transId=trans_id}" ofType="java.util.List" select="DScrapTrans.selectImagePathByReportId" />
+    </resultMap>
+    
+        <resultMap id="MWorkshopTransRM" type="com.is.pretrst.entity.MWorkshopTrans">
+        <id property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="fromWsCd" column="from_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="transUserCd" column="trans_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="transUserName" column="trans_user_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="sender" column="sender" javaType="String" jdbcType="VARCHAR" />
+        <result property="toWsCd" column="to_ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="receiver" column="receiver" javaType="String" jdbcType="VARCHAR" />
+        <result property="tCompanyNm" column="t_company_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="driver" column="driver" javaType="String" jdbcType="VARCHAR" />
+        <result property="weight" column="weight" javaType="Float" jdbcType="DOUBLE" />
+        <result property="deliveryTm" column="delivery_tm" javaType="Date" />
+        <result property="arrivalTm" column="arrival_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="dealComment" column="deal_comment" javaType="String" jdbcType="VARCHAR" />
+        <collection property="itemList" column="{transId=trans_id}" ofType="java.util.List" select="MTransItem.selectByEntity" />
+         <collection property="fileName" column="{transId=trans_id}" ofType="java.util.List" select="MWorkshopTrans.selectImagePathByReportId" />
+    </resultMap>
+    <resultMap id="MWorkshopRM" type="com.is.pretrst.entity.MWorkshop">
+        <id property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsNm" column="ws_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="divCd" column="div_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="typeCd" column="type_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="managerUserId" column="manager_user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="beginTime" column="begin_time" javaType="Date" />
+        <result property="endTime" column="end_time" javaType="Date" />
+        <result property="deleteCd" column="delete_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="filenames" column="filenames" javaType="String" jdbcType="VARCHAR" />
+        <collection property="itemList" column="{wsCd=ws_nm}" ofType="java.util.List" select="MWorkshopItem.selectByEntity" />
+        <collection property="contractImage" column="{wsCd=ws_cd}" ofType="java.util.List" select="DContractImage.selectByEntity" />
+        <collection property="project" column="{wsCd=ws_cd}" ofType="com.is.pretrst.entity.DExProject" select="DExProject.selectOneByEntity" />
+    </resultMap>
+    <resultMap id="MWorkshopQualityRM" type="com.is.pretrst.entity.MWorkshopQuality">
+        <id property="pid" column="pid" javaType="String" jdbcType="VARCHAR" />
+        <result property="fquserid" column="fquserid" javaType="String" jdbcType="VARCHAR" />
+        <result property="fqusername" column="fqusername" javaType="String" jdbcType="VARCHAR" />
+        <result property="ws_cd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="ws_nm" column="ws_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="div_cd" column="div_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="fqattchid" column="fqattchid" javaType="String" jdbcType="VARCHAR" />
+        <result property="zgattchid" column="zgattchid" javaType="String" jdbcType="VARCHAR" />
+        <result property="fqdesc" column="fqdesc" javaType="String" jdbcType="VARCHAR" />
+        <result property="zgdesc" column="zgdesc" javaType="String" jdbcType="VARCHAR" />
+        <result property="zgusername" column="zgusername" javaType="String" jdbcType="VARCHAR" />
+        <result property="zguserid" column="zguserid" javaType="String" jdbcType="VARCHAR" />
+        <result property="fqstatus" column="fqstatus" javaType="String" jdbcType="VARCHAR" />
+        <result property="remak" column="remak" javaType="String" jdbcType="VARCHAR" />
+        <result property="zgaddtime" column="zgaddtime" javaType="Date" />
+        <result property="fqaddtime" column="fqaddtime" javaType="Date" /> 
+    </resultMap>
+    <resultMap id="MWorkshopExtRM" type="com.is.pretrst.entity.MWorkshopExt">
+        <id property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsNm" column="ws_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="flag" column="flag" javaType="String" jdbcType="VARCHAR" />
+        <result property="newtime" column="newtime" javaType="Date" />
+        <result property="managerUserId" column="manager_user_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="beginTime" column="begin_time" javaType="Date" />
+        <result property="endTime" column="end_time" javaType="Date" />
+    </resultMap>
+       <resultMap id="DContractImageRM" type="com.is.pretrst.entity.DContractImage">
+        <id property="photoId" column="photo_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="fileName" column="file_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="photoTm" column="photo_tm" javaType="Date" />
+        
+    </resultMap>
+    <resultMap id="ExPersonManagerRM" type="com.is.pretrst.entity.ExPersonManager">
+        <id property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="workCenterId" column="work_center_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="title" column="title" javaType="String" jdbcType="VARCHAR" />
+        <result property="teamCd" column="team_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportUserCd" column="report_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportUserName" column="report_user_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="reportTm" column="report_tm" javaType="Date" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <result property="processUserCd" column="process_user_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="processUserName" column="process_user_name" javaType="String" jdbcType="VARCHAR" />
+        <result property="processTm" column="process_tm" javaType="Date"  />
+        <result property="dealComment" column="deal_comment" javaType="String" jdbcType="VARCHAR" />
+        <result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR" />
+         <collection property="fileName" column="{reportId=report_id}" ofType="java.util.List" select="ExPersonManager.selectImagePathByReportId" />
+    </resultMap>
+    <resultMap id="DExProgressMobileRM" type="com.is.pretrst.entity.DExProgress">
+        <id property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectId" column="project_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="progressStatus" column="progress_status" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbWorkshop" column="fb_workshop" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbDelivery" column="fb_delivery" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbQuality" column="fb_quality" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbSecurity" column="fb_security" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbManner" column="fb_manner" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbMmaterial" column="fb_mmaterial" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbSmaterial" column="fb_smaterial" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbEquipment" column="fb_equipment" javaType="String" jdbcType="VARCHAR" />
+        <result property="totalCost" column="total_cost" javaType="Float" jdbcType="DOUBLE" />
+        <result property="currentCost" column="current_cost" javaType="Float" jdbcType="DOUBLE" />
+        <result property="totalExpense" column="total_expense" javaType="Float" jdbcType="DOUBLE" />
+        <result property="currentExpense" column="current_expense" javaType="Float" jdbcType="DOUBLE" />
+        <result property="teamLeader" column="team_leader" javaType="String" jdbcType="VARCHAR" />
+        <result property="welder" column="welder" javaType="String" jdbcType="VARCHAR" />
+        <result property="riveter" column="riveter" javaType="String" jdbcType="VARCHAR" />
+        <result property="workerCount" column="worker_count" javaType="Integer" jdbcType="INTEGER" />
+        <result property="viceManager" column="vice_manager" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsLeader" column="ws_leader" javaType="String" jdbcType="VARCHAR" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+        <collection property="dprogressImage" column="{reportId=report_id}" ofType="java.util.List" select="DProgressImage.selectFilenameByReportId" />
+    </resultMap>
+    <resultMap id="RstVerInfoRM" type="com.is.pretrst.entity.RstVerInfo">
+		<id property="verId" column="ver_id" javaType="Integer" jdbcType="INTEGER" />
+		<result property="verCode" column="ver_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="prodDate" column="prod_date"  javaType="Date"  />
+		<result property="finishDate" column="finish_date" javaType="Date"  />
+		<result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" javaType="String" jdbcType="VARCHAR"/>
+		<result property="fileName" column="file_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="updateMode" column="update_mode" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operUserName" column="oper_user_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operTime" column="oper_time"  javaType="Date"  />
+	</resultMap>
+	<resultMap id="RstUploadConfRM" type="com.is.pretrst.entity.RstUploadConf">
+		<id property="fileType" column="file_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="sizeConf" column="size_conf" javaType="Integer" jdbcType="INTEGER" />
+		<result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operUserName" column="oper_user_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="operTime" column="oper_time"  javaType="Date"  />
+	</resultMap>
+	
+	<resultMap id="MWorkshopItemRM" type="com.is.pretrst.entity.MWorkshopItem">
+		<id property="itemId" column="item_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="categoryCd" column="category_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="materialCd" column="material_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="modelNo" column="model_no" javaType="String" jdbcType="VARCHAR"/>
+		<result property="totalAmount" column="total_amount" javaType="Integer" jdbcType="INTEGER" />
+		<result property="remainNumber" column="remain_number" javaType="Integer" jdbcType="INTEGER" />
+		<result property="unit" column="unit" javaType="String" jdbcType="VARCHAR"/>
+		<result property="usePlace" column="use_place" javaType="String" jdbcType="VARCHAR"/>
+		<result property="materialNm" column="material_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="categoryNm" column="category_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+	</resultMap>
+	<resultMap id="MTransItemRM" type="com.is.pretrst.entity.MTransItem">
+		<id property="itemId" column="item_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="transId" column="trans_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="categoryCd" column="category_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="materialCd" column="material_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="modelNo" column="model_no" javaType="String" jdbcType="VARCHAR"/>
+		<result property="totalAmount" column="total_amount" javaType="Integer" jdbcType="INTEGER" />
+		<result property="unit" column="unit" javaType="String" jdbcType="VARCHAR"/>
+		<result property="usePlace" column="use_place" javaType="String" jdbcType="VARCHAR"/>
+		<result property="materialNm" column="material_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="categoryNm" column="category_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+	</resultMap>
+    <resultMap id="DExprojectExtRM" type="com.is.pretrst.entity.DExProjectExt">
+        <result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectId" column="project_Id" javaType="String" jdbcType="VARCHAR" />
+        <result property="projectNm" column="project_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="weight" column="weight" javaType="Double" jdbcType="DOUBLE" />
+        <result property="startDate" column="start_date" javaType="String" jdbcType="VARCHAR" />
+        <result property="lastReportDt" column="last_report_dt" javaType="Date" />
+        <result property="lastReportId" column="last_report_id" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DExProgressExtRM" type="com.is.pretrst.entity.DExProgressExt">
+        <id property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR" /> 
+         <result property="projectId" column="project_id" javaType="String" jdbcType="VARCHAR" />
+        <result property="progressStatus" column="progress_status" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbWorkshop" column="fb_workshop" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbDelivery" column="fb_delivery" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbQuality" column="fb_quality" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbSecurity" column="fb_security" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbManner" column="fb_manner" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbMmaterial" column="fb_mmaterial" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbSmaterial" column="fb_smaterial" javaType="String" jdbcType="VARCHAR" />
+        <result property="fbEquipment" column="fb_equipment" javaType="String" jdbcType="VARCHAR" />
+        <result property="totalCost" column="total_cost" javaType="Float" jdbcType="DOUBLE" />
+        <result property="currentCost" column="current_cost" javaType="Float" jdbcType="DOUBLE" />
+        <result property="totalExpense" column="total_expense" javaType="Float" jdbcType="DOUBLE" />
+        <result property="currentExpense" column="current_expense" javaType="Float" jdbcType="DOUBLE" />
+        <result property="teamLeader" column="team_leader" javaType="String" jdbcType="VARCHAR" />
+        <result property="welder" column="welder" javaType="String" jdbcType="VARCHAR" />
+        <result property="riveter" column="riveter" javaType="String" jdbcType="VARCHAR" />
+        <result property="workerCount" column="worker_count" javaType="Integer" jdbcType="INTEGER" />
+        <result property="viceManager" column="vice_manager" javaType="String" jdbcType="VARCHAR" />
+        <result property="wsLeader" column="ws_leader" javaType="String" jdbcType="VARCHAR" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+    </resultMap>
+    <resultMap id="DExItemExtRM" type="com.is.pretrst.entity.DExItemExt">
+        <result property="itemNm" column="item_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="amount" column="amount" javaType="Integer" jdbcType="INTEGER" />
+        <result property="memo" column="memo" javaType="String" jdbcType="BLOB" typeHandler="blobHandler" />
+    </resultMap>
+    	<resultMap id="ExPersonInfoRM" type="com.is.pretrst.entity.ExPersonInfo">
+		<id property="identyCardCode" column="identy_card_code" javaType="String" jdbcType="VARCHAR"/>
+		<result property="reportId" column="report_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="telephone" column="telephone" javaType="String" jdbcType="VARCHAR"/>
+		<result property="workType" column="work_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="workTypeName" column="work_type_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="statusCd" column="status_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="wsNm" column="ws_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="toWsCd" column="to_ws_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="toWsNm" column="to_ws_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="updateDate" column="update_date"  javaType="Date"  />
+		<result property="flag" column="flag" javaType="String" jdbcType="VARCHAR"/>
+		<result property="teamName" column="team_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="teamId" column="team_id" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="ExPersonInfoPayRM" type="com.is.pretrst.entity.ExPersonInfoPay">
+	    <id property="pid" column="pid" javaType="String" jdbcType="VARCHAR"/>
+		<result property="identyCardCode" column="identyCardCode" javaType="String" jdbcType="VARCHAR"/>
+		<result property="name" column="name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="telephone" column="telephone" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_type" column="work_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_type_name" column="work_type_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_count_type" column="work_count_type" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_pay" column="work_pay" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_ws_cd" column="work_ws_cd" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_ws_nm" column="work_ws_nm" javaType="String" jdbcType="VARCHAR"/>
+		<result property="team_name" column="team_name" javaType="String" jdbcType="VARCHAR"/>
+		<result property="team_id" column="team_id" javaType="String" jdbcType="VARCHAR"/>
+		<result property="addtime" column="addtime"  javaType="Date"  />
+		<result property="start_time_am" column="start_time_am"  javaType="Date"  />
+		<result property="end_time_am" column="end_time_am"  javaType="Date"  />
+		<result property="start_time_pm" column="start_time_pm"  javaType="Date"  />
+		<result property="end_time_pm" column="end_time_pm"  javaType="Date"  />
+		<result property="start_time_other" column="start_time_other"  javaType="Date"  />
+		<result property="end_time_other" column="end_time_other"  javaType="Date"  />
+		<result property="work_timer" column="work_timer" javaType="String" jdbcType="VARCHAR"/>
+		<result property="work_status" column="work_status" javaType="String" jdbcType="VARCHAR"/>
+		<result property="remark" column="remark" javaType="String" jdbcType="VARCHAR"/>
+		<result property="dayormonth" column="dayormonth" javaType="String" jdbcType="VARCHAR"/>
+		<result property="bank_card" column="bank_card" javaType="String" jdbcType="VARCHAR"/>
+		<result property="bank_card_name" column="bank_card_name" javaType="String" jdbcType="VARCHAR"/>
+	</resultMap>
+    <resultMap id="MTeamRM" type="com.is.pretrst.entity.MTeam">
+        <id property="teamCd" column="team_cd" javaType="String" jdbcType="VARCHAR"/>
+        <result property="teamNm" column="team_nm" javaType="String" jdbcType="VARCHAR"/>
+        <result property="wsCd" column="ws_cd" javaType="String" jdbcType="VARCHAR"/>
+        <result property="wsNm" column="ws_nm" javaType="String" jdbcType="VARCHAR"/>
+        <result property="workerCount" column="worker_count" javaType="Integer" jdbcType="INTEGER"/>
+        <result property="mobileTel" column="mobile_tel" javaType="String" jdbcType="VARCHAR"/>
+        <result property="identyCardCode" column="identy_card_code" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operUserName" column="oper_user_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operTime" column="oper_time" javaType="Date"/>
+    </resultMap>
+    <resultMap id="ExWorkTypeRM" type="com.is.pretrst.entity.ExWorkType">
+        <id property="workCd" column="work_cd" javaType="String" jdbcType="VARCHAR"/>
+        <result property="workNm" column="work_nm" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operUserId" column="oper_user_id" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operUserName" column="oper_user_name" javaType="String" jdbcType="VARCHAR"/>
+        <result property="operTime" column="oper_time" javaType="Date"/>
+    </resultMap>
+    <resultMap id="MWorkshopJoblogRM" type="com.is.pretrst.entity.MWorkshopJoblog">
+        <id property="ID" column="ID" javaType="String" jdbcType="VARCHAR" />
+        <result property="fquserid" column="fquserid" javaType="String" jdbcType="VARCHAR" />
+        <result property="fqusername" column="fqusername" javaType="String" jdbcType="VARCHAR" />
+        <result property="ws_cd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="ws_nm" column="ws_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="accepttime" column="accepttime" javaType="date" />
+        <result property="wheather" column="wheather" javaType="String" jdbcType="VARCHAR" />
+        <result property="starttime" column="starttime" javaType="date" />
+        <result property="endtime" column="endtime" javaType="date" />
+        <result property="jobcontent" column="jobcontent" javaType="String" jdbcType="VARCHAR" />
+        <result property="schedule" column="schedule" javaType="String" jdbcType="VARCHAR" />
+        <result property="Isplan" column="Isplan" javaType="String" jdbcType="VARCHAR" />
+        <result property="daySituation" column="daySituation" javaType="String" jdbcType="VARCHAR" />
+        <result property="nightSituation" column="nightSituation" javaType="String" jdbcType="VARCHAR" />
+        <result property="qualitySituation" column="qualitySituation" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="MWorkshopContactRM" type="com.is.pretrst.entity.MWorkshopContact">
+        <id property="ID" column="ID" javaType="String" jdbcType="VARCHAR" />
+        <result property="fquserid" column="fquserid" javaType="String" jdbcType="VARCHAR" />
+        <result property="fqusername" column="fqusername" javaType="String" jdbcType="VARCHAR" />
+        <result property="ws_cd" column="ws_cd" javaType="String" jdbcType="VARCHAR" />
+        <result property="ws_nm" column="ws_nm" javaType="String" jdbcType="VARCHAR" />
+        <result property="title" column="title" javaType="String" jdbcType="VARCHAR" />
+        <result property="detail" column="detail" javaType="String" jdbcType="VARCHAR" />
+        <result property="addtime" column="addtime"  javaType="date" />
+        <result property="acceptdepname" column="acceptdepname" javaType="String" jdbcType="VARCHAR" />
+        <result property="acceptdepID" column="acceptdepID" javaType="String" jdbcType="VARCHAR" />
+        <result property="senderdepname" column="senderdepname" javaType="String" jdbcType="VARCHAR" />
+        <result property="senderdepID" column="senderdepID" javaType="String" jdbcType="VARCHAR" />
+        <result property="acceptdepmangername" column="acceptdepmangername" javaType="String" jdbcType="VARCHAR" />
+        <result property="acceptdepmangerID" column="acceptdepmangerID" javaType="String" jdbcType="VARCHAR" />
+        <result property="acceptdepmangerdesc" column="acceptdepmangerdesc" javaType="String" jdbcType="VARCHAR" />
+        <result property="acceptdepmangertime" column="acceptdepmangertime"  javaType="date"/>
+        <result property="leadername" column="leadername" javaType="String" jdbcType="VARCHAR" />
+        <result property="leaderID" column="leaderID" javaType="String" jdbcType="VARCHAR" />
+        <result property="leaderdesc" column="leaderdesc" javaType="String" jdbcType="VARCHAR" />
+        <result property="leadertime" column="leadertime"  javaType="date"/>
+        <result property="Isaccept" column="Isaccept" javaType="String" jdbcType="VARCHAR" />
+        <result property="accepttime" column="accepttime"  javaType="date" />
+        <result property="acceptdesc" column="acceptdesc" javaType="String" jdbcType="VARCHAR" />
+        <result property="status" column="status" javaType="String" jdbcType="VARCHAR" />
+        <result property="remark" column="remark" javaType="String" jdbcType="VARCHAR" />
+    </resultMap>
+</mapper>

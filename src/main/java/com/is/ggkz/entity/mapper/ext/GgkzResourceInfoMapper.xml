@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="GgkzResourceInfoExt">
+	<!-- 查找一个权限所对应的资源 -->
+	<select id="selectResourceNameList" parameterType="string" resultType="string">
+		select b.resource_url from ggkz_auth_resource a, ggkz_resource_info b, ggkz_auth_info c
+		where a.resource_id = b.resource_id and a.auth_id = c.auth_id and c.auth_name = #{value}
+	</select>
+	
+	
+	<!-- 查找多个权限所对应的菜单menu-->
+	<select id="selectResourceIdsByAuthIds" parameterType="java.util.List" resultType="string">
+		select info.resource_id from ggkz_auth_resource rela, ggkz_resource_info info
+		where rela.auth_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		and info.resource_id = rela.resource_id and info.resource_type = 'MENU' and info.valid_state='1'
+	</select>
+	
+	<select id="selectResourceByAuthIds" parameterType="java.util.List" resultMap="ggkz.GgkzResourceInfoRM">
+		select 
+			distinct info.resource_id,
+			info.higer_resource_code,
+			info.resource_name,
+			info.short_name,
+			info.resource_url,
+			info.note,
+			info.order_num
+		from ggkz_resource_info info,ggkz_auth_resource rela
+		where info.resource_id = rela.resource_id and info.resource_type = 'MENU' and info.valid_state='1' and rela.auth_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by info.order_num
+	</select>
+</mapper>

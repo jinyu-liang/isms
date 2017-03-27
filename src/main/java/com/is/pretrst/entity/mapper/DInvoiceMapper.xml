@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DInvoice">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			invoice_id,
+			plan_id,
+			sell_order_code,
+			title,
+			t_company_nm,
+			t_company_tel,
+			driver,
+			truck_num,
+			driver_tel,
+			from_ws_cd,
+			to_ws_cd,
+			verified_by,
+			invoice_user_id,
+			approval_req_tm,
+            sure_delivery_tm,
+			approval_tm,
+			approval_user_cd,
+			delivery_tm,
+			arrival_tm,
+			memo,
+			update_tm,
+            dinvoice_image_path,
+			status_cd,
+			delete_cd
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			invoice_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> ,
+            (select ws_nm from m_workshop where ws_cd=to_ws_cd ) as toWsNm,
+            (select ws_nm from m_workshop where ws_cd=from_ws_cd) as fromWsNm,
+            (SELECT name from  ggkz_user_info where user_id=approval_user_cd)as approvalUserNm
+                 
+			from d_invoice
+			<where>	      				
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="planId != null and planId != ''">
+					<![CDATA[and plan_id = #{planId}]]>
+				</if>
+				<if test="sellOrderCode != null and sellOrderCode != ''">
+					<![CDATA[and sell_order_code = #{sellOrderCode}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="tcompanyNm != null and tcompanyNm != ''">
+					<![CDATA[and t_company_nm = #{tcompanyNm}]]>
+				</if>
+				<if test="tcompanyTel != null and tcompanyTel != ''">
+					<![CDATA[and t_company_tel = #{tcompanyTel}]]>
+				</if>
+				<if test="driver != null and driver != ''">
+					<![CDATA[and driver = #{driver}]]>
+				</if>
+				<if test="truckNum != null and truckNum != ''">
+					<![CDATA[and truck_num = #{truckNum}]]>
+				</if>
+				<if test="driverTel != null and driverTel != ''">
+					<![CDATA[and driver_tel = #{driverTel}]]>
+				</if>
+				<if test="fromWsCd != null and fromWsCd != ''">
+					<![CDATA[and from_ws_cd = #{fromWsCd}]]>
+				</if>
+				<if test="toWsCd != null and toWsCd != ''">
+					<![CDATA[and to_ws_cd = #{toWsCd}]]>
+				</if>
+				<if test="verifiedBy != null and verifiedBy != ''">
+					<![CDATA[and verified_by = #{verifiedBy}]]>
+				</if>
+				<if test="invoiceUserId != null and invoiceUserId != ''">
+					<![CDATA[and invoice_user_id = #{invoiceUserId}]]>
+				</if>
+				<if test="approvalReqTm != null and approvalReqTm != ''">
+					<![CDATA[and approval_req_tm = #{approvalReqTm}]]>
+				</if>
+				<if test="sureDeliveryTm != null and sureDeliveryTm != ''">
+					<![CDATA[and sure_delivery_tm = #{sureDeliveryTm}]]>
+				</if>
+				<if test="approvalTm != null and approvalTm != ''">
+					<![CDATA[and approval_tm = #{approvalTm}]]>
+				</if>
+				<if test="approvalUserCd != null and approvalUserCd != ''">
+					<![CDATA[and approval_user_cd = #{approvalUserCd}]]>
+				</if>
+				<if test="deliveryTm != null and deliveryTm != ''">
+					<![CDATA[and delivery_tm = #{deliveryTm}]]>
+				</if>
+				<if test="arrivalTm != null and arrivalTm != ''">
+					<![CDATA[and arrival_tm = #{arrivalTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and update_tm = #{updateTm}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+           order by invoice_id desc 
+	</sql>
+	<!-- 模糊查询对象的sql -->
+	<sql id="mhquerySql">
+		select invoice.* ,
+            (select ws_nm from m_workshop where ws_cd=to_ws_cd ) as toWsNm,
+            (select ws_nm from m_workshop where ws_cd=from_ws_cd) as fromWsNm,
+            (SELECT name from  ggkz_user_info where user_id=approval_user_cd)as approvalUserNm
+                 
+			from d_invoice invoice
+            <if test="(invoiceUserId != null and invoiceUserId != '' )  ">
+                ,ggkz_user_info user
+                </if>
+            <if test="(fromWsCd != null and fromWsCd != '') ">
+                ,m_workshop shop
+            </if>
+			<where>	      				
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice.invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="planId != null and planId != ''">
+					<![CDATA[and invoice.plan_id = #{planId}]]>
+				</if>
+				<if test="sellOrderCode != null and sellOrderCode != ''">
+					<![CDATA[and invoice.sell_order_code = #{sellOrderCode}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and invoice.title = #{title}]]>
+				</if>
+				<if test="tcompanyNm != null and tcompanyNm != ''">
+					<![CDATA[and invoice.t_company_nm  like concat('%',  #{tcompanyNm},'%')]]> 
+				</if>
+				<if test="tcompanyTel != null and tcompanyTel != ''">
+					<![CDATA[and invoice.t_company_tel = #{tcompanyTel}]]>
+				</if>
+				<if test="driver != null and driver != ''">
+					<![CDATA[and invoice.driver like concat('%',  #{driver},'%')]]> 
+				</if>
+				<if test="truckNum != null and truckNum != ''">
+					<![CDATA[and invoice.truck_num  like concat('%',  #{truckNum},'%')]]> 
+				</if>
+				<if test="driverTel != null and driverTel != ''">
+					<![CDATA[and invoice.driver_tel = #{driverTel}]]>
+				</if>
+				<if test="fromWsCd != null and fromWsCd != ''">
+					<![CDATA[and invoice.from_ws_cd =`shop`.ws_cd and `shop`.`ws_nm`   like concat('%', #{fromWsCd},'%')]]>
+				</if>
+				<if test="toWsCd != null and toWsCd != ''">
+					<![CDATA[and invoice.to_ws_cd = `shop`.ws_cd and `shop`.`ws_nm`   like concat('%', #{toWsCd},'%')]]>
+				</if>
+				<if test="verifiedBy != null and verifiedBy != ''">
+					<![CDATA[and invoice.verified_by = #{verifiedBy}]]>
+				</if>
+				<if test="invoiceUserId != null and invoiceUserId != ''">
+					<![CDATA[and invoice.invoice_user_id =`user`.user_id and `user`.`name`   like concat('%', #{invoiceUserId},'%')]]>
+				</if>
+				<if test="approvalReqTm != null and approvalReqTm != ''">
+					<![CDATA[and invoice.approval_req_tm = #{approvalReqTm}]]>
+				</if>
+				<if test="sureDeliveryTm != null and sureDeliveryTm != ''">
+					<![CDATA[and invoice.sure_delivery_tm = #{sureDeliveryTm}]]>
+				</if>
+				<if test="approvalTm != null and approvalTm != ''">
+					<![CDATA[and invoice.approval_tm = #{approvalTm}]]>
+				</if>
+				<if test="approvalUserCd != null and approvalUserCd != ''">
+					<![CDATA[and invoice.approval_user_cd = #{approvalUserCd}]]>
+				</if>
+				<if test="deliveryTm != null and deliveryTm != ''">
+					<![CDATA[and invoice.delivery_tm = #{deliveryTm}]]>
+				</if>
+				<if test="arrivalTm != null and arrivalTm != ''">
+					<![CDATA[and invoice.arrival_tm = #{arrivalTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and invoice.memo = #{memo}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and invoice.update_tm = #{updateTm}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and invoice.status_cd = #{statusCd}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and invoice.delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DInvoice">
+	    <![CDATA[
+			insert into d_invoice (
+				invoice_id,
+				plan_id,
+				sell_order_code,
+				title,
+				t_company_nm,
+				t_company_tel,
+				driver,
+				truck_num,
+				driver_tel,
+				from_ws_cd,
+				to_ws_cd,
+				verified_by,
+				invoice_user_id,
+				approval_req_tm,
+                sure_delivery_tm,
+				approval_tm,
+				approval_user_cd,
+				delivery_tm,
+				arrival_tm,
+				memo,
+				update_tm,
+                dinvoice_image_path,
+				status_cd,
+				delete_cd
+			) values (
+				#{invoiceId},
+				#{planId},
+				#{sellOrderCode},
+				#{title},
+				#{tcompanyNm},
+				#{tcompanyTel},
+				#{driver},
+				#{truckNum},
+				#{driverTel},
+				#{fromWsCd},
+				#{toWsCd},
+				#{verifiedBy},
+				#{invoiceUserId},
+				#{approvalReqTm},
+				#{sureDeliveryTm},
+				#{approvalTm},
+				#{approvalUserCd},
+				#{deliveryTm},
+				#{arrivalTm},
+				#{memo},
+				#{updateTm},
+				#{dinvoiceImagePath},
+				#{statusCd},
+				#{deleteCd}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DInvoice">
+      
+			delete from d_invoice 
+				<where>	 
+					<if test="invoiceId != null and invoiceId != ''">
+						<![CDATA[and invoice_id = #{invoiceId}]]>
+					</if>
+					<if test="planId != null and planId != ''">
+						<![CDATA[and plan_id = #{planId}]]>
+					</if>
+					<if test="sellOrderCode != null and sellOrderCode != ''">
+						<![CDATA[and sell_order_code = #{sellOrderCode}]]>
+					</if>
+					<if test="title != null and title != ''">
+						<![CDATA[and title = #{title}]]>
+					</if>
+					<if test="tcompanyNm != null and tcompanyNm != ''">
+						<![CDATA[and t_company_nm = #{tcompanyNm}]]>
+					</if>
+					<if test="tcompanyTel != null and tcompanyTel != ''">
+						<![CDATA[and t_company_tel = #{tcompanyTel}]]>
+					</if>
+					<if test="driver != null and driver != ''">
+						<![CDATA[and driver = #{driver}]]>
+					</if>
+					<if test="truckNum != null and truckNum != ''">
+						<![CDATA[and truck_num = #{truckNum}]]>
+					</if>
+					<if test="driverTel != null and driverTel != ''">
+						<![CDATA[and driver_tel = #{driverTel}]]>
+					</if>
+					<if test="fromWsCd != null and fromWsCd != ''">
+						<![CDATA[and from_ws_cd = #{fromWsCd}]]>
+					</if>
+					<if test="toWsCd != null and toWsCd != ''">
+						<![CDATA[and to_ws_cd = #{toWsCd}]]>
+					</if>
+					<if test="verifiedBy != null and verifiedBy != ''">
+						<![CDATA[and verified_by = #{verifiedBy}]]>
+					</if>
+					<if test="invoiceUserId != null and invoiceUserId != ''">
+						<![CDATA[and invoice_user_id = #{invoiceUserId}]]>
+					</if>
+					<if test="approvalReqTm != null and approvalReqTm != ''">
+						<![CDATA[and approval_req_tm = #{approvalReqTm}]]>
+					</if>
+					<if test="sureDeliveryTm != null and sureDeliveryTm != ''">
+						<![CDATA[and sure_delivery_tm = #{sureDeliveryTm}]]>
+					</if>
+					<if test="approvalTm != null and approvalTm != ''">
+						<![CDATA[and approval_tm = #{approvalTm}]]>
+					</if>
+					<if test="approvalUserCd != null and approvalUserCd != ''">
+						<![CDATA[and approval_user_cd = #{approvalUserCd}]]>
+					</if>
+					<if test="deliveryTm != null and deliveryTm != ''">
+						<![CDATA[and delivery_tm = #{deliveryTm}]]>
+					</if>
+					<if test="arrivalTm != null and arrivalTm != ''">
+						<![CDATA[and arrival_tm = #{arrivalTm}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="updateTm != null and updateTm != ''">
+						<![CDATA[and update_tm = #{updateTm}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+					<if test="deleteCd != null and deleteCd != ''">
+						<![CDATA[and delete_cd = #{deleteCd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DInvoice">
+	   
+			update d_invoice 
+				<set>
+				<if test="planId != null">
+					plan_id = #{planId},
+				</if>
+				<if test="sellOrderCode != null">
+					sell_order_code = #{sellOrderCode},
+				</if>
+				<if test="title != null">
+					title = #{title},
+				</if>
+				<if test="tcompanyNm != null">
+					t_company_nm = #{tcompanyNm},
+				</if>
+				<if test="tcompanyTel != null">
+					t_company_tel = #{tcompanyTel},
+				</if>
+				<if test="driver != null">
+					driver = #{driver},
+				</if>
+				<if test="truckNum != null">
+					truck_num = #{truckNum},
+				</if>
+				<if test="driverTel != null">
+					driver_tel = #{driverTel},
+				</if>
+				<if test="fromWsCd != null">
+					from_ws_cd = #{fromWsCd},
+				</if>
+				<if test="toWsCd != null">
+					to_ws_cd = #{toWsCd},
+				</if>
+				<if test="verifiedBy != null">
+					verified_by = #{verifiedBy},
+				</if>
+				<if test="invoiceUserId != null">
+					invoice_user_id = #{invoiceUserId},
+				</if>
+				<if test="approvalReqTm != null">
+					approval_req_tm = #{approvalReqTm},
+				</if>
+				<if test="sureDeliveryTm != null">
+					sure_delivery_tm = #{sureDeliveryTm},
+				</if>
+				<if test="approvalTm != null">
+					approval_tm = #{approvalTm},
+				</if>
+				<if test="approvalUserCd != null">
+					approval_user_cd = #{approvalUserCd},
+				</if>
+				<if test="deliveryTm != null">
+					delivery_tm = #{deliveryTm},
+				</if>
+				<if test="arrivalTm != null">
+					arrival_tm = #{arrivalTm},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="updateTm != null">
+					update_tm = #{updateTm},
+				</if>
+				<if test="dinvoiceImagePath != null">
+					dinvoice_image_path = #{dinvoiceImagePath},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd},
+				</if>
+				<if test="deleteCd != null">
+					delete_cd = #{deleteCd}
+				</if>
+				</set>
+				
+				where 
+					invoice_id = #{invoiceId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DInvoice" resultMap="pretrst.DInvoiceRM">
+        select <include refid="allColumns" />
+	    
+			from d_invoice 
+			<where>	      				
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="planId != null and planId != ''">
+					<![CDATA[and plan_id = #{planId}]]>
+				</if>
+				<if test="sellOrderCode != null and sellOrderCode != ''">
+					<![CDATA[and sell_order_code = #{sellOrderCode}]]>
+				</if>
+				<if test="title != null and title != ''">
+					<![CDATA[and title = #{title}]]>
+				</if>
+				<if test="tcompanyNm != null and tcompanyNm != ''">
+					<![CDATA[and t_company_nm = #{tcompanyNm}]]>
+				</if>
+				<if test="tcompanyTel != null and tcompanyTel != ''">
+					<![CDATA[and t_company_tel = #{tcompanyTel}]]>
+				</if>
+				<if test="driver != null and driver != ''">
+					<![CDATA[and driver = #{driver}]]>
+				</if>
+				<if test="truckNum != null and truckNum != ''">
+					<![CDATA[and truck_num = #{truckNum}]]>
+				</if>
+				<if test="driverTel != null and driverTel != ''">
+					<![CDATA[and driver_tel = #{driverTel}]]>
+				</if>
+				<if test="fromWsCd != null and fromWsCd != ''">
+					<![CDATA[and from_ws_cd = #{fromWsCd}]]>
+				</if>
+				<if test="toWsCd != null and toWsCd != ''">
+					<![CDATA[and to_ws_cd = #{toWsCd}]]>
+				</if>
+				<if test="verifiedBy != null and verifiedBy != ''">
+					<![CDATA[and verified_by = #{verifiedBy}]]>
+				</if>
+				<if test="invoiceUserId != null and invoiceUserId != ''">
+					<![CDATA[and invoice_user_id = #{invoiceUserId}]]>
+				</if>
+				<if test="approvalReqTm != null and approvalReqTm != ''">
+					<![CDATA[and approval_req_tm = #{approvalReqTm}]]>
+				</if>
+				<if test="sureDeliveryTm != null and sureDeliveryTm != ''">
+					<![CDATA[and sure_delivery_tm = #{sureDeliveryTm}]]>
+				</if>
+				<if test="approvalTm != null and approvalTm != ''">
+					<![CDATA[and approval_tm = #{approvalTm}]]>
+				</if>
+				<if test="approvalUserCd != null and approvalUserCd != ''">
+					<![CDATA[and approval_user_cd = #{approvalUserCd}]]>
+				</if>
+				<if test="deliveryTm != null and deliveryTm != ''">
+					<![CDATA[and delivery_tm = #{deliveryTm}]]>
+				</if>
+				<if test="arrivalTm != null and arrivalTm != ''">
+					<![CDATA[and arrival_tm = #{arrivalTm}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="updateTm != null and updateTm != ''">
+					<![CDATA[and update_tm = #{updateTm}]]>
+				</if>
+				<if test="dinvoiceImagePath != null and dinvoiceImagePath != ''">
+					<![CDATA[and dinvoice_image_path = #{dinvoiceImagePath}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="deleteCd != null and deleteCd != ''">
+					<![CDATA[and delete_cd = #{deleteCd}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DInvoiceQuery" resultMap="pretrst.DInvoiceRM">
+			<include refid="querySql"/>
+			
+	</select>
+	<select id="selectImagePathByInvoiceId" parameterType="com.is.pretrst.entity.DInvoice" resultType="java.lang.String">
+        select file_name 
+            from d_invoice_image  
+            <where>                     
+                <if test="invoiceId != null and invoiceId != ''">
+                    <![CDATA[and invoice_id = #{invoiceId}]]>
+                </if>
+                
+            </where>
+      
+    </select>
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DInvoiceQuery" resultMap="pretrst.DInvoiceRM">
+		<include refid="mhquerySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DInvoiceQuery" resultType="integer">
+		select count(1) from ( <include refid="mhquerySql"/> ) as tmp_d_invoice
+	</select>
+	
+</mapper>

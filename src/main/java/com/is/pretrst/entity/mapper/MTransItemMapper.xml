@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称 -->
+<mapper namespace="MTransItem">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			item_id,
+			trans_id,
+			ws_cd,
+			category_cd,
+			material_cd,
+			model_no,
+			total_amount,
+			unit,
+			use_place,
+			material_nm,
+			category_nm,
+			memo
+	    ]]>
+	</sql>
+
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			item_id
+	    ]]>
+	</sql>
+
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select
+		<include refid="allColumns" />
+		from m_trans_item
+		<where>
+			<if test="itemId != null and itemId != ''">
+					<![CDATA[and item_id = #{itemId}]]>
+			</if>
+			<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+			</if>
+			<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+			</if>
+			<if test="categoryCd != null and categoryCd != ''">
+					<![CDATA[and category_cd = #{categoryCd}]]>
+			</if>
+			<if test="materialCd != null and materialCd != ''">
+					<![CDATA[and material_cd = #{materialCd}]]>
+			</if>
+			<if test="modelNo != null and modelNo != ''">
+					<![CDATA[and model_no = #{modelNo}]]>
+			</if>
+			<if test="totalAmount != null and totalAmount != ''">
+					<![CDATA[and total_amount = #{totalAmount}]]>
+			</if>
+			<if test="totalAmountStart != null and totalAmountStart != ''">
+					<![CDATA[and total_amount >= #{totalAmountStart}]]>
+			</if>
+			<if test="totalAmountEnd != null and totalAmountEnd != ''">
+					<![CDATA[and total_amount <= #{totalAmountEnd}]]>
+			</if>
+			<if test="unit != null and unit != ''">
+					<![CDATA[and unit = #{unit}]]>
+			</if>
+			<if test="usePlace != null and usePlace != ''">
+					<![CDATA[and use_place = #{usePlace}]]>
+			</if>
+			<if test="materialNm != null and materialNm != ''">
+					<![CDATA[and material_nm = #{materialNm}]]>
+			</if>
+			<if test="categoryNm != null and categoryNm != ''">
+					<![CDATA[and category_nm = #{categoryNm}]]>
+			</if>
+			<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+			</if>
+		</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MTransItem">
+	    <![CDATA[
+			insert into m_trans_item (
+				item_id,
+				trans_id,
+				ws_cd,
+				category_cd,
+				material_cd,
+				model_no,
+				total_amount,
+				unit,
+				use_place,
+				material_nm,
+				category_nm,
+				memo
+			) values (
+				#{itemId},
+				#{transId},
+				#{wsCd},
+				#{categoryCd},
+				#{materialCd},
+				#{modelNo},
+				#{totalAmount},
+				#{unit},
+				#{usePlace},
+				#{materialNm},
+				#{categoryNm},
+				#{memo}
+			)
+		]]>
+	</insert>
+
+	<!-- 根据条件删除数据 -->
+	<delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MTransItem">
+
+		delete from m_trans_item
+		<where>
+			<if test="itemId != null and itemId != ''">
+						<![CDATA[and item_id = #{itemId}]]>
+			</if>
+			<if test="transId != null and transId != ''">
+						<![CDATA[and trans_id = #{transId}]]>
+			</if>
+			<if test="wsCd != null and wsCd != ''">
+						<![CDATA[and ws_cd = #{wsCd}]]>
+			</if>
+			<if test="categoryCd != null and categoryCd != ''">
+						<![CDATA[and category_cd = #{categoryCd}]]>
+			</if>
+			<if test="materialCd != null and materialCd != ''">
+						<![CDATA[and material_cd = #{materialCd}]]>
+			</if>
+			<if test="modelNo != null and modelNo != ''">
+						<![CDATA[and model_no = #{modelNo}]]>
+			</if>
+			<if test="totalAmount != null and totalAmount != ''">
+						<![CDATA[and total_amount = #{totalAmount}]]>
+			</if>
+			<if test="unit != null and unit != ''">
+						<![CDATA[and unit = #{unit}]]>
+			</if>
+			<if test="usePlace != null and usePlace != ''">
+						<![CDATA[and use_place = #{usePlace}]]>
+			</if>
+			<if test="materialNm != null and materialNm != ''">
+						<![CDATA[and material_nm = #{materialNm}]]>
+			</if>
+			<if test="categoryNm != null and categoryNm != ''">
+						<![CDATA[and category_nm = #{categoryNm}]]>
+			</if>
+			<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+			</if>
+		</where>
+
+	</delete>
+
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MTransItem">
+
+		update m_trans_item
+		<set>
+			<if test="transId != null">
+				trans_id = #{transId},
+				</if>
+			<if test="wsCd != null">
+				ws_cd = #{wsCd},
+				</if>
+			<if test="categoryCd != null">
+				category_cd = #{categoryCd},
+				</if>
+			<if test="materialCd != null">
+				material_cd = #{materialCd},
+				</if>
+			<if test="modelNo != null">
+				model_no = #{modelNo},
+				</if>
+			<if test="totalAmount != null">
+				total_amount = #{totalAmount},
+				</if>
+			<if test="unit != null">
+				unit = #{unit},
+				</if>
+			<if test="usePlace != null">
+				use_place = #{usePlace},
+				</if>
+			<if test="materialNm != null">
+				material_nm = #{materialNm},
+				</if>
+			<if test="categoryNm != null">
+				category_nm = #{categoryNm},
+				</if>
+			<if test="memo != null">
+				memo = #{memo}
+				</if>
+		</set>
+
+		where
+		item_id = #{itemId}
+
+	</update>
+
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MTransItem"
+		resultMap="pretrst.MTransItemRM">
+		select
+		<include refid="allColumns" />
+
+		from m_trans_item
+		<where>
+			<if test="itemId != null and itemId != ''">
+					<![CDATA[and item_id = #{itemId}]]>
+			</if>
+			<if test="transId != null and transId != ''">
+					<![CDATA[and trans_id = #{transId}]]>
+			</if>
+			<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+			</if>
+			<if test="categoryCd != null and categoryCd != ''">
+					<![CDATA[and category_cd = #{categoryCd}]]>
+			</if>
+			<if test="materialCd != null and materialCd != ''">
+					<![CDATA[and material_cd = #{materialCd}]]>
+			</if>
+			<if test="modelNo != null and modelNo != ''">
+					<![CDATA[and model_no = #{modelNo}]]>
+			</if>
+			<if test="totalAmount != null and totalAmount != ''">
+					<![CDATA[and total_amount = #{totalAmount}]]>
+			</if>
+			<if test="unit != null and unit != ''">
+					<![CDATA[and unit = #{unit}]]>
+			</if>
+			<if test="usePlace != null and usePlace != ''">
+					<![CDATA[and use_place = #{usePlace}]]>
+			</if>
+			<if test="materialNm != null and materialNm != ''">
+					<![CDATA[and material_nm = #{materialNm}]]>
+			</if>
+			<if test="categoryNm != null and categoryNm != ''">
+					<![CDATA[and category_nm = #{categoryNm}]]>
+			</if>
+			<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+			</if>
+		</where>
+
+	</select>
+
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MTransItemQuery"
+		resultMap="pretrst.MTransItemRM">
+		<include refid="querySql" />
+
+	</select>
+
+
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="getTransItemListByWscd" parameterType="com.is.pretrst.entity.query.MTransItemQuery"
+		resultMap="pretrst.MTransItemRM">
+		select
+		item_id ,
+		"" trans_id,
+		ws_cd ,
+		category_cd ,
+		material_cd ,
+		model_no ,
+		remain_number total_amount,
+		unit ,
+		use_place ,
+		material_nm ,
+		category_nm,
+		memo
+		from m_workshop_item
+		<where>
+			<if test="wsCd != null and wsCd != ''">
+					<![CDATA[and ws_cd = #{wsCd}]]>
+			</if>
+		</where>
+	</select>
+
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MTransItemQuery"
+		resultMap="pretrst.MTransItemRM">
+		<include refid="querySql" />
+
+	</select>
+
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MTransItemQuery"
+		resultType="integer">
+		select count(1) from (
+		<include refid="querySql" />
+		) as tmp_m_trans_item
+	</select>
+
+</mapper>

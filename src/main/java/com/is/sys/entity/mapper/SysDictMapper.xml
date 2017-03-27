@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="SysDict">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			dict_code,
+			dict_name,
+			dict_type_code,
+			serial_number
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			dict_code,
+			dict_type_code
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from sys_dict
+			<where>	      				
+				<if test="dictCode != null and dictCode != ''">
+					<![CDATA[and dict_code = #{dictCode}]]>
+				</if>
+				<if test="dictName != null and dictName != ''">
+					<![CDATA[and dict_name = #{dictName}]]>
+				</if>
+				<if test="dictTypeCode != null and dictTypeCode != ''">
+					<![CDATA[and dict_type_code = #{dictTypeCode}]]>
+				</if>
+				<if test="serialNumber != null and serialNumber != ''">
+					<![CDATA[and serial_number = #{serialNumber}]]>
+				</if>
+			</where>
+			order by serial_number asc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.sys.entity.SysDict">
+	    <![CDATA[
+			insert into sys_dict (
+				dict_code,
+				dict_name,
+				dict_type_code,
+				serial_number
+			) values (
+				#{dictCode},
+				#{dictName},
+				#{dictTypeCode},
+				#{serialNumber}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.sys.entity.SysDict">
+      
+			delete from sys_dict 
+				<where>	 
+					<if test="dictCode != null and dictCode != ''">
+						<![CDATA[and dict_code = #{dictCode}]]>
+					</if>
+					<if test="dictName != null and dictName != ''">
+						<![CDATA[and dict_name = #{dictName}]]>
+					</if>
+					<if test="dictTypeCode != null and dictTypeCode != ''">
+						<![CDATA[and dict_type_code = #{dictTypeCode}]]>
+					</if>
+					<if test="serialNumber != null and serialNumber != ''">
+						<![CDATA[and serial_number = #{serialNumber}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.sys.entity.SysDict">
+	   
+			update sys_dict 
+				<set>
+				<if test="dictName != null">
+					dict_name = #{dictName},
+				</if>
+				<if test="serialNumber != null">
+					serial_number = #{serialNumber}
+				</if>
+				</set>
+				
+				where 
+					dict_code = #{dictCode} and 
+					dict_type_code = #{dictTypeCode}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.sys.entity.SysDict" resultMap="sys.SysDictRM">
+        select <include refid="allColumns" />
+	    
+			from sys_dict 
+			<where>	      				
+				<if test="dictCode != null and dictCode != ''">
+					<![CDATA[and dict_code = #{dictCode}]]>
+				</if>
+				<if test="dictName != null and dictName != ''">
+					<![CDATA[and dict_name = #{dictName}]]>
+				</if>
+				<if test="dictTypeCode != null and dictTypeCode != ''">
+					<![CDATA[and dict_type_code = #{dictTypeCode}]]>
+				</if>
+				<if test="serialNumber != null and serialNumber != ''">
+					<![CDATA[and serial_number = #{serialNumber}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!--查询当前最大的序号号并加1-->
+	<select id="selectMaxNumber" parameterType="String"  resultType="integer">
+		select MAX(serial_number+1) from sys_dict  where dict_type_code=#{typeCode}
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.sys.entity.query.SysDictQuery" resultMap="sys.SysDictRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.sys.entity.query.SysDictQuery" resultMap="sys.SysDictRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.sys.entity.query.SysDictQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_sys_dict
+	</select>
+	
+</mapper>

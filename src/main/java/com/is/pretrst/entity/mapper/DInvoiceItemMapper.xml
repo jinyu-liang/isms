@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="DInvoiceItem">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			item_id,
+			invoice_id,
+			item_no,
+			category_cd,
+			material_cd,
+			model_no,
+			identification_cd,
+			sender,
+			receiver,
+			send_amount,
+			received_amount,
+			unit,
+			memo,
+			status_cd,
+			material_nm,
+			category_nm,
+            use_place
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			item_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from d_invoice_item
+			<where>	      				
+				<if test="itemId != null and itemId != ''">
+					<![CDATA[and item_id = #{itemId}]]>
+				</if>
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="itemNo != null and itemNo != ''">
+					<![CDATA[and item_no = #{itemNo}]]>
+				</if>
+				<if test="categoryCd != null and categoryCd != ''">
+					<![CDATA[and category_cd = #{categoryCd}]]>
+				</if>
+				<if test="materialCd != null and materialCd != ''">
+					<![CDATA[and material_cd = #{materialCd}]]>
+				</if>
+				<if test="modelNo != null and modelNo != ''">
+					<![CDATA[and model_no = #{modelNo}]]>
+				</if>
+				<if test="identificationCd != null and identificationCd != ''">
+					<![CDATA[and identification_cd = #{identificationCd}]]>
+				</if>
+				<if test="sender != null and sender != ''">
+					<![CDATA[and sender = #{sender}]]>
+				</if>
+				<if test="receiver != null and receiver != ''">
+					<![CDATA[and receiver = #{receiver}]]>
+				</if>
+				<if test="sendAmount != null and sendAmount != ''">
+					<![CDATA[and send_amount = #{sendAmount}]]>
+				</if>
+				<if test="receivedAmount != null and receivedAmount != ''">
+					<![CDATA[and received_amount = #{receivedAmount}]]>
+				</if>
+				<if test="unit != null and unit != ''">
+					<![CDATA[and unit = #{unit}]]>
+				</if>
+				<if test="usePlace != null and usePlace != ''">
+					<![CDATA[and use_place = #{usePlace}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="materialNm != null and materialNm != ''">
+					<![CDATA[and material_nm = #{materialNm}]]>
+				</if>
+				<if test="categoryNm != null and categoryNm != ''">
+					<![CDATA[and category_nm = #{categoryNm}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.DInvoiceItem">
+	    <![CDATA[
+			insert into d_invoice_item (
+				item_id,
+				invoice_id,
+				item_no,
+				category_cd,
+				material_cd,
+				model_no,
+				identification_cd,
+				sender,
+				receiver,
+				send_amount,
+				received_amount,
+				unit,
+                use_place,
+				memo,
+				status_cd,
+				material_nm,
+				category_nm
+			) values (
+				#{itemId},
+				#{invoiceId},
+				#{itemNo},
+				#{categoryCd},
+				#{materialCd},
+				#{modelNo},
+				#{identificationCd},
+				#{sender},
+				#{receiver},
+				#{sendAmount},
+				#{receivedAmount},
+				#{unit},
+				#{usePlace},
+				#{memo},
+				#{statusCd},
+				#{materialNm},
+				#{categoryNm}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.DInvoiceItem">
+      
+			delete from d_invoice_item 
+				<where>	 
+					<if test="itemId != null and itemId != ''">
+						<![CDATA[and item_id = #{itemId}]]>
+					</if>
+					<if test="invoiceId != null and invoiceId != ''">
+						<![CDATA[and invoice_id = #{invoiceId}]]>
+					</if>
+					<if test="itemNo != null and itemNo != ''">
+						<![CDATA[and item_no = #{itemNo}]]>
+					</if>
+					<if test="categoryCd != null and categoryCd != ''">
+						<![CDATA[and category_cd = #{categoryCd}]]>
+					</if>
+					<if test="materialCd != null and materialCd != ''">
+						<![CDATA[and material_cd = #{materialCd}]]>
+					</if>
+					<if test="modelNo != null and modelNo != ''">
+						<![CDATA[and model_no = #{modelNo}]]>
+					</if>
+					<if test="identificationCd != null and identificationCd != ''">
+						<![CDATA[and identification_cd = #{identificationCd}]]>
+					</if>
+					<if test="sender != null and sender != ''">
+						<![CDATA[and sender = #{sender}]]>
+					</if>
+					<if test="receiver != null and receiver != ''">
+						<![CDATA[and receiver = #{receiver}]]>
+					</if>
+					<if test="sendAmount != null and sendAmount != ''">
+						<![CDATA[and send_amount = #{sendAmount}]]>
+					</if>
+					<if test="receivedAmount != null and receivedAmount != ''">
+						<![CDATA[and received_amount = #{receivedAmount}]]>
+					</if>
+					<if test="unit != null and unit != ''">
+						<![CDATA[and unit = #{unit}]]>
+					</if>
+					<if test="usePlace != null and usePlace != ''">
+						<![CDATA[and use_place = #{usePlace}]]>
+					</if>
+					<if test="memo != null and memo != ''">
+						<![CDATA[and memo = #{memo}]]>
+					</if>
+					<if test="statusCd != null and statusCd != ''">
+						<![CDATA[and status_cd = #{statusCd}]]>
+					</if>
+					<if test="materialNm != null and materialNm != ''">
+						<![CDATA[and material_nm = #{materialNm}]]>
+					</if>
+					<if test="categoryNm != null and categoryNm != ''">
+						<![CDATA[and category_nm = #{categoryNm}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.DInvoiceItem">
+	   
+			update d_invoice_item 
+				<set>
+				<if test="invoiceId != null">
+					invoice_id = #{invoiceId},
+				</if>
+				<if test="itemNo != null">
+					item_no = #{itemNo},
+				</if>
+				<if test="categoryCd != null">
+					category_cd = #{categoryCd},
+				</if>
+				<if test="materialCd != null">
+					material_cd = #{materialCd},
+				</if>
+				<if test="modelNo != null">
+					model_no = #{modelNo},
+				</if>
+				<if test="identificationCd != null">
+					identification_cd = #{identificationCd},
+				</if>
+				<if test="sender != null">
+					sender = #{sender},
+				</if>
+				<if test="receiver != null">
+					receiver = #{receiver},
+				</if>
+				<if test="sendAmount != null">
+					send_amount = #{sendAmount},
+				</if>
+				<if test="receivedAmount != null">
+					received_amount = #{receivedAmount},
+				</if>
+				<if test="unit != null">
+					unit = #{unit},
+				</if>
+				<if test="usePlace != null">
+					use_place = #{usePlace},
+				</if>
+				<if test="memo != null">
+					memo = #{memo},
+				</if>
+				<if test="statusCd != null">
+					status_cd = #{statusCd},
+				</if>
+				<if test="materialNm != null">
+					material_nm = #{materialNm},
+				</if>
+				<if test="categoryNm != null">
+					category_nm = #{categoryNm}
+				</if>
+				</set>
+				
+				where 
+					item_id = #{itemId}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.DInvoiceItem" resultMap="pretrst.DInvoiceItemRM">
+        select <include refid="allColumns" />
+	    
+			from d_invoice_item 
+			<where>	      				
+				<if test="itemId != null and itemId != ''">
+					<![CDATA[and item_id = #{itemId}]]>
+				</if>
+				<if test="invoiceId != null and invoiceId != ''">
+					<![CDATA[and invoice_id = #{invoiceId}]]>
+				</if>
+				<if test="itemNo != null and itemNo != ''">
+					<![CDATA[and item_no = #{itemNo}]]>
+				</if>
+				<if test="categoryCd != null and categoryCd != ''">
+					<![CDATA[and category_cd = #{categoryCd}]]>
+				</if>
+				<if test="materialCd != null and materialCd != ''">
+					<![CDATA[and material_cd = #{materialCd}]]>
+				</if>
+				<if test="modelNo != null and modelNo != ''">
+					<![CDATA[and model_no = #{modelNo}]]>
+				</if>
+				<if test="identificationCd != null and identificationCd != ''">
+					<![CDATA[and identification_cd = #{identificationCd}]]>
+				</if>
+				<if test="sender != null and sender != ''">
+					<![CDATA[and sender = #{sender}]]>
+				</if>
+				<if test="receiver != null and receiver != ''">
+					<![CDATA[and receiver = #{receiver}]]>
+				</if>
+				<if test="sendAmount != null and sendAmount != ''">
+					<![CDATA[and send_amount = #{sendAmount}]]>
+				</if>
+				<if test="receivedAmount != null and receivedAmount != ''">
+					<![CDATA[and received_amount = #{receivedAmount}]]>
+				</if>
+				<if test="unit != null and unit != ''">
+					<![CDATA[and unit = #{unit}]]>
+				</if>
+				<if test="usePlace != null and usePlace != ''">
+					<![CDATA[and use_place = #{usePlace}]]>
+				</if>
+				<if test="memo != null and memo != ''">
+					<![CDATA[and memo = #{memo}]]>
+				</if>
+				<if test="statusCd != null and statusCd != ''">
+					<![CDATA[and status_cd = #{statusCd}]]>
+				</if>
+				<if test="materialNm != null and materialNm != ''">
+					<![CDATA[and material_nm = #{materialNm}]]>
+				</if>
+				<if test="categoryNm != null and categoryNm != ''">
+					<![CDATA[and category_nm = #{categoryNm}]]>
+				</if>
+			</where>
+	  
+	</select>
+	<!-- 批量插入发料产品对象 -->
+    <insert id="batchInsertItemInfo" parameterType="java.util.List" >
+        insert into d_invoice_item (
+                    item_id,
+        			invoice_id,
+        			item_no,
+                    category_cd,
+                    material_cd,
+        			category_nm,
+        			material_nm,
+        			model_no,
+        			identification_cd,
+        			send_amount,
+        			unit,
+                    use_place,
+        			memo,
+        			sender,
+        			receiver,
+        			received_amount,
+        			status_cd
+        			
+        			
+                ) values 
+                <foreach item="item" index="index" collection="list"    separator=","  >
+                    (
+                        #{item.itemId},
+                        #{item.invoiceId},
+                        #{item.itemNo},
+                        #{item.categoryCd},
+                        #{item.materialCd},
+                        #{item.categoryNm},
+                        #{item.materialNm},
+                        #{item.modelNo},
+                        #{item.identificationCd},
+                        #{item.sendAmount},
+                        #{item.unit},
+                        #{item.usePlace},
+                        #{item.memo},
+                        #{item.sender},
+                        #{item.receiver},
+                        #{item.receivedAmount},
+                        #{item.statusCd}
+                    )
+                </foreach>
+    </insert>
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.DInvoiceItemQuery" resultMap="pretrst.DInvoiceItemRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.DInvoiceItemQuery" resultMap="pretrst.DInvoiceItemRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.DInvoiceItemQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_d_invoice_item
+	</select>
+	
+</mapper>

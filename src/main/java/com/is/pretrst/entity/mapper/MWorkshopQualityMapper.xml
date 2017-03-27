@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="MWorkshopQuality"> 
+<!-- <cache flushInterval="60000" readOnly="true"/> -->
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			pid,
+			fquserid,
+			fqusername,
+			ws_cd,
+			ws_nm,
+			div_cd,
+			fqattchid,
+			zgattchid,
+			fqdesc,
+			zgdesc,
+			zgusername,
+			zguserid,
+			zgaddtime,
+			fqaddtime,
+			fqstatus,
+			remak,
+			zgjhfinishtime,
+			zgfinishtime,
+			isovertime,
+			jlqrfinishtime,
+			fqrqrfinishtime,
+			fqyqfinishtime,
+			zgfinishuserid,
+			zgfinishusername,
+			zgfinishdesc,
+			jluserid,
+			jlusername,
+			jlfinishuerid,
+			jlfinishusername,
+			jlDesc,
+			fqrqdesc
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			pid
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from m_workshop_quality
+			<where>	      				
+				<if test="pid != null and pid != ''">
+					<![CDATA[and pid = #{pid}]]>
+				</if>
+				<if test="fquserid != null and fquserid != ''">
+					<![CDATA[and fquserid = #{fquserid}]]>
+				</if>
+				<if test="ws_nm != null and ws_nm != ''">
+					<![CDATA[and ws_nm like concat('%',#{ws_nm},'%')]]>
+				</if>
+				<if test="fqusername != null and fqusername != ''">
+					<![CDATA[and fqusername = #{fqusername}]]>
+				</if>
+				<if test="ws_cd != null and ws_cd != ''">
+					<![CDATA[and ws_cd = #{ws_cd}]]>
+				</if>
+				<if test="div_cd != null and div_cd != ''">
+					<![CDATA[and div_cd = #{div_cd}]]>
+				</if>
+				<if test="fqattchid != null and fqattchid != ''">
+					<![CDATA[and fqattchid = #{fqattchid}]]>
+				</if>
+				<if test="zgattchid != null and zgattchid != ''">
+					<![CDATA[and zgattchid = #{zgattchid}]]>
+				</if>
+				<if test="fqdesc != null and fqdesc != ''">
+					<![CDATA[and fqdesc = #{fqdesc}]]>
+				</if>
+				<if test="zgdesc != null and zgdesc != ''">
+					<![CDATA[and zgdesc = #{zgdesc}]]>
+				</if>
+				<if test="zgusername != null and zgusername != ''">
+					<![CDATA[and zgusername = #{zgusername}]]>
+				</if>
+				<if test="zguserid != null and zguserid != ''">
+					<![CDATA[and zguserid = #{zguserid}]]>
+				</if>
+				<if test="zgaddtime != null and zgaddtime != ''">
+					<![CDATA[and zgaddtime = #{zgaddtime}]]>
+				</if>
+				<if test="fqaddtime != null and fqaddtime != ''">
+					<![CDATA[and fqaddtime = #{fqaddtime}]]>
+				</if>
+				<if test="fqstatus != null and fqstatus != ''">
+					<![CDATA[and fqstatus = #{fqstatus}]]>
+				</if>
+				<if test="remak != null and remak != ''">
+					<![CDATA[and remak = #{remak}]]>
+				</if>
+			</where>
+			order by fqaddtime desc
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.pretrst.entity.MWorkshopQuality">
+	    <![CDATA[
+			insert into m_workshop_quality (
+				pid,
+				fquserid,
+				fqusername,
+				ws_cd,
+				ws_nm,
+				div_cd,
+				fqattchid,
+				zgattchid,
+				fqdesc,
+				zgdesc,
+				zgusername,
+				zguserid,
+				zgaddtime,
+				fqaddtime,
+				fqstatus,
+				remak,
+				zgjhfinishtime,
+				zgfinishtime,
+				isovertime,
+				jlqrfinishtime,
+				fqrqrfinishtime,
+				fqyqfinishtime,
+				zgfinishuserid,
+				zgfinishusername,
+				zgfinishdesc,
+				jluserid,
+				jlusername,
+				jlfinishuerid,
+				jlfinishusername,
+				jlDesc,
+				fqrqdesc
+			) values (
+				#{pid},
+				#{fquserid},
+				#{fqusername},
+				#{ws_cd},
+				#{ws_nm},
+				#{div_cd},
+				#{fqattchid},
+				#{zgattchid},
+				#{fqdesc},
+				#{zgdesc},
+				#{zgusername},
+				#{zguserid},
+				#{zgaddtime},
+				#{fqaddtime},
+				#{fqstatus},
+				#{remak},
+				#{zgjhfinishtime},
+				#{zgfinishtime},
+				#{isovertime},
+				#{jlqrfinishtime},
+				#{fqrqrfinishtime},
+				#{fqyqfinishtime}
+				#{zgfinishuserid},
+				#{zgfinishusername},
+				#{zgfinishdesc},
+				#{jluserid},
+				#{jlusername},
+				#{jlfinishuerid},
+				#{jlfinishusername},
+				#{jlDesc},
+				#{fqrqdesc}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.pretrst.entity.MWorkshopQuality">
+      
+			delete from m_workshop_quality 
+				<where>
+					<if test="pid != null and pid != ''">
+						<![CDATA[and pid = #{pid}]]>
+					</if> 
+					<if test="ws_cd != null and ws_cd != ''">
+						<![CDATA[and ws_cd = #{ws_cd}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.pretrst.entity.MWorkshopQuality">
+	   
+			update m_workshop_quality 
+				<set>
+				<if test="fqstatus != null">
+					fqstatus = #{fqstatus},
+				</if>
+				<if test="zgaddtime != null">
+					zgaddtime = #{zgaddtime},
+				</if>
+				<if test="zguserid != null">
+					zguserid = #{zguserid},
+				</if>
+				<if test="zgusername != null">
+					zgusername = #{zgusername},
+				</if>
+				<if test="zgdesc != null">
+					zgdesc = #{zgdesc},
+				</if>
+				<if test="zgattchid != null">
+					zgattchid = #{zgattchid},
+				</if>
+				<if test="zgfinishuserid != null">
+					zgfinishuserid = #{zgfinishuserid},
+				</if>
+				<if test="zgfinishusername != null">
+					zgfinishusername = #{zgfinishusername},
+				</if>
+				<if test="zgjhfinishtime != null">
+					zgjhfinishtime = #{zgjhfinishtime},
+				</if>
+				<if test="zgdesc != null">
+					zgdesc = #{zgdesc},
+				</if>
+				<if test="zgfinishtime != null">
+					zgfinishtime = #{zgfinishtime},
+				</if>
+				<if test="isovertime != null">
+					isovertime = #{isovertime},
+				</if>
+				<if test="zgfinishdesc != null">
+					zgfinishdesc = #{zgfinishdesc},
+				</if>
+				<if test="fqrqdesc != null">
+					fqrqdesc = #{fqrqdesc},
+				</if>
+				<if test="fqyqfinishtime != null">
+					fqyqfinishtime = #{fqyqfinishtime},
+				</if>
+				<if test="jlfinishuerid != null">
+					jlfinishuerid = #{jlfinishuerid},
+				</if>
+				<if test="jlfinishusername != null">
+					jlfinishusername = #{jlfinishusername},
+				</if>
+				<if test="jlqrfinishtime != null">
+					jlqrfinishtime = #{jlqrfinishtime},
+				</if>
+				<if test="jlDesc != null">
+					jlDesc = #{jlDesc},
+				</if>
+				</set>
+				
+				where 
+					pid = #{pid}
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.pretrst.entity.MWorkshopQuality" resultMap="pretrst.MWorkshopQualityRM">
+        select <include refid="allColumns" />
+	    
+			from m_workshop_quality  m
+			
+			<where>
+				<if test="pid != null and pid != ''">
+					<![CDATA[and m.pid = #{pid}]]>
+				</if>	      				
+				<if test="ws_cd != null and ws_cd != ''">
+					<![CDATA[and m.ws_cd = #{ws_cd}]]>
+				</if>
+				<if test="ws_nm != null and ws_nm != ''">
+					<![CDATA[and m.ws_nm = #{ws_nm}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.pretrst.entity.query.MWorkshopQualityQuery" resultMap="pretrst.MWorkshopQualityRM">
+			<include refid="querySql"/>
+			
+	</select>
+
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.pretrst.entity.query.MWorkshopQualityQuery" resultMap="pretrst.MWorkshopQualityRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.pretrst.entity.query.MWorkshopQualityQuery" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_m_workshop_quality
+	</select>	
+    
+</mapper>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="GgkzResourceInfo">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			resource_id,
+			higer_resource_code,
+			resource_name,
+			resource_type,
+			short_name,
+			resource_url,
+			order_num,
+			model_code,
+			valid_state,
+			note,
+			oper_time,
+			oper_user_id
+	    ]]>
+  	</sql>
+	
+	<!-- 表的主键字段 -->
+	<sql id="pkColumns">
+		<![CDATA[
+			resource_id
+	    ]]>
+  	</sql>
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ggkz_resource_info
+			<where>	      				
+				<if test="resourceId != null and resourceId != ''">
+					<![CDATA[and resource_id = #{resourceId}]]>
+				</if>
+				<if test="higerResourceCode != null and higerResourceCode != ''">
+					<![CDATA[and higer_resource_code = #{higerResourceCode}]]>
+				</if>
+				<if test="resourceName != null and resourceName != ''">
+					<![CDATA[and resource_name like concat('%',#{resourceName},'%')]]>
+				</if>
+				<if test="resourceType != null and resourceType != ''">
+					<![CDATA[and resource_type = #{resourceType}]]>
+				</if>
+				<if test="shortName != null and shortName != ''">
+					<![CDATA[and short_name  like concat('%',#{shortName},'%')]]>
+				</if>
+				<if test="resourceUrl != null and resourceUrl != ''">
+					<![CDATA[and resource_url = #{resourceUrl}]]>
+				</if>
+				<if test="orderNum != null and orderNum != ''">
+					<![CDATA[and order_num = #{orderNum}]]>
+				</if>
+				<if test="modelCode != null and modelCode != ''">
+					<![CDATA[and model_code = #{modelCode}]]>
+				</if>
+				<if test="validState != null and validState != ''">
+					<![CDATA[and valid_state = #{validState}]]>
+				</if>
+				<if test="note != null and note != ''">
+					<![CDATA[and note = #{note}]]>
+				</if>
+				<if test="operTime != null and operTime != ''">
+					<![CDATA[and oper_time = #{operTime}]]>
+				</if>
+				<if test="operUserId != null and operUserId != ''">
+					<![CDATA[and oper_user_id = #{operUserId}]]>
+				</if>
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.ggkz.entity.GgkzResourceInfo">
+	    <![CDATA[
+			insert into ggkz_resource_info (
+				resource_id,
+				higer_resource_code,
+				resource_name,
+				resource_type,
+				short_name,
+				resource_url,
+				order_num,
+				model_code,
+				valid_state,
+				note,
+				oper_time,
+				oper_user_id
+			) values (
+				#{resourceId},
+				#{higerResourceCode},
+				#{resourceName},
+				#{resourceType},
+				#{shortName},
+				#{resourceUrl},
+				#{orderNum},
+				#{modelCode},
+				#{validState},
+				#{note},
+				#{operTime},
+				#{operUserId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzResourceInfo">
+      
+			delete from ggkz_resource_info 
+				<where>	 
+					<if test="resourceId != null and resourceId != ''">
+						<![CDATA[and resource_id = #{resourceId}]]>
+					</if>
+					<if test="higerResourceCode != null and higerResourceCode != ''">
+						<![CDATA[and higer_resource_code = #{higerResourceCode}]]>
+					</if>
+					<if test="resourceName != null and resourceName != ''">
+						<![CDATA[and resource_name = #{resourceName}]]>
+					</if>
+					<if test="resourceType != null and resourceType != ''">
+						<![CDATA[and resource_type = #{resourceType}]]>
+					</if>
+					<if test="shortName != null and shortName != ''">
+						<![CDATA[and short_name = #{shortName}]]>
+					</if>
+					<if test="resourceUrl != null and resourceUrl != ''">
+						<![CDATA[and resource_url = #{resourceUrl}]]>
+					</if>
+					<if test="orderNum != null and orderNum != ''">
+						<![CDATA[and order_num = #{orderNum}]]>
+					</if>
+					<if test="modelCode != null and modelCode != ''">
+						<![CDATA[and model_code = #{modelCode}]]>
+					</if>
+					<if test="validState != null and validState != ''">
+						<![CDATA[and valid_state = #{validState}]]>
+					</if>
+					<if test="note != null and note != ''">
+						<![CDATA[and note = #{note}]]>
+					</if>
+					<if test="operTime != null and operTime != ''">
+						<![CDATA[and oper_time = #{operTime}]]>
+					</if>
+					<if test="operUserId != null and operUserId != ''">
+						<![CDATA[and oper_user_id = #{operUserId}]]>
+					</if>
+				</where>
+    
+    </delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzResourceInfo">
+	   
+			update ggkz_resource_info 
+				<set>
+				<if test="higerResourceCode != null">
+					higer_resource_code = #{higerResourceCode},
+				</if>
+				<if test="resourceName != null">
+					resource_name = #{resourceName},
+				</if>
+				<if test="resourceType != null">
+					resource_type = #{resourceType},
+				</if>
+				<if test="shortName != null">
+					short_name = #{shortName},
+				</if>
+				<if test="resourceUrl != null">
+					resource_url = #{resourceUrl},
+				</if>
+				<if test="orderNum != null">
+					order_num = #{orderNum},
+				</if>
+				<if test="modelCode != null">
+					model_code = #{modelCode},
+				</if>
+				<if test="validState != null">
+					valid_state = #{validState},
+				</if>
+				<if test="note != null">
+					note = #{note},
+				</if>
+				<if test="operTime != null">
+					oper_time = #{operTime},
+				</if>
+				<if test="operUserId != null">
+					oper_user_id = #{operUserId}
+				</if>
+				</set>
+				
+				where 
+					resource_id = #{resourceId}
+    	
+	</update>
+	
+	
+	<!-- 通过主键集合批量删除记录 -->
+	<delete id="batchRemoveResourceByPks" parameterType="java.util.List">
+			DELETE FROM ggkz_resource_info WHERE resource_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzResourceInfo" resultMap="ggkz.GgkzResourceInfoRM">
+        select <include refid="allColumns" />
+	    
+			from ggkz_resource_info
+			<where>	      				
+				<if test="resourceId != null and resourceId != ''">
+					<![CDATA[and resource_id = #{resourceId}]]>
+				</if>
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.ggkz.entity.GgkzResourceInfo" resultMap="ggkz.GgkzResourceInfoRM">
+			<include refid="querySql"/>
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	 <select id="selectByPage" parameterType="com.is.ggkz.entity.GgkzResourceInfo" resultMap="ggkz.GgkzResourceInfoRM"> <include refid="querySql"/> order by resource_id desc </select> 
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.ggkz.entity.GgkzResourceInfo" resultType="integer"> select count(<include refid="pkColumns"/>) from ( <include refid="querySql"/> ) as tmp_resource </select>
+	
+	
+	
+</mapper>

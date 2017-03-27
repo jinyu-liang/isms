@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//ibatis.apache.org//DTD Config 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-config.dtd">
+
+<configuration>
+    <settings>
+        <!-- 全局的映射器启用或禁用缓存 -->
+        <setting name="cacheEnabled" value="true" />
+        <!-- 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。 -->
+        <setting name="lazyLoadingEnabled" value="true" />
+        <setting name="aggressiveLazyLoading" value="false" />
+    </settings>
+    <typeAliases>
+        <typeAlias type="com.is.utils.blobUtil.BlobAndStringHandler" alias="blobHandler" />
+    </typeAliases>
+    <mappers>
+        <!-- 引入ResultMap定义文件 -->
+        <mapper resource="com/is/ggkz/entity/mapper/ResultMap.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzUserInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzUserRoleMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzRoleAuthMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzRoleInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzResourceInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzAuthInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzAuthResourceMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzDepartInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzPostInfoMapper.xml" />
+        <!-- 公共控制扩展文件 -->
+        <mapper resource="com/is/ggkz/entity/mapper/ext/GgkzRoleInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/ext/GgkzUserRoleMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/ext/GgkzRoleAuthMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/ext/GgkzResourceInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/ext/GgkzAuthInfoMapper.xml" />
+        <!-- 终端权限文件 -->
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzRoleMobileAuthMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzAuthMobileInfoMapper.xml" />
+        <mapper resource="com/is/ggkz/entity/mapper/GgkzAuthMobileResourceMapper.xml" />
+        <!-- 系统控制 -->
+        <mapper resource="com/is/sys/entity/mapper/ResultMap.xml" />
+        <mapper resource="com/is/sys/entity/mapper/SysOperLogMapper.xml" />
+        <mapper resource="com/is/sys/entity/mapper/SysDictMapper.xml" />
+        <mapper resource="com/is/sys/entity/mapper/SysDictTypeMapper.xml" />
+        <mapper resource="com/is/sys/entity/mapper/SysAttachAuthMapper.xml" />
+        <mapper resource="com/is/sys/entity/mapper/SysAttachMapper.xml" />
+
+        <mapper resource="com/is/pretrst/entity/mapper/ResultMap.xml" />
+        <!-- <mapper resource="com/is/pretrst/entity/mapper/ApnUserMapper.xml" /> <mapper resource="com/is/pretrst/entity/mapper/DApnMessageMapper.xml" 
+            /> <mapper resource="com/is/pretrst/entity/mapper/DContractImageMapper.xml" /> <mapper resource="com/is/pretrst/entity/mapper/DInProductMapper.xml" 
+            /> <mapper resource="com/is/pretrst/entity/mapper/DInProgressMapper.xml" /> <mapper resource="com/is/pretrst/entity/mapper/MCustomerCopyMapper.xml" 
+            /> <mapper resource="com/is/pretrst/entity/mapper/MCustomerMapper.xml" /> 
+            <mapper resource="com/is/pretrst/entity/mapper/MTransCompanyMapper.xml" /> -->
+        <mapper resource="com/is/pretrst/entity/mapper/MTeamMapper.xml" /> 
+        <mapper resource="com/is/pretrst/entity/mapper/ExWorkTypeMapper.xml" /> 
+        <mapper resource="com/is/pretrst/entity/mapper/DDeliveryItemMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DDeliveryPlanMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DExItemMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DExProgressMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DExProjectMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DInvoiceImageMapper.xml" />
+ 		<mapper resource="com/is/pretrst/entity/mapper/ExPersonInfoPayMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DInvoiceItemMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DInvoiceMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DProgressImageMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DProgressReportMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DRecordReplyMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DRecordUserMappingMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DReportImageMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DReportMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DScrapTransImageMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DScrapTransMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MWorkshopMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MWorkshopTransMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MWorkshopQualityMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MWorkshopJoblogMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MWorkshopContactMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/DContractImageMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/ExPersonManagerMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/ExPersonInfoMapper.xml" />
+       
+        <mapper resource="com/is/pretrst/entity/mapper/ExWorkTypeMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/RstVerInfoMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MWorkshopItemMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/MTransItemMapper.xml" />
+        <mapper resource="com/is/pretrst/entity/mapper/RstUploadConfMapper.xml" />
+        <!-- 消息互动 -->
+        <mapper resource="com/is/pms/msginteract/entity/mapper/ResultMap.xml" />
+
+        <mapper resource="com/is/pms/msginteract/entity/mapper/MsgMessageInfoMapper.xml" />
+
+    </mappers>
+</configuration>

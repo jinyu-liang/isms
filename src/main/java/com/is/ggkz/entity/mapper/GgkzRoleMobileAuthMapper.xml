@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- namespace命名规则: 表对应java类的名称-->
+<mapper namespace="GgkzRoleMobileAuth">
+	<!-- 表的所有字段 -->
+	<sql id="allColumns">
+		<![CDATA[
+			role_id,
+			auth_id
+	    ]]>
+  	</sql>
+	
+	
+	<!-- 根据实体的查询对象进行查询的sql -->
+	<sql id="querySql">
+		select <include refid="allColumns" /> 
+			from ggkz_role_mobile_auth
+			<where>	      				
+				<if test="roleId != null and roleId != ''">
+					<![CDATA[and role_id = #{roleId}]]>
+				</if>
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				
+			</where>
+	</sql>
+
+	<!-- 新增数据 -->
+	<insert id="insert" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth">
+	    <![CDATA[
+			insert into ggkz_role_mobile_auth (
+				role_id,
+				auth_id
+			) values (
+				#{roleId},
+				#{authId}
+			)
+		]]>
+	</insert>
+	
+	<!-- 根据条件删除数据 -->
+    <delete id="deleteByEntity" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth">
+      
+			delete from ggkz_role_mobile_auth 
+				<where>	 
+					<if test="roleId != null and roleId != ''">
+						<![CDATA[and role_id = #{roleId}]]>
+					</if>
+					<if test="authId != null and authId != ''">
+						<![CDATA[and auth_id = #{authId}]]>
+					</if>
+					
+				</where>
+    </delete>
+    	<!-- 通过主键集合批量删除记录 -->
+	<delete id="batchRemoveRoleAuthByPks" parameterType="java.util.List">
+			DELETE FROM ggkz_role_mobile_auth WHERE role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+   
+	<!-- 跟据条件更新数据 -->
+	<update id="updateByEntity" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth">
+	   
+			update ggkz_role_mobile_auth 
+				<set>
+				
+				<if test="authId != null">
+					auth_id = #{authId},
+				</if>
+				
+				</set>
+				where 
+					role_id = #{roleId} 
+    	
+	</update>
+	
+	<!-- 根据条件查询单个对象 -->
+	<select id="selectOneByEntity" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth" resultMap="ggkz.GgkzRoleMobileAuthRM">
+        select <include refid="allColumns" />
+	    
+			from ggkz_role_mobile_auth 
+			<where>	      				
+				<if test="roleId != null and roleId != ''">
+					<![CDATA[and role_id = #{roleId}]]>
+				</if>
+				<if test="authId != null and authId != ''">
+					<![CDATA[and auth_id = #{authId}]]>
+				</if>
+				
+			</where>
+	  
+	</select>
+	
+	<!-- 根据实体对象查询数据结果集 -->
+	<select id="selectByEntity" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth" resultMap="ggkz.GgkzRoleMobileAuthRM">
+			<include refid="querySql"/>
+			
+	</select>
+	
+	<!-- 分页查询 -查询结果数据 -->
+	<select id="selectByPage" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth" resultMap="ggkz.GgkzRoleMobileAuthRM">
+		<include refid="querySql"/>
+		
+	</select>
+	
+	<!-- 分页查询 -查询记录总数 -->
+	<select id="selectByPageCount" parameterType="com.is.ggkz.entity.GgkzRoleMobileAuth" resultType="integer">
+		select count(1) from ( <include refid="querySql"/> ) as tmp_ggkz_role_mobile_auth
+	</select>
+	
+	<!-- 根据角色查找该角色下的权限id -->
+	<select id="selectAuthIdsByRoles" parameterType="java.util.List" resultType="string">
+		select distinct auth_id FROM ggkz_role_mobile_auth WHERE role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+	<!-- 根据角色查找该角色下的权限 -->
+	<select id="selectAuthByRoles" parameterType="java.util.List" resultMap="ggkz.GgkzAuthMobileInfoRM">
+		select distinct info.auth_id,info.auth_name from ggkz_role_mobile_auth ra ,ggkz_auth_mobile_info info 
+        where ra.auth_id = info.auth_id and ra.role_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>		
+</mapper>
